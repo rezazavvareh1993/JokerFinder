@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.MovieListActivity">
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movie_recycler_view"
@@ -15,6 +17,29 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:id="@+id/btn_insert_data"
+        android:text="Insert Data"
+        app:layout_constraintTop_toBottomOf="@id/movie_recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_update_data"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:id="@+id/btn_update_data"
+        android:text="Update Data"
+        app:layout_constraintTop_toBottomOf="@id/movie_recycler_view"
+        app:layout_constraintEnd_toStartOf="@id/btn_insert_data"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

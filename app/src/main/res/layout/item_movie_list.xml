@@ -16,7 +16,7 @@
             <TextView
                 android:id="@+id/txt_name_movie"
                 android:layout_width="0dp"
-                android:layout_weight="0.4"
+                android:layout_weight="0.8"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:focusable="false"
@@ -30,7 +30,7 @@
             <ImageView
                 android:id="@+id/img_movie_pic"
                 android:layout_width="0dp"
-                android:layout_weight="0.3"
+                android:layout_weight="0.2"
                 android:layout_height="60dp"
                 android:src="@drawable/ic_launcher_background"
                 />

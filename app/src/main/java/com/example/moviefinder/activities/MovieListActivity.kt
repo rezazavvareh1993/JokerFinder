@@ -1,5 +1,6 @@
 package com.example.moviefinder.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -20,6 +21,13 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
     private var imgSearchMovie: ImageView? = null
     lateinit var adapter: MovieAdapter
     private val disposable = CompositeDisposable()
+    private val getIdMovieLambdaFunction : (Int) -> Unit = {
+        val intent = Intent(this,MovieDetailsActivity::class.java);
+        intent.putExtra("idMovie", it)
+        showToast(it.toString())
+        startActivity(intent)
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +62,11 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Toast.makeText(this, "success", Toast.LENGTH_LONG).show()
-                    adapter = MovieAdapter(it.results)
+                    showToast("success")
+                    adapter = MovieAdapter(it.results,getIdMovieLambdaFunction)
                     setUpRecyclerView(adapter)
                 }, {
-                    Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                    showToast(it?.message)
                 })
         )
     }
@@ -73,5 +81,10 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
             R.id.img_search_movie -> callRetrofit()
             else -> {}
         }
+    }
+
+    private fun showToast(myMessage : String?){
+        Toast.makeText(this, myMessage, Toast.LENGTH_LONG).show()
+
     }
 }

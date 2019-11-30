@@ -21,8 +21,8 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
     private var imgSearchMovie: ImageView? = null
     lateinit var adapter: MovieAdapter
     private val disposable = CompositeDisposable()
-    private val getIdMovieLambdaFunction : (Int) -> Unit = {
-        val intent = Intent(this,MovieDetailsActivity::class.java);
+    private val getIdMovieLambdaFunction: (Int) -> Unit = {
+        val intent = Intent(this, MovieDetailsActivity::class.java)
         intent.putExtra("idMovie", it)
         showToast(it.toString())
         startActivity(intent)
@@ -35,7 +35,23 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
 
         initView()
         setOnClicks()
-    }
+
+        swipeContainer.setOnRefreshListener {
+            // Your code to refresh the list here.
+            // Make sure you call swipeContainer.setRefreshing(false)
+            // once the network request has completed successfully.
+            //                fetchTimelineAsync(0);
+           callGetListMovies()
+//            swipeContainer.isRefreshing = false
+        }
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light
+        )
+}
 
     private fun initView() {
         imgSearchMovie = findViewById(R.id.img_search_movie)
@@ -52,7 +68,7 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
         movie_recycler_view.adapter = adapter
     }
 
-    private fun callRetrofit() {
+    private fun callGetListMovies() {
         disposable.add(
             RetrofitProvideClass.provideRetrofit()
                 .getMovieDetailSearched(
@@ -65,6 +81,7 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
                     showToast("success")
                     adapter = MovieAdapter(it.results,getIdMovieLambdaFunction)
                     setUpRecyclerView(adapter)
+                    swipeContainer.isRefreshing = false
                 }, {
                     showToast(it?.message)
                 })
@@ -78,7 +95,7 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.img_search_movie -> callRetrofit()
+            R.id.img_search_movie -> callGetListMovies()
             else -> {}
         }
     }

@@ -37,12 +37,8 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
         setOnClicks()
 
         swipeContainer.setOnRefreshListener {
-            // Your code to refresh the list here.
-            // Make sure you call swipeContainer.setRefreshing(false)
-            // once the network request has completed successfully.
-            //                fetchTimelineAsync(0);
-           callGetListMovies()
-//            swipeContainer.isRefreshing = false
+
+            callGetListMovies()
         }
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(

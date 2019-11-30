@@ -78,6 +78,8 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
                     adapter = MovieAdapter(it.results,getIdMovieLambdaFunction)
                     setUpRecyclerView(adapter)
                     swipeContainer.isRefreshing = false
+                    adapter.updateListItem(it.results)
+
                 }, {
                     showToast(it?.message)
                 })

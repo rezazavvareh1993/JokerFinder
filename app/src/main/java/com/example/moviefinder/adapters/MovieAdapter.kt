@@ -3,13 +3,15 @@ package ir.calendar.kotlincource.KotlinCodes.KotlinRecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviefinder.R
+import com.example.moviefinder.Utils.MyDiffUtilCallback
 import com.example.moviefinder.models.ResultModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_movie_list.view.*
 
-class MovieAdapter(private val data : MutableList<ResultModel>, private  val getMovieId : (Int) -> Unit) : RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
+class MovieAdapter(private var data : MutableList<ResultModel>, private  val getMovieId : (Int) -> Unit) : RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_movie_list, parent, false)
@@ -33,6 +35,18 @@ class MovieAdapter(private val data : MutableList<ResultModel>, private  val get
         private fun getImageMovieByPicasso(uriImage: String) {
             Picasso.get().load(uriImage).into(itemView.img_movie_pic)
         }
+        }
 
-    }
+        fun updateListItem(newItems : MutableList<ResultModel>) {
+            if(newItems.size != data.size){
+                val diffUtilCallback = MyDiffUtilCallback(data, newItems)
+                val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
+//            data.clear()
+                data.addAll(newItems)// Add new item to exit list
+                diffResult.dispatchUpdatesTo(this)
+
+                data = newItems
+            }
+
+}
 }

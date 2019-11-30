@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviefinder.R
 import com.example.moviefinder.models.ResultModel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_movie_list.view.*
 
 class MovieAdapter(private val data : MutableList<ResultModel>) : RecyclerView.Adapter<MovieAdapter.MyViewHolder>() {
@@ -20,7 +21,13 @@ class MovieAdapter(private val data : MutableList<ResultModel>) : RecyclerView.A
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind (resultModel: ResultModel){
+            val uriImage = "https://image.tmdb.org/t/p/w500" + resultModel.posterPath
             itemView.txt_name_movie.text = resultModel.title
+            getImageMovieByPicasso(uriImage)
+        }
+
+        private fun getImageMovieByPicasso(uriImage: String) {
+            Picasso.get().load(uriImage).into(itemView.img_movie_pic)
         }
     }
 }

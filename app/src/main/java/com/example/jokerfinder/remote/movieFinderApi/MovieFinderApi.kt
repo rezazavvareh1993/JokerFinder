@@ -1,7 +1,8 @@
-package com.example.moviefinder.remote.movieFinderApi
+package com.example.jokerfinder.remote.movieFinderApi
 
-import com.example.moviefinder.models.ResponseDetailMovie
-import com.example.moviefinder.models.ResponseSearchMovieModel
+import com.example.jokerfinder.models.Credits
+import com.example.jokerfinder.models.ResponseDetailMovie
+import com.example.jokerfinder.models.ResponseSearchMovieModel
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,4 +16,7 @@ interface MovieFinderApi {
 
     @GET("movie/{movie_id}")
     fun getMovieDetails(@Path("movie_id")movieId : Int, @Query("api_key") apiKey : String ) : Observable<ResponseDetailMovie>
+
+    @GET("movie/{movie_id}/credits")
+    fun getCastsOfMovies(@Path("movie_id")movieId: Int, @Query("api_key") apiKey: String) : Observable<Credits>
 }

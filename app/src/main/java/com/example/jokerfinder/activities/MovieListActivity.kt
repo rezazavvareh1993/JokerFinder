@@ -1,43 +1,46 @@
-package com.example.moviefinder.activities
+package com.example.jokerfinder.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moviefinder.MyConstantClass
-import com.example.moviefinder.R
-import com.example.moviefinder.remote.RetrofitProvideClass
+import androidx.recyclerview.widget.RecyclerView
+import com.example.jokerfinder.Utils.MyConstantClass
+import com.example.jokerfinder.R
+import com.example.jokerfinder.adapters.MovieAdapter
+import com.example.jokerfinder.remote.RetrofitProvideClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import ir.calendar.kotlincource.KotlinCodes.KotlinRecyclerView.MovieAdapter
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_movie_list.*
 
 class MovieListActivity : AppCompatActivity(), View.OnClickListener {
 
     private var imgSearchMovie: ImageView? = null
-    lateinit var adapter: MovieAdapter
+    private var checkSearchButton = true
     private val disposable = CompositeDisposable()
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
         val intent = Intent(this, MovieDetailsActivity::class.java)
         intent.putExtra("idMovie", it)
-        showToast(it.toString())
         startActivity(intent)
-
     }
+
+    private var adapter = MovieAdapter(getIdMovieLambdaFunction)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_movie_list)
+
+        progressBar_in_movie_list.visibility = View.GONE
 
         initView()
         setOnClicks()
+        setUpRecyclerView()
 
         swipeContainer.setOnRefreshListener {
-
             callGetListMovies()
         }
         // Configure the refreshing colors
@@ -47,7 +50,7 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light
         )
-}
+    }
 
     private fun initView() {
         imgSearchMovie = findViewById(R.id.img_search_movie)
@@ -57,10 +60,11 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
         imgSearchMovie?.setOnClickListener(this)
     }
 
-    private fun setUpRecyclerView(adapter: MovieAdapter) {
+    private fun setUpRecyclerView() {
 
         movie_recycler_view.setHasFixedSize(true)
-        movie_recycler_view.layoutManager = LinearLayoutManager(this)
+        movie_recycler_view.layoutManager =
+            LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         movie_recycler_view.adapter = adapter
     }
 
@@ -74,14 +78,15 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    showToast("success")
-                    adapter = MovieAdapter(it.results,getIdMovieLambdaFunction)
-                    setUpRecyclerView(adapter)
                     swipeContainer.isRefreshing = false
-                    adapter.updateListItem(it.results)
-
+                    adapter.submitList(it.results)
                 }, {
-                    showToast(it?.message)
+                    Log.d("MyTag", it.message)
+                    MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
+                    progressBar_in_movie_list.visibility = View.GONE
+                    swipeContainer.isRefreshing = false
+                },{
+                    progressBar_in_movie_list.visibility = View.GONE
                 })
         )
     }
@@ -93,13 +98,23 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.img_search_movie -> callGetListMovies()
-            else -> {}
+            R.id.img_search_movie -> {
+                if(checkSearchButton){
+
+                        callGetListMovies()
+                        progressBar_in_movie_list.visibility = View.VISIBLE
+                        img_search_movie.setImageResource(R.drawable.ic_clear_red_24dp)
+
+                }else{
+
+                    edt_movie_name_search.text.clear()
+                    img_search_movie.setImageResource(R.drawable.ic_search_red_24dp)
+                }
+                checkSearchButton = !checkSearchButton
+
+            }
+            else -> {
+            }
         }
-    }
-
-    private fun showToast(myMessage : String?){
-        Toast.makeText(this, myMessage, Toast.LENGTH_LONG).show()
-
     }
 }

@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">MovieFinder</string>
+    <string name="app_name">JokerFinder</string>
+    <string name="error_connection">امکان برقراری ارتباط نمی باشد.</string>
+    <string name="movie_finder">Joker Finder</string>
+    <string name="name">Name :</string>
+    <string name="character">Character :</string>
+    <string name="released">Released :</string>
+    <string name="vote_count">Vote Count :</string>
 </resources>

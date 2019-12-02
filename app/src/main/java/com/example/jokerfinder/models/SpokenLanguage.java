@@ -1,24 +1,24 @@
 
-package com.example.moviefinder.models; ;
+package com.example.jokerfinder.models; ;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProductionCountry {
+public class SpokenLanguage {
 
-    @SerializedName("iso_3166_1")
+    @SerializedName("iso_639_1")
     @Expose
-    private String iso31661;
+    private String iso6391;
     @SerializedName("name")
     @Expose
     private String name;
 
-    public String getIso31661() {
-        return iso31661;
+    public String getIso6391() {
+        return iso6391;
     }
 
-    public void setIso31661(String iso31661) {
-        this.iso31661 = iso31661;
+    public void setIso6391(String iso6391) {
+        this.iso6391 = iso6391;
     }
 
     public String getName() {

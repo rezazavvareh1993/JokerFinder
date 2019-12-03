@@ -1,4 +1,4 @@
-package com.example.moviefinder
+package com.example.jokerfinder
 
 import org.junit.Test
 

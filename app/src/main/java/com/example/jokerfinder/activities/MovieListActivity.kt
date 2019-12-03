@@ -100,18 +100,14 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
         when (v?.id) {
             R.id.img_search_movie -> {
                 if(checkSearchButton){
-
                         callGetListMovies()
                         progressBar_in_movie_list.visibility = View.VISIBLE
                         img_search_movie.setImageResource(R.drawable.ic_clear_red_24dp)
-
                 }else{
-
                     edt_movie_name_search.text.clear()
                     img_search_movie.setImageResource(R.drawable.ic_search_red_24dp)
                 }
                 checkSearchButton = !checkSearchButton
-
             }
             else -> {
             }

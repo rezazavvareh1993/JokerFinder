@@ -1,5 +1,6 @@
 package com.example.jokerfinder.activities
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -45,7 +46,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         txt_movie_detail_overview.visibility = View.GONE
         txt_movie_detail_title.visibility = View.GONE
         txt_movie_detail_director.visibility = View.GONE
-        txt_movie_detail_stars.visibility = View.GONE
+        txt_movie_detail_rate.visibility = View.GONE
     }
 
     private fun callGetMovieDetails() {
@@ -59,12 +60,13 @@ class MovieDetailsActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     bindData(it)
+                    showViews()
+
                 }, {
                     Log.d("MyTag", it.message)
                     MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
                     progressBar.visibility  = View.GONE
                 }, {
-                    showViews()
                     callGetCastsOfMovie()
                 })
         )
@@ -96,14 +98,15 @@ class MovieDetailsActivity : AppCompatActivity() {
         txt_movie_detail_overview.visibility = View.VISIBLE
         txt_movie_detail_title.visibility = View.VISIBLE
         txt_movie_detail_director.visibility = View.VISIBLE
-        txt_movie_detail_stars.visibility = View.VISIBLE
+        txt_movie_detail_rate.visibility = View.VISIBLE
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindData(responseDetailMovie: ResponseDetailMovie) {
-        txt_movie_detail_overview.text = responseDetailMovie.overview
+        txt_movie_detail_overview.text = "OverView : " + responseDetailMovie.overview
         txt_movie_detail_title.text = responseDetailMovie.originalTitle
-        txt_movie_detail_director.text = "Director : " + responseDetailMovie.revenue
-        txt_movie_list_rate.text = responseDetailMovie.voteAverage.toString()
+        txt_movie_detail_director.text = "Director : "
+        txt_movie_detail_rate.text ="Rate :  " + responseDetailMovie.voteAverage.toString()
         Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.posterPath).into(img_detail_movie)
     }
 

@@ -30,8 +30,8 @@ class CastAdapter : ListAdapter<Cast, CastAdapter.CastViewHolder>(CastDiffUtilCa
             val uriImage = "https://image.tmdb.org/t/p/w500" + cast.profilePath
             getImageMovieByPicasso(uriImage)
 
-            itemView.txt_character_cast.text = cast.character
-            itemView.txt_name_cast.text = cast.name
+            itemView.txt_character_cast.text = "Character : " + cast.character
+            itemView.txt_name_cast.text = "Name : " + cast.name
 
         }
 

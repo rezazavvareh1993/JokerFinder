@@ -32,7 +32,7 @@ class MovieAdapter(private val getMovieIdFunction : (Int) -> Unit) : ListAdapter
 
             itemView.txt_name_movie.text = resultModel.title
             itemView.txt_movie_list_rate.text = resultModel.voteAverage.toString()
-            itemView.txt_vote_count_movie.text = "vote count : " + resultModel.voteCount
+            itemView.txt_vote_count_movie.text = "votes : " + resultModel.voteCount
             itemView.txt_released_movie.text = "released : " + resultModel.releaseDate.toString()
             itemView.ratingBar_movie.rating = resultModel.voteAverage.toFloat()/2
 

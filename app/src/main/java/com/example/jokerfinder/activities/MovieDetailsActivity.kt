@@ -103,7 +103,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun bindData(responseDetailMovie: ResponseDetailMovie) {
-        txt_movie_detail_overview.text = "OverView : " + responseDetailMovie.overview
+        txt_movie_detail_overview.text = responseDetailMovie.overview
         txt_movie_detail_title.text = responseDetailMovie.originalTitle
         txt_movie_detail_director.text = "Director : "
         txt_movie_detail_rate.text ="Rate :  " + responseDetailMovie.voteAverage.toString()

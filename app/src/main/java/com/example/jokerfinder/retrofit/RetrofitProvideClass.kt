@@ -1,6 +1,6 @@
-package com.example.jokerfinder.remote
+package com.example.jokerfinder.retrofit
 
-import com.example.jokerfinder.remote.movieFinderApi.MovieFinderApi
+import com.example.jokerfinder.retrofit.movieFinderApi.MovieFinderApi
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory

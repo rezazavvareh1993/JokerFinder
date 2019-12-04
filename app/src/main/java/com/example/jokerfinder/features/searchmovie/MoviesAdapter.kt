@@ -1,4 +1,4 @@
-package com.example.jokerfinder.adapters
+package com.example.jokerfinder.features.searchmovie
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,16 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.Utils.MovieDiffUtilCallback
-import com.example.jokerfinder.models.ResultModel
+import com.example.jokerfinder.utils.MovieDiffUtilCallback
+import com.example.jokerfinder.pojoes.ResultModel
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.itm_movie_list.view.*
 
-class MovieAdapter(private val getMovieIdFunction : (Int) -> Unit) : ListAdapter<ResultModel, MovieAdapter.ViewHolder>(MovieDiffUtilCallback()) {
+class MoviesAdapter(private val getMovieIdFunction : (Int) -> Unit) : ListAdapter<ResultModel, MoviesAdapter.ViewHolder>(MovieDiffUtilCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val v = LayoutInflater.from(parent.context).inflate(R.layout.itm_movie_list, parent, false)
-        return ViewHolder(v, getMovieIdFunction)
+        return ViewHolder(
+            v,
+            getMovieIdFunction
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

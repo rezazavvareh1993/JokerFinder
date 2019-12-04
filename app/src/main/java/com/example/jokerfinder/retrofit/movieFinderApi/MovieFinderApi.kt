@@ -1,8 +1,8 @@
-package com.example.jokerfinder.remote.movieFinderApi
+package com.example.jokerfinder.retrofit.movieFinderApi
 
-import com.example.jokerfinder.models.Credits
-import com.example.jokerfinder.models.ResponseDetailMovie
-import com.example.jokerfinder.models.ResponseSearchMovieModel
+import com.example.jokerfinder.pojoes.Credits
+import com.example.jokerfinder.pojoes.ResponseDetailMovie
+import com.example.jokerfinder.pojoes.ResponseSearchMovieModel
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path

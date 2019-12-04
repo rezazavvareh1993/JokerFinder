@@ -1,4 +1,4 @@
-package com.example.jokerfinder.Utils
+package com.example.jokerfinder.utils
 
 import android.content.Context
 import android.widget.Toast

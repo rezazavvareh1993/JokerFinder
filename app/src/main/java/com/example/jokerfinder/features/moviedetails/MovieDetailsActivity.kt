@@ -1,4 +1,4 @@
-package com.example.jokerfinder.activities
+package com.example.jokerfinder.features.moviedetails
 
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -8,12 +8,11 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jokerfinder.Utils.MyConstantClass
+import com.example.jokerfinder.utils.MyConstantClass
 import com.example.jokerfinder.R
-import com.example.jokerfinder.adapters.CastAdapter
-import com.example.jokerfinder.models.Crew
-import com.example.jokerfinder.models.ResponseDetailMovie
-import com.example.jokerfinder.remote.RetrofitProvideClass
+import com.example.jokerfinder.pojoes.Crew
+import com.example.jokerfinder.pojoes.ResponseDetailMovie
+import com.example.jokerfinder.retrofit.RetrofitProvideClass
 import com.squareup.picasso.Picasso
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,7 +22,8 @@ import kotlinx.android.synthetic.main.activity_movie_details.*
 class MovieDetailsActivity : AppCompatActivity() {
 
     private val disposable = CompositeDisposable()
-    private val adapter = CastAdapter()
+    private val adapter =
+        CastsMovieAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)

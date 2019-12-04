@@ -1,5 +1,5 @@
 
-package com.example.jokerfinder.models; ;
+package com.example.jokerfinder.pojoes; ;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

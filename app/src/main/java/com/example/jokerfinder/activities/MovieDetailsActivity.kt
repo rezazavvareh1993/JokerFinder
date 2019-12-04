@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.Utils.MyConstantClass
 import com.example.jokerfinder.R
 import com.example.jokerfinder.adapters.CastAdapter
+import com.example.jokerfinder.models.Crew
 import com.example.jokerfinder.models.ResponseDetailMovie
 import com.example.jokerfinder.remote.RetrofitProvideClass
 import com.squareup.picasso.Picasso
@@ -17,7 +19,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_movie_details.*
-import kotlinx.android.synthetic.main.itm_movie_list.*
 
 class MovieDetailsActivity : AppCompatActivity() {
 
@@ -41,12 +42,16 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun loadingViews() {
 
-        progressBar.visibility = View.VISIBLE
-        img_detail_movie.visibility = View.GONE
-        txt_movie_detail_overview.visibility = View.GONE
-        txt_movie_detail_title.visibility = View.GONE
-        txt_movie_detail_director.visibility = View.GONE
-        txt_movie_detail_rate.visibility = View.GONE
+        progressBar.visibility = VISIBLE
+        cv_logo_detail_movie.visibility = GONE
+        img_main_detail_movie.visibility = GONE
+        txt_movie_detail_overview.visibility = GONE
+        txt_movie_detail_title.visibility = GONE
+        txt_movie_detail_director.visibility = GONE
+        txt_movie_detail_rate.visibility = GONE
+        txt_movie_detail_writer.visibility = GONE
+        txt_movie_detail_producer.visibility = GONE
+
     }
 
     private fun callGetMovieDetails() {
@@ -65,7 +70,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 }, {
                     Log.d("MyTag", it.message)
                     MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
-                    progressBar.visibility  = View.GONE
+                    progressBar.visibility  = GONE
                 }, {
                     callGetCastsOfMovie()
                 })
@@ -83,6 +88,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     adapter.submitList(it.cast)
+                    getProductsMovie(it.crew)
                 }, {
 
                     Log.d("MyTag", it.message)
@@ -91,27 +97,43 @@ class MovieDetailsActivity : AppCompatActivity() {
         )
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun getProductsMovie(crewList: List<Crew>) {
+
+        for(i in crewList){
+            when(i.job){
+                "Director" -> txt_movie_detail_director.text = "Director : " + i.name
+                "Writer" -> txt_movie_detail_writer.text = "Writer : " + i.name
+                "Producer" -> txt_movie_detail_producer.text = "Producer : " + i.name
+            }
+        }
+    }
+
     private fun showViews() {
 
-        progressBar.visibility  = View.GONE
-        img_detail_movie.visibility = View.VISIBLE
-        txt_movie_detail_overview.visibility = View.VISIBLE
-        txt_movie_detail_title.visibility = View.VISIBLE
-        txt_movie_detail_director.visibility = View.VISIBLE
-        txt_movie_detail_rate.visibility = View.VISIBLE
+        progressBar.visibility  = GONE
+        cv_logo_detail_movie.visibility = VISIBLE
+        img_main_detail_movie.visibility = VISIBLE
+        txt_movie_detail_overview.visibility = VISIBLE
+        txt_movie_detail_title.visibility = VISIBLE
+        txt_movie_detail_director.visibility = VISIBLE
+        txt_movie_detail_rate.visibility = VISIBLE
+        txt_movie_detail_writer.visibility = VISIBLE
+        txt_movie_detail_producer.visibility = VISIBLE
     }
 
     @SuppressLint("SetTextI18n")
     private fun bindData(responseDetailMovie: ResponseDetailMovie) {
+
         txt_movie_detail_overview.text = responseDetailMovie.overview
         txt_movie_detail_title.text = responseDetailMovie.originalTitle
-        txt_movie_detail_director.text = "Director : "
         txt_movie_detail_rate.text ="Rate :  " + responseDetailMovie.voteAverage.toString()
-        Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.posterPath).into(img_detail_movie)
+        Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.backdropPath).into(img_main_detail_movie)
+        Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.posterPath).into(img_logo_detail_movie)
+
     }
 
     private fun getIdMovie(): Int {
-
         return intent.getIntExtra("idMovie", 0)
     }
 

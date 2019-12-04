@@ -1,4 +1,4 @@
-package com.example.jokerfinder.adapters
+package com.example.jokerfinder.features.moviedetails
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,17 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.Utils.CastDiffUtilCallBack
-import com.example.jokerfinder.models.Cast
+import com.example.jokerfinder.utils.CastDiffUtilCallBack
+import com.example.jokerfinder.pojoes.Cast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_casts_list.view.*
 
-class CastAdapter : ListAdapter<Cast, CastAdapter.CastViewHolder>(CastDiffUtilCallBack()) {
+class CastsMovieAdapter : ListAdapter<Cast, CastsMovieAdapter.CastViewHolder>(CastDiffUtilCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {
 
         val v = LayoutInflater.from(parent.context).inflate(R.layout.item_casts_list, parent, false)
-        return CastViewHolder(v)
+        return CastViewHolder(
+            v
+        )
     }
 
     override fun onBindViewHolder(holder: CastViewHolder, position: Int) {

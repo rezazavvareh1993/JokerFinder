@@ -1,7 +1,7 @@
-package com.example.jokerfinder.Utils
+package com.example.jokerfinder.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.jokerfinder.models.ResultModel
+import com.example.jokerfinder.pojoes.ResultModel
 
 
 class MovieDiffUtilCallback : DiffUtil.ItemCallback<ResultModel>() {

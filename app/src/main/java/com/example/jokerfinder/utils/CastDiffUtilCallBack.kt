@@ -1,7 +1,7 @@
-package com.example.jokerfinder.Utils
+package com.example.jokerfinder.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.jokerfinder.models.Cast
+import com.example.jokerfinder.pojoes.Cast
 
 class CastDiffUtilCallBack : DiffUtil.ItemCallback<Cast>() {
     override fun areItemsTheSame(oldItem: Cast, newItem: Cast): Boolean {

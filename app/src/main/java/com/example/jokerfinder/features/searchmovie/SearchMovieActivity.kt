@@ -1,4 +1,4 @@
-package com.example.jokerfinder.activities
+package com.example.jokerfinder.features.searchmovie
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,16 +8,16 @@ import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jokerfinder.Utils.MyConstantClass
+import com.example.jokerfinder.utils.MyConstantClass
 import com.example.jokerfinder.R
-import com.example.jokerfinder.adapters.MovieAdapter
-import com.example.jokerfinder.remote.RetrofitProvideClass
+import com.example.jokerfinder.features.moviedetails.MovieDetailsActivity
+import com.example.jokerfinder.retrofit.RetrofitProvideClass
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_movie_list.*
 
-class MovieListActivity : AppCompatActivity(), View.OnClickListener {
+class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
     private var imgSearchMovie: ImageView? = null
     private var checkSearchButton = true
@@ -28,7 +28,10 @@ class MovieListActivity : AppCompatActivity(), View.OnClickListener {
         startActivity(intent)
     }
 
-    private var adapter = MovieAdapter(getIdMovieLambdaFunction)
+    private var adapter =
+        MoviesAdapter(
+            getIdMovieLambdaFunction
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

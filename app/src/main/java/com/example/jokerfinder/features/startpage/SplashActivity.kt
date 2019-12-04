@@ -1,12 +1,13 @@
-package com.example.jokerfinder.activities
+package com.example.jokerfinder.features.startpage
 
 import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.example.jokerfinder.Utils.MyConstantClass
+import com.example.jokerfinder.utils.MyConstantClass
 import com.example.jokerfinder.R
+import com.example.jokerfinder.features.searchmovie.SearchMovieActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
@@ -29,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun startActivityByDelay() {
         Handler().postDelayed({
-            val intent = Intent(this@SplashActivity, MovieListActivity::class.java)
+            val intent = Intent(this@SplashActivity, SearchMovieActivity::class.java)
             startActivity(intent)
             finish()
         }, MyConstantClass.SPLASH_ACTIVITY_TIME)

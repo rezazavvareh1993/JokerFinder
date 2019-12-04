@@ -1,5 +1,5 @@
 
-package com.example.jokerfinder.models;
+package com.example.jokerfinder.pojoes;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

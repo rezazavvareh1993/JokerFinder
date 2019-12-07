@@ -45,6 +45,8 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
         init()
         setOnClicks()
         callGetListMovies()
+        setUpRecyclerView()
+
 
         swipeContainer.setOnRefreshListener {
             callGetListMovies()
@@ -78,8 +80,6 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
     private fun callGetListMovies() {
         searchMovieViewModel.fetchMovieSearchData(getMovieName(), this)
         searchMovieViewModel.getSearchMovieData().observe(this, Observer {
-            setUpRecyclerView()
-
             if(it != null ){
                 adapter.submitList(it.results)
             }

@@ -32,4 +32,12 @@ class CastOfMovieViewModel : ViewModel() {
     }
 
     fun getCastOfMovieData() : LiveData<Credits> = castOfMovieMutableLiveData
+
+    /**
+     * Clearing the RX disposable
+     */
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
+    }
 }

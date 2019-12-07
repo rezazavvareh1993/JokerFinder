@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+def lifecycle_version = "2.1.0"
+
+
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
@@ -51,6 +54,9 @@ dependencies {
 
     /////////////////////Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    ////////////////////ViewModel , Live Data
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

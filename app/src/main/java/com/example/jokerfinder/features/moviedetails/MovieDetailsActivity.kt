@@ -3,35 +3,43 @@ package com.example.jokerfinder.features.moviedetails
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jokerfinder.utils.MyConstantClass
 import com.example.jokerfinder.R
 import com.example.jokerfinder.pojoes.Crew
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
-import com.example.jokerfinder.retrofit.RetrofitProvideClass
 import com.squareup.picasso.Picasso
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_movie_details.*
 
 class MovieDetailsActivity : AppCompatActivity() {
-
+    //////////////disposable
     private val disposable = CompositeDisposable()
-    private val adapter =
-        CastsMovieAdapter()
+    
+    /////////////adapter
+    private val adapter = CastsMovieAdapter()
+    
+    /////////////////////viewModels
+    private lateinit var movieDetailViewModel : MovieDetailsViewModel
+    private lateinit var castOfMovieViewModel: CastOfMovieViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
 
+        init()
         loadingViews()
         callGetMovieDetails()
         setUpRecyclerView()
 
+    }
+
+    private fun init() {
+        movieDetailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MovieDetailsViewModel::class.java)
+        castOfMovieViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(CastOfMovieViewModel::class.java)
     }
 
     private fun setUpRecyclerView() {
@@ -55,50 +63,49 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun callGetMovieDetails() {
-        disposable.add(
-            RetrofitProvideClass.provideRetrofit()
-                .getMovieDetails(
-                    getIdMovie(),
-                    MyConstantClass.APY_KEY
-                )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    bindData(it)
-                    showViews()
 
-                }, {
-                    Log.d("MyTag", it.message)
-                    MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
-                    progressBar.visibility  = GONE
-                }, {
-                    callGetCastsOfMovie()
-                })
-        )
+        movieDetailViewModel.fetchData(getIdMovie(), this)
+        movieDetailViewModel.getMovieDetailsData().observe(this, Observer {
+
+            if(it != null){
+                bindData(it)
+                showViews()
+                callGetCastsOfMovie()
+            }
+            progressBar.visibility  = GONE
+        })
     }
 
     private fun callGetCastsOfMovie(){
-        disposable.add(
-            RetrofitProvideClass.provideRetrofit()
-                .getCastsOfMovies(
-                    getIdMovie(),
-                    MyConstantClass.APY_KEY
-                )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    adapter.submitList(it.cast)
-                    getProductsMovie(it.crew)
-                }, {
-
-                    Log.d("MyTag", it.message)
-                    MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
-                })
-        )
+        
+        castOfMovieViewModel.fetchCastOfMovieData(getIdMovie(), this)
+        castOfMovieViewModel.getCastOfMovieData().observe(this, Observer {
+            
+            adapter.submitList(it?.cast)
+            it?.crew?.let { it1 -> getCrewOfMovie(it1) }
+        })
+        
+//        disposable.add(
+//            RetrofitProvideClass.provideRetrofit()
+//                .getCastsOfMovie(
+//                    getIdMovie(),
+//                    MyConstantClass.APY_KEY
+//                )
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe({
+//                    adapter.submitList(it.cast)
+//                    getProductsMovie(it.crew)
+//                }, {
+//
+//                    Log.d("MyTag", it.message)
+//                    MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
+//                })
+//        )
     }
 
     @SuppressLint("SetTextI18n")
-    private fun getProductsMovie(crewList: List<Crew>) {
+    private fun getCrewOfMovie(crewList: List<Crew>) {
 
         for(i in crewList){
             when(i.job){

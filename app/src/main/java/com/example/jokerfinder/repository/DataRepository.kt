@@ -4,10 +4,9 @@ import android.annotation.SuppressLint
 import com.example.jokerfinder.pojoes.Credits
 
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
-import com.example.jokerfinder.pojoes.ResponseSearchMovieModel
+import com.example.jokerfinder.pojoes.ResponseSearchMovie
 import com.example.jokerfinder.retrofit.RetrofitProvideClass
 import com.example.jokerfinder.utils.MyConstantClass
-import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -38,7 +37,7 @@ class DataRepository @Inject constructor() {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchMovieSearchData(movieName : String) : Single<ResponseSearchMovieModel>{
+    fun fetchMovieSearchData(movieName : String) : Single<ResponseSearchMovie>{
         return RetrofitProvideClass.provideRetrofit()
             .getMovieDetailSearched(
                 apiKey,

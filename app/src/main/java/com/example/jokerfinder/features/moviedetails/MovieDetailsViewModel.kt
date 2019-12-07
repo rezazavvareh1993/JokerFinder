@@ -32,4 +32,12 @@ class MovieDetailsViewModel : ViewModel() {
 
     fun getMovieDetailsData() : LiveData<ResponseDetailMovie> = movieDetailsLiveData
 
+    /**
+     * Clearing the RX disposables
+     */
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
+    }
 }
+

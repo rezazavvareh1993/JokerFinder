@@ -7,12 +7,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.jokerfinder.pojoes.Credits
 import com.example.jokerfinder.repository.DataRepository
+import com.example.jokerfinder.repository.di.DaggerProvideRepositoryComponent
 import com.example.jokerfinder.utils.MyConstantClass
 import io.reactivex.disposables.CompositeDisposable
 
 class CastOfMovieViewModel : ViewModel() {
     private val disposable = CompositeDisposable()
-    private val repository = DataRepository()
+    private val component = DaggerProvideRepositoryComponent.create()
+    private val repository = component.provideRepository()
     private var castOfMovieMutableLiveData = MutableLiveData<Credits>()
 
     fun fetchCastOfMovieData(idMovie : Int, context: Context){

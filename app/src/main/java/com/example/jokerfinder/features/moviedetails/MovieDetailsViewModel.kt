@@ -8,13 +8,15 @@ import androidx.lifecycle.ViewModel
 import com.example.jokerfinder.R
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.repository.DataRepository
+import com.example.jokerfinder.repository.di.DaggerProvideRepositoryComponent
 import com.example.jokerfinder.utils.MyConstantClass
 import io.reactivex.disposables.CompositeDisposable
 
 class MovieDetailsViewModel : ViewModel() {
     private var movieDetailsLiveData = MutableLiveData<ResponseDetailMovie>()
     private val disposable = CompositeDisposable()
-    private val repository = DataRepository()
+    private val component = DaggerProvideRepositoryComponent.create()
+    private val repository = component.provideRepository()
 
     fun fetchData (idMovie : Int, context : Context){
         disposable.add(repository.fetchMovieDetails(idMovie)

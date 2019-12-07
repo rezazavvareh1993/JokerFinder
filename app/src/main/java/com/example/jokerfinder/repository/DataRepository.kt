@@ -11,8 +11,9 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class DataRepository {
+class DataRepository @Inject constructor() {
     private val apiKey = MyConstantClass.APY_KEY
 
 

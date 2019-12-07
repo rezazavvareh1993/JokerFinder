@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.utils.MyConstantClass
@@ -19,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_movie_list.*
 
 class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
+    private lateinit var searchMovieViewModel: SearchMovieViewModel
     private var imgSearchMovie: ImageView? = null
     private var checkSearchButton = true
     private val disposable = CompositeDisposable()
@@ -39,9 +42,11 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
         progressBar_in_movie_list.visibility = View.GONE
 
-        initView()
+        init()
         setOnClicks()
+        callGetListMovies()
         setUpRecyclerView()
+
 
         swipeContainer.setOnRefreshListener {
             callGetListMovies()
@@ -55,8 +60,9 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
         )
     }
 
-    private fun initView() {
+    private fun init() {
         imgSearchMovie = findViewById(R.id.img_search_movie)
+        searchMovieViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SearchMovieViewModel::class.java)
     }
 
     private fun setOnClicks() {
@@ -72,26 +78,19 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun callGetListMovies() {
-        disposable.add(
-            RetrofitProvideClass.provideRetrofit()
-                .getMovieDetailSearched(
-                    MyConstantClass.APY_KEY,
-                    edt_movie_name_search.text.toString()
-                )
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    swipeContainer.isRefreshing = false
-                    adapter.submitList(it.results)
-                }, {
-                    Log.d("MyTag", it.message)
-                    MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
-                    progressBar_in_movie_list.visibility = View.GONE
-                    swipeContainer.isRefreshing = false
-                },{
-                    progressBar_in_movie_list.visibility = View.GONE
-                })
-        )
+        searchMovieViewModel.fetchMovieSearchData(getMovieName(), this)
+        searchMovieViewModel.getSearchMovieData().observe(this, Observer {
+            if(it != null ){
+                adapter.submitList(it.results)
+            }
+            progressBar_in_movie_list.visibility = View.GONE
+            swipeContainer.isRefreshing = false
+        })
+//
+    }
+
+    private fun getMovieName(): String {
+        return  edt_movie_name_search.text.toString()
     }
 
     override fun onDestroy() {
@@ -111,8 +110,6 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
                     img_search_movie.setImageResource(R.drawable.ic_search_red_24dp)
                 }
                 checkSearchButton = !checkSearchButton
-            }
-            else -> {
             }
         }
     }

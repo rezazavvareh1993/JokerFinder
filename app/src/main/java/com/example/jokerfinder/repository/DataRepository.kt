@@ -8,6 +8,7 @@ import com.example.jokerfinder.pojoes.ResponseSearchMovieModel
 import com.example.jokerfinder.retrofit.RetrofitProvideClass
 import com.example.jokerfinder.utils.MyConstantClass
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -16,7 +17,7 @@ class DataRepository {
 
 
     @SuppressLint("CheckResult")
-    fun fetchMovieDetails(idMovie : Int) : Observable<ResponseDetailMovie> {
+    fun fetchMovieDetails(idMovie : Int) : Single<ResponseDetailMovie> {
         return RetrofitProvideClass.provideRetrofit()
                 .getMovieDetails(
                     idMovie,
@@ -26,7 +27,7 @@ class DataRepository {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchCastsOfMovie(idMovie: Int) : Observable<Credits>{
+    fun fetchCastsOfMovie(idMovie: Int) : Single<Credits>{
         return RetrofitProvideClass.provideRetrofit()
             .getCastsOfMovie(
                 idMovie,
@@ -36,7 +37,7 @@ class DataRepository {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchMovieSearchData(movieName : String) : Observable<ResponseSearchMovieModel>{
+    fun fetchMovieSearchData(movieName : String) : Single<ResponseSearchMovieModel>{
         return RetrofitProvideClass.provideRetrofit()
             .getMovieDetailSearched(
                 apiKey,

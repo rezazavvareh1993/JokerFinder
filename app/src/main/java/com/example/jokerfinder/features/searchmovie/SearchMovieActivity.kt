@@ -44,6 +44,7 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
         init()
         setOnClicks()
+        callGetListMovies()
 
         swipeContainer.setOnRefreshListener {
             callGetListMovies()
@@ -109,8 +110,6 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
                     img_search_movie.setImageResource(R.drawable.ic_search_red_24dp)
                 }
                 checkSearchButton = !checkSearchButton
-            }
-            else -> {
             }
         }
     }

@@ -284,6 +284,18 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_begin="399dp" />
 
+            <ImageView
+                android:id="@+id/img_back_movie_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/guideline3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.041"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.077"
+                app:srcCompat="@drawable/ic_arrow_back_green_24dp" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

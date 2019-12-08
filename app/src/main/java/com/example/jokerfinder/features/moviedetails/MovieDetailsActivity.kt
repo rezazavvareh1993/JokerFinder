@@ -3,8 +3,10 @@ package com.example.jokerfinder.features.moviedetails
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +18,10 @@ import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_movie_details.*
 
-class MovieDetailsActivity : AppCompatActivity() {
+class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
+    ///////////////Views
+    private lateinit var imgBack : ImageView
+
     //////////////disposable
     private val disposable = CompositeDisposable()
     
@@ -34,10 +39,16 @@ class MovieDetailsActivity : AppCompatActivity() {
         loadingViews()
         callGetMovieDetails()
         setUpRecyclerView()
+        setOnClicks()
 
     }
 
+    private fun setOnClicks() {
+        imgBack.setOnClickListener(this)
+    }
+
     private fun init() {
+        imgBack = findViewById(R.id.img_back_movie_detail)
         movieDetailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MovieDetailsViewModel::class.java)
         castOfMovieViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(CastOfMovieViewModel::class.java)
     }
@@ -140,5 +151,14 @@ class MovieDetailsActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         disposable.clear()
+    }
+
+    override fun onClick(v: View?) {
+        when(v!!.id){
+            R.id.img_back_movie_detail ->{
+                finish()
+            }
+        }
+
     }
 }

@@ -84,34 +84,27 @@ class MovieDetailsActivity : AppCompatActivity() {
             adapter.submitList(it?.cast)
             it?.crew?.let { it1 -> getCrewOfMovie(it1) }
         })
-        
-//        disposable.add(
-//            RetrofitProvideClass.provideRetrofit()
-//                .getCastsOfMovie(
-//                    getIdMovie(),
-//                    MyConstantClass.APY_KEY
-//                )
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({
-//                    adapter.submitList(it.cast)
-//                    getProductsMovie(it.crew)
-//                }, {
-//
-//                    Log.d("MyTag", it.message)
-//                    MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
-//                })
-//        )
     }
 
     @SuppressLint("SetTextI18n")
     private fun getCrewOfMovie(crewList: List<Crew>) {
-
+        var writer  = ""
+        var director = ""
+        var producer = ""
         for(i in crewList){
             when(i.job){
-                "Director" -> txt_movie_detail_director.text = "Director : " + i.name
-                "Writer" -> txt_movie_detail_writer.text = "Writer : " + i.name
-                "Producer" -> txt_movie_detail_producer.text = "Producer : " + i.name
+                "Director" -> {
+                    director += i.name +  ","
+                    txt_movie_detail_director.text = "Director : " + director
+                }
+                "Writer" -> {
+                        writer += i.name + ","
+                        txt_movie_detail_writer.text = "Writer : " + writer
+                }
+                "Producer" -> {
+                    producer += i.name + ","
+                    txt_movie_detail_producer.text = "Producer : " + producer
+                }
             }
         }
     }

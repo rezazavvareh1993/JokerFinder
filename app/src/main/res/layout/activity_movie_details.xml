@@ -101,49 +101,93 @@
                 android:text="Rate : "
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/txt_movie_detail_director"
-                app:layout_constraintEnd_toEndOf="@+id/txt_movie_detail_director"
+                app:layout_constraintBottom_toTopOf="@+id/horizontal_scroll_director"
+                app:layout_constraintEnd_toEndOf="@+id/horizontal_scroll_director"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/txt_movie_detail_director"
-                app:layout_constraintTop_toBottomOf="@+id/img_main_detail_movie" />
+                app:layout_constraintStart_toStartOf="@+id/horizontal_scroll_director"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_director" />
 
-            <TextView
-                android:id="@+id/txt_movie_detail_director"
+            <HorizontalScrollView
+                android:id="@+id/horizontal_scroll_director"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Director :"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/txt_movie_detail_writer"
-                app:layout_constraintEnd_toEndOf="@+id/txt_movie_detail_writer"
+                app:layout_constraintBottom_toTopOf="@+id/horizontal_scroll_writer"
+                app:layout_constraintEnd_toEndOf="@+id/horizontal_scroll_writer"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/txt_movie_detail_writer"
-                app:layout_constraintTop_toBottomOf="@+id/txt_movie_detail_rate" />
+                app:layout_constraintStart_toStartOf="@+id/horizontal_scroll_writer"
+                app:layout_constraintTop_toBottomOf="@+id/txt_movie_detail_rate"
+                >
 
-            <TextView
-                android:id="@+id/txt_movie_detail_writer"
+                <TextView
+                    android:id="@+id/txt_movie_detail_director"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Director :"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:id="@+id/horizontal_scroll_writer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Writer : "
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/txt_movie_detail_producer"
-                app:layout_constraintEnd_toEndOf="@+id/txt_movie_detail_producer"
+                app:layout_constraintBottom_toTopOf="@+id/horizontal_scroll_producer"
+                app:layout_constraintEnd_toEndOf="@+id/horizontal_scroll_producer"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="@+id/txt_movie_detail_producer"
-                app:layout_constraintTop_toBottomOf="@+id/txt_movie_detail_director" />
+                app:layout_constraintStart_toStartOf="@+id/horizontal_scroll_producer"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_director">
 
-            <TextView
-                android:id="@+id/txt_movie_detail_producer"
+
+                <TextView
+                    android:id="@+id/txt_movie_detail_writer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Writer : "
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+
+
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:id="@+id/horizontal_scroll_producer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Producer : "
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/guideline5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/txt_movie_detail_writer" />
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_writer">
+
+
+                <TextView
+                    android:id="@+id/txt_movie_detail_producer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Producer : "
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+
+            </HorizontalScrollView>
+
+
+
+
+
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline5"

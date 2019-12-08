@@ -3,17 +3,15 @@ package com.example.jokerfinder.features.searchmovie
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jokerfinder.utils.MyConstantClass
 import com.example.jokerfinder.R
 import com.example.jokerfinder.features.moviedetails.MovieDetailsActivity
-import com.example.jokerfinder.retrofit.RetrofitProvideClass
+import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -21,20 +19,31 @@ import kotlinx.android.synthetic.main.activity_movie_list.*
 
 class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
+    //////////////////////ViewModel
     private lateinit var searchMovieViewModel: SearchMovieViewModel
-    private var imgSearchMovie: ImageView? = null
-    private var checkSearchButton = true
+
+    /////////////////////Views
+    private lateinit var imgSearchMovie: ImageView
+
+    ////////////////////Disposable
     private val disposable = CompositeDisposable()
+
+    ////////////////////Lambda Function
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
         val intent = Intent(this, MovieDetailsActivity::class.java)
         intent.putExtra("idMovie", it)
         startActivity(intent)
     }
+    ///////////////////Variable
+    private var checkSearchButton = true
 
+    ///////////////////Adapter
     private var adapter =
         MoviesAdapter(
             getIdMovieLambdaFunction
         )
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +52,9 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
         progressBar_in_movie_list.visibility = View.GONE
 
         init()
-        setOnClicks()
         callGetListMovies()
         setUpRecyclerView()
+        handleImgSearch()
 
 
         swipeContainer.setOnRefreshListener {
@@ -58,6 +67,11 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light
         )
+
+    }
+
+    private fun handleImgSearch() {
+        setOnClicks()
     }
 
     private fun init() {
@@ -66,7 +80,18 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setOnClicks() {
-        imgSearchMovie?.setOnClickListener(this)
+        imgSearchMovie.setOnClickListener(this) //click
+
+        disposable.add( //////when edt search is empty
+            RxTextView
+                .textChanges(edt_movie_name_search)
+                .filter { it.isEmpty() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if(!checkSearchButton)
+                        img_search_movie.setImageResource(R.drawable.ic_search)
+                }
+        )
     }
 
     private fun setUpRecyclerView() {
@@ -86,7 +111,6 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
             progressBar_in_movie_list.visibility = View.GONE
             swipeContainer.isRefreshing = false
         })
-//
     }
 
     private fun getMovieName(): String {
@@ -99,15 +123,15 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when (v?.id) {
+        when (v!!.id) {
             R.id.img_search_movie -> {
                 if(checkSearchButton){
                         callGetListMovies()
                         progressBar_in_movie_list.visibility = View.VISIBLE
-                        img_search_movie.setImageResource(R.drawable.ic_clear_red_24dp)
+                        img_search_movie.setImageResource(R.drawable.ic_clear_)
                 }else{
                     edt_movie_name_search.text.clear()
-                    img_search_movie.setImageResource(R.drawable.ic_search_red_24dp)
+                    img_search_movie.setImageResource(R.drawable.ic_search)
                 }
                 checkSearchButton = !checkSearchButton
             }

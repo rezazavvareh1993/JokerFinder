@@ -3,8 +3,10 @@ package com.example.jokerfinder.features.moviedetails
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +18,10 @@ import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_movie_details.*
 
-class MovieDetailsActivity : AppCompatActivity() {
+class MovieDetailsActivity : AppCompatActivity(), View.OnClickListener {
+    ///////////////Views
+    private lateinit var imgBack : ImageView
+
     //////////////disposable
     private val disposable = CompositeDisposable()
     
@@ -34,10 +39,16 @@ class MovieDetailsActivity : AppCompatActivity() {
         loadingViews()
         callGetMovieDetails()
         setUpRecyclerView()
+        setOnClicks()
 
     }
 
+    private fun setOnClicks() {
+        imgBack.setOnClickListener(this)
+    }
+
     private fun init() {
+        imgBack = findViewById(R.id.img_back_movie_detail)
         movieDetailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MovieDetailsViewModel::class.java)
         castOfMovieViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(CastOfMovieViewModel::class.java)
     }
@@ -84,34 +95,27 @@ class MovieDetailsActivity : AppCompatActivity() {
             adapter.submitList(it?.cast)
             it?.crew?.let { it1 -> getCrewOfMovie(it1) }
         })
-        
-//        disposable.add(
-//            RetrofitProvideClass.provideRetrofit()
-//                .getCastsOfMovie(
-//                    getIdMovie(),
-//                    MyConstantClass.APY_KEY
-//                )
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe({
-//                    adapter.submitList(it.cast)
-//                    getProductsMovie(it.crew)
-//                }, {
-//
-//                    Log.d("MyTag", it.message)
-//                    MyConstantClass.showToast(this, this.resources.getString(R.string.error_connection))
-//                })
-//        )
     }
 
     @SuppressLint("SetTextI18n")
     private fun getCrewOfMovie(crewList: List<Crew>) {
-
+        var writer  = ""
+        var director = ""
+        var producer = ""
         for(i in crewList){
             when(i.job){
-                "Director" -> txt_movie_detail_director.text = "Director : " + i.name
-                "Writer" -> txt_movie_detail_writer.text = "Writer : " + i.name
-                "Producer" -> txt_movie_detail_producer.text = "Producer : " + i.name
+                "Director" -> {
+                    director += i.name +  ","
+                    txt_movie_detail_director.text = "Director : " + director
+                }
+                "Writer" -> {
+                        writer += i.name + ","
+                        txt_movie_detail_writer.text = "Writer : " + writer
+                }
+                "Producer" -> {
+                    producer += i.name + ","
+                    txt_movie_detail_producer.text = "Producer : " + producer
+                }
             }
         }
     }
@@ -147,5 +151,14 @@ class MovieDetailsActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         disposable.clear()
+    }
+
+    override fun onClick(v: View?) {
+        when(v!!.id){
+            R.id.img_back_movie_detail ->{
+                finish()
+            }
+        }
+
     }
 }

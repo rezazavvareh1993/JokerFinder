@@ -34,13 +34,19 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <ScrollView
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txt_movie_detail_overview"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/view_line1"
-                app:layout_constraintTop_toTopOf="@id/guideline">
-
-            </ScrollView>
+                android:padding="10dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/view_line1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline4"
+                app:layout_constraintVertical_bias="0.0" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_logo_detail_movie"
@@ -103,9 +109,9 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/horizontal_scroll_director"
                 app:layout_constraintEnd_toEndOf="@+id/horizontal_scroll_director"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/horizontal_scroll_director"
-                app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_director" />
+                app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontal_scroll_director"
@@ -115,8 +121,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/horizontal_scroll_writer"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="@+id/horizontal_scroll_writer"
-                app:layout_constraintTop_toBottomOf="@+id/txt_movie_detail_rate"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/txt_movie_detail_rate">
 
                 <TextView
                     android:id="@+id/txt_movie_detail_director"
@@ -160,12 +165,14 @@
 
             </HorizontalScrollView>
 
+
             <HorizontalScrollView
                 android:id="@+id/horizontal_scroll_producer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/guideline5"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/horizontal_scroll_writer">
 
@@ -184,24 +191,13 @@
 
             </HorizontalScrollView>
 
-
-
-
-
-
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="331dp" />
+                app:layout_constraintGuide_begin="330dp" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="515dp" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -210,26 +206,12 @@
                 android:text="Summary : "
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/txt_movie_detail_overview"
+                app:layout_constraintBottom_toTopOf="@+id/guideline4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.047"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-            <TextView
-                android:id="@+id/txt_movie_detail_overview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:padding="10dp"
-                android:text="TextView"
-                android:textColor="@color/white"
-                app:layout_constraintBottom_toTopOf="@+id/guideline6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.045"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5"
-                app:layout_constraintVertical_bias="0.097" />
+                app:layout_constraintTop_toTopOf="@+id/guideline"
+                app:layout_constraintVertical_bias="0.466" />
 
             <TextView
                 android:id="@+id/txt_movie_detail_stars"
@@ -243,7 +225,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline6" />
+                app:layout_constraintTop_toBottomOf="@id/view_line1" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cast_recycler_view"
@@ -291,10 +273,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toTopOf="@+id/guideline6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline6" />
+                app:layout_constraintTop_toBottomOf="@id/txt_movie_detail_overview" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="399dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

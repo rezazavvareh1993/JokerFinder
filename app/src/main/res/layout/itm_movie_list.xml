@@ -53,7 +53,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:weightSum="1"
                     android:orientation="horizontal"
                     android:gravity="center"
@@ -66,18 +66,25 @@
                         android:src="@drawable/ic_favorite_border_red_24dp"
                         tools:ignore="NestedWeights" />
 
-                    <TextView
-                        android:gravity="center"
-                        android:id="@+id/txt_name_movie"
+                    <ScrollView
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:layout_weight="0.6"
-                        android:text="Movie Name"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        />
+                        android:layout_weight="0.6">
+                        <TextView
+                            android:gravity="center"
+                            android:id="@+id/txt_name_movie"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Movie Name"
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="21sp"
+                            android:textStyle="bold"
+                            />
+
+                    </ScrollView>
+
 
                     <ImageView
                         android:layout_width="0dp"
@@ -142,7 +149,8 @@
                         android:textColor="@color/white"
                         tools:ignore="RtlHardcoded" />
                     <RatingBar
-
+                        android:focusable="false"
+                        android:clickable="false"
                         android:id="@+id/ratingBar_movie"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

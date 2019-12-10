@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".features.searchmovie.SearchMovieFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/backpic"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:id="@+id/ll_search_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/img_search_movie"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/img_search_shape"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_search"
+                    app:layout_constraintBottom_toBottomOf="@+id/edt_movie_name_search"
+                    app:layout_constraintEnd_toStartOf="@+id/edt_movie_name_search"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/view"
+                    app:layout_constraintTop_toTopOf="@+id/edt_movie_name_search"
+                    />
+
+                <EditText
+                    android:id="@+id/edt_movie_name_search"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/edt_search_shape"
+                    android:hint="search movie"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toStartOf="@+id/view"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/img_search_movie"
+                    app:layout_constraintBottom_toBottomOf="@id/view"
+                    app:layout_constraintTop_toTopOf="@id/view"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </LinearLayout>
+
+
+        <ProgressBar
+            android:id="@+id/progressBar_in_movie_list"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:indeterminateTint="@color/colorPrimaryDark"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movie_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_search_layout"
+            tools:listitem="@layout/itm_movie_list" />
+    </LinearLayout>
+
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_navigation"
+    app:startDestination="@id/splashFragment">
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.jokerfinder.features.startpage.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_searchMovieFragment"
+            app:destination="@id/searchMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchMovieFragment"
+        android:name="com.example.jokerfinder.features.searchmovie.SearchMovieFragment"
+        android:label="fragment_search_movie"
+        tools:layout="@layout/fragment_search_movie" >
+        <action
+            android:id="@+id/action_searchMovieFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.example.jokerfinder.features.moviedetails.MovieDetailsFragment"
+        android:label="fragment_movie_details"
+        tools:layout="@layout/fragment_movie_details" >
+
+        <argument android:name="idMovie"
+            app:argType="integer"
+            android:defaultValue="0"
+            />
+
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_searchMovieFragment"
+            app:destination="@id/searchMovieFragment" />
+    </fragment>
+</navigation>

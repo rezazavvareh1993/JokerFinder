@@ -170,8 +170,8 @@ class MovieDetailsFragment : Fragment() ,View.OnClickListener{
     }
 
     private fun getIdMovie(): Int {
-        idMovie = arguments!!.getInt("idMovie")
-        return idMovie
+        val safeArgs = MovieDetailsFragmentArgs.fromBundle(requireArguments())
+        return safeArgs.idMovie
 
     }
     override fun onDestroy() {

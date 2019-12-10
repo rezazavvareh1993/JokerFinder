@@ -11,15 +11,11 @@
         android:roundIcon="@drawable/joker_main_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.jokerfinder.features.startpage.SplashActivity">
+        <activity android:name=".features.Main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name="com.example.jokerfinder.features.moviedetails.MovieDetailsActivity"></activity>
-        <activity android:name="com.example.jokerfinder.features.searchmovie.SearchMovieActivity">
         </activity>
     </application>
 

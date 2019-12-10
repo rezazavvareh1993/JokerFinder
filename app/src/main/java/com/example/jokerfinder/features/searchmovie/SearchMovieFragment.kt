@@ -1,24 +1,33 @@
 package com.example.jokerfinder.features.searchmovie
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+
+import android.content.Context
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.features.moviedetails.MovieDetailsActivity
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_movie_list.*
 
-class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
+/**
+ * A simple [Fragment] subclass.
+ */
+class SearchMovieFragment : Fragment() ,View.OnClickListener{
 
+
+    private lateinit var navController: NavController
     //////////////////////ViewModel
     private lateinit var searchMovieViewModel: SearchMovieViewModel
 
@@ -30,9 +39,8 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
     ////////////////////Lambda Function
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
-        intent.putExtra("idMovie", it)
-        startActivity(intent)
+        val bundle = bundleOf("idMovie" to it)
+        navController.navigate(R.id.action_searchMovieFragment_to_movieDetailsFragment, bundle)
     }
     ///////////////////Variable
     private var checkSearchButton = true
@@ -45,16 +53,24 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_list)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_search_movie, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
 
         progressBar_in_movie_list.visibility = View.GONE
 
-        init()
+        init(view)
         callGetListMovies()
         setUpRecyclerView()
-        handleImgSearch()
+        handleImgSearch(view)
 
 
         swipeContainer.setOnRefreshListener {
@@ -70,17 +86,19 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun handleImgSearch() {
-        setOnClicks()
+    private fun handleImgSearch(view: View) {
+        setOnClicks(view)
     }
 
-    private fun init() {
-        imgSearchMovie = findViewById(R.id.img_search_movie)
+    private fun init(view: View) {
+
+        navController = Navigation.findNavController(view)
+        imgSearchMovie = view.findViewById(R.id.img_search_movie)
         searchMovieViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SearchMovieViewModel::class.java)
     }
 
-    private fun setOnClicks() {
-        imgSearchMovie.setOnClickListener(this) //click
+    private fun setOnClicks(view: View) {
+        view.findViewById<ImageView>(R.id.img_search_movie).setOnClickListener(this) //click
 
         disposable.add( //////when edt search is empty
             RxTextView
@@ -98,12 +116,12 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
 
         movie_recycler_view.setHasFixedSize(true)
         movie_recycler_view.layoutManager =
-            LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         movie_recycler_view.adapter = adapter
     }
 
     private fun callGetListMovies() {
-        searchMovieViewModel.fetchMovieSearchData(getMovieName(), this)
+        searchMovieViewModel.fetchMovieSearchData(getMovieName(), requireContext())
         searchMovieViewModel.getSearchMovieData().observe(this, Observer {
             if(it != null ){
                 adapter.submitList(it.results)
@@ -126,9 +144,9 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
         when (v!!.id) {
             R.id.img_search_movie -> {
                 if(checkSearchButton){
-                        callGetListMovies()
-                        progressBar_in_movie_list.visibility = View.VISIBLE
-                        img_search_movie.setImageResource(R.drawable.ic_clear_)
+                    callGetListMovies()
+                    progressBar_in_movie_list.visibility = View.VISIBLE
+                    img_search_movie.setImageResource(R.drawable.ic_clear_)
                 }else{
                     edt_movie_name_search.text.clear()
                     img_search_movie.setImageResource(R.drawable.ic_search)
@@ -137,4 +155,9 @@ class SearchMovieActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
 }

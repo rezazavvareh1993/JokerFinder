@@ -5,6 +5,7 @@ import com.example.jokerfinder.pojoes.Credits
 
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.pojoes.ResponseSearchMovie
+import com.example.jokerfinder.repository.networkreopsiroty.NetworkReposiitory
 import com.example.jokerfinder.retrofit.RetrofitProvideClass
 import com.example.jokerfinder.utils.MyConstantClass
 import io.reactivex.Single
@@ -14,6 +15,9 @@ import javax.inject.Inject
 
 class DataRepository @Inject constructor() {
     private val apiKey = MyConstantClass.APY_KEY
+
+    private lateinit var networkReposiitory : NetworkReposiitory
+    private
 
 
     @SuppressLint("CheckResult")
@@ -37,11 +41,12 @@ class DataRepository @Inject constructor() {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun fetchMovieSearchData(movieName : String) : Single<ResponseSearchMovie>{
+    fun fetchMovieSearchData(movieName : String, page : Int) : Single<ResponseSearchMovie>{
         return RetrofitProvideClass.provideRetrofit()
             .getMovieDetailSearched(
                 apiKey,
-                movieName
+                movieName,
+                page
             )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

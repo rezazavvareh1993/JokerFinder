@@ -1,4 +1,4 @@
-package com.example.jokerfinder.features.moviedetails
+package com.example.jokerfinder.features.moviedetails.castsofmovie
 
 import android.content.Context
 import android.util.Log

@@ -13,13 +13,14 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.jokerfinder.R
+import com.example.jokerfinder.base.di.BaseFragment
 import com.example.jokerfinder.utils.MyConstantClass
 import kotlinx.android.synthetic.main.fragment_splash.*
 
 /**
  * A simple [Fragment] subclass.
  */
-class SplashFragment : Fragment() {
+class SplashFragment : BaseFragment() {
 
     lateinit var navController: NavController
 

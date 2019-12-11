@@ -1,4 +1,4 @@
-package com.example.jokerfinder.utils
+package com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.jokerfinder.pojoes.Cast

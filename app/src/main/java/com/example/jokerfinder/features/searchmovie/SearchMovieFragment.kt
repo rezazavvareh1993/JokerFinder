@@ -16,15 +16,22 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
+import com.example.jokerfinder.base.di.BaseFragment
+import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
+import com.example.jokerfinder.utils.MyConstantClass
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_movie_list.*
+import kotlinx.android.synthetic.main.activity_movie_list.edt_movie_name_search
+import kotlinx.android.synthetic.main.activity_movie_list.img_search_movie
+import kotlinx.android.synthetic.main.activity_movie_list.movie_recycler_view
+import kotlinx.android.synthetic.main.activity_movie_list.progressBar_in_movie_list
+import kotlinx.android.synthetic.main.activity_movie_list.swipeContainer
 
 /**
  * A simple [Fragment] subclass.
  */
-class SearchMovieFragment : Fragment() ,View.OnClickListener{
+class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
 
     private lateinit var navController: NavController
@@ -115,16 +122,30 @@ class SearchMovieFragment : Fragment() ,View.OnClickListener{
     private fun setUpRecyclerView() {
 
         movie_recycler_view.setHasFixedSize(true)
-        movie_recycler_view.layoutManager =
-            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+        movie_recycler_view.layoutManager = layoutManager
         movie_recycler_view.adapter = adapter
+
+        movie_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val lastItem = layoutManager.findLastVisibleItemPosition()
+                val total = layoutManager.itemCount
+                if (total > 0)
+                    if (total - 1 == lastItem)
+                        searchMovieViewModel.fetchMovieSearchData(edt_movie_name_search.text.toString(),  true)
+            }
+        })
     }
 
     private fun callGetListMovies() {
-        searchMovieViewModel.fetchMovieSearchData(getMovieName(), requireContext())
+        searchMovieViewModel.fetchMovieSearchData(getMovieName(),false)
         searchMovieViewModel.getSearchMovieData().observe(this, Observer {
             if(it != null ){
-                adapter.submitList(it.results)
+                adapter.submitList(it)
+            }else{
+                MyConstantClass.showToast(requireContext(), context?.resources?.getString(R.string.error_connection))
             }
             progressBar_in_movie_list.visibility = View.GONE
             swipeContainer.isRefreshing = false

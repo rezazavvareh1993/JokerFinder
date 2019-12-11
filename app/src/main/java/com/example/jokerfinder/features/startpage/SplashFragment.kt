@@ -2,7 +2,6 @@ package com.example.jokerfinder.features.startpage
 
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler

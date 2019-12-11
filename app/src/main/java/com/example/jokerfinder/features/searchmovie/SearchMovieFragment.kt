@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.di.BaseFragment
+import com.example.jokerfinder.features.di.BaseViewModelFactory
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
+import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,6 +35,8 @@ import kotlinx.android.synthetic.main.activity_movie_list.swipeContainer
  */
 class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
+    private val repository = DataRepository()
+    lateinit var factory: ViewModelProvider.Factory
 
     private lateinit var navController: NavController
     //////////////////////ViewModel
@@ -101,7 +105,8 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
         navController = Navigation.findNavController(view)
         imgSearchMovie = view.findViewById(R.id.img_search_movie)
-        searchMovieViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(SearchMovieViewModel::class.java)
+        factory = BaseViewModelFactory(repository)
+        searchMovieViewModel = ViewModelProvider(this, factory).get(SearchMovieViewModel::class.java)
     }
 
     private fun setOnClicks(view: View) {

@@ -3,8 +3,8 @@ package com.example.jokerfinder.repository.di
 import com.example.jokerfinder.repository.DataRepository
 import dagger.Component
 
-@Component
+//@Component
 interface ProvideRepositoryComponent {
 
-    fun provideRepository() : DataRepository
+//    fun provideRepository() : DataRepository
 }

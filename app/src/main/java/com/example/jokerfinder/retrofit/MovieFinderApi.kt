@@ -12,10 +12,10 @@ import retrofit2.http.Query
 interface MovieFinderApi {
 
     @GET("search/movie")
-    fun getMovieDetailSearched(@Query("api_key") apiKey : String , @Query("query") query: String, @Query("page") page : Int) : Single<ResponseSearchMovie>
+    fun getMovieSearched(@Query("api_key") apiKey : String, @Query("query") query: String, @Query("page") page : Int) : Single<ResponseSearchMovie>
 
     @GET("movie/{movie_id}")
-    fun getMovieDetails(@Path("movie_id")movieId : Int, @Query("api_key") apiKey : String ) : Single<ResponseDetailMovie>
+    fun getMovieDetails(@Path("movie_id")movieId : Int, @Query("api_key") apiKey : String) : Single<ResponseDetailMovie>
 
     @GET("movie/{movie_id}/credits")
     fun getCastsOfMovie(@Path("movie_id")movieId: Int, @Query("api_key") apiKey: String) : Single<Credits>

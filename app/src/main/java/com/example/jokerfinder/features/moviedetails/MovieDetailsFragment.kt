@@ -15,8 +15,13 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
+import com.example.jokerfinder.base.di.BaseFragment
+import com.example.jokerfinder.features.di.BaseViewModelFactory
+import com.example.jokerfinder.features.moviedetails.castsofmovie.CastOfMovieViewModel
+import com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter.CastsMovieAdapter
 import com.example.jokerfinder.pojoes.Crew
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
+import com.example.jokerfinder.repository.DataRepository
 import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_movie_details.*
@@ -24,7 +29,11 @@ import kotlinx.android.synthetic.main.activity_movie_details.*
 /**
  * A simple [Fragment] subclass.
  */
-class MovieDetailsFragment : Fragment() ,View.OnClickListener{
+class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
+
+    private val repository = DataRepository()
+
+    lateinit var factory: ViewModelProvider.Factory
 
 
     lateinit var navController: NavController
@@ -36,10 +45,8 @@ class MovieDetailsFragment : Fragment() ,View.OnClickListener{
     private val disposable = CompositeDisposable()
 
     /////////////adapter
-    private val adapter = CastsMovieAdapter()
-
-
-    private  var idMovie: Int = 0
+    private val adapter =
+        CastsMovieAdapter()
 
     /////////////////////viewModels
     private lateinit var movieDetailViewModel : MovieDetailsViewModel
@@ -74,8 +81,9 @@ class MovieDetailsFragment : Fragment() ,View.OnClickListener{
     private fun init(view: View) {
         navController = Navigation.findNavController(view)
         imgBack = view.findViewById(R.id.img_back_movie_detail)
-        movieDetailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MovieDetailsViewModel::class.java)
-        castOfMovieViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(CastOfMovieViewModel::class.java)
+        factory = BaseViewModelFactory(repository)
+        movieDetailViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
+        castOfMovieViewModel = ViewModelProvider(this, factory).get(CastOfMovieViewModel::class.java)
     }
 
     private fun setUpRecyclerView() {

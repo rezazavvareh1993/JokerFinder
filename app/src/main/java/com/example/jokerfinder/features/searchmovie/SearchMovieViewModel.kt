@@ -1,39 +1,63 @@
 package com.example.jokerfinder.features.searchmovie
 
-import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.jokerfinder.R
-import com.example.jokerfinder.pojoes.ResponseSearchMovie
-import com.example.jokerfinder.repository.di.DaggerProvideRepositoryComponent
-import com.example.jokerfinder.utils.MyConstantClass
+import com.example.jokerfinder.base.di.BaseViewModel
+import com.example.jokerfinder.pojoes.ResultModel
+import com.example.jokerfinder.repository.DataRepository
 import io.reactivex.disposables.CompositeDisposable
 
 
-class SearchMovieViewModel : ViewModel() {
+class SearchMovieViewModel (private val repository: DataRepository): BaseViewModel() {
 
-    private val component = DaggerProvideRepositoryComponent.create()
-    private val repository = component.provideRepository()
+    private var page = 1
+    private var shouldLoadMore = true
+    private var list = arrayListOf<ResultModel>()
+    private var movieName = ""
+    private var isLoading = false
 
-    private var searchMovieMutableLiveData = MutableLiveData<ResponseSearchMovie>()
+
+    private var searchMovieMutableLiveData = MutableLiveData<List<ResultModel>>()
     private val disposable = CompositeDisposable()
 
-    fun fetchMovieSearchData(movieName : String, context: Context){
+    fun fetchMovieSearchData(movieName : String, isLoadMore : Boolean){
+        if (isLoading) return
+
+        if (movieName.isNotEmpty())
+            this.movieName = movieName
+
+        prepareDataToSearch(isLoadMore)
+
         disposable.add(
-            repository.fetchMovieSearchData(movieName)
+            repository.fetchMovieSearchData(movieName,page)
                 .subscribe({
-                    searchMovieMutableLiveData.value = it
+                    isLoading = false
+                    if(it.results.isEmpty())
+                        shouldLoadMore = false
+
+                    list.addAll(it.results)
+                    searchMovieMutableLiveData.value = list
 
                 },{
-                    MyConstantClass.showToast(context, context.resources.getString(R.string.error_connection))
-                    searchMovieMutableLiveData.value = null
-
+                    isLoading = false
+                    Log.d("message",it.message)
                 })
         )
     }
 
-    fun getSearchMovieData() : LiveData<ResponseSearchMovie> = searchMovieMutableLiveData
+    private fun prepareDataToSearch(isLoadMore: Boolean) {
+        isLoading = true
+        if (isLoadMore && shouldLoadMore) {
+            page++
+        } else {
+            page = 1
+            list.clear()
+            shouldLoadMore = true
+        }
+    }
+
+    fun getSearchMovieData() : LiveData<List<ResultModel>> = searchMovieMutableLiveData
 
     /**
      * Clearing the RX disposables

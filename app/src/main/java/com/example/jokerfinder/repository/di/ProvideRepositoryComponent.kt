@@ -6,5 +6,4 @@ import dagger.Component
 //@Component
 interface ProvideRepositoryComponent {
 
-//    fun provideRepository() : DataRepository
 }

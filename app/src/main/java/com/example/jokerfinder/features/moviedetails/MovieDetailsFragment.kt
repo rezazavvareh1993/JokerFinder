@@ -25,13 +25,15 @@ import com.example.jokerfinder.repository.DataRepository
 import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_movie_details.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
 class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
-    private val repository = DataRepository()
+    @Inject
+    lateinit var repository : DataRepository
 
     lateinit var factory: ViewModelProvider.Factory
 

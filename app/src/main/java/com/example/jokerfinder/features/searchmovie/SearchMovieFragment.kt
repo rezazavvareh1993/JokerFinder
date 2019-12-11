@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.di.BaseFragment
 import com.example.jokerfinder.features.di.BaseViewModelFactory
+import com.example.jokerfinder.features.di.DaggerprovideRepository
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass
@@ -29,13 +30,16 @@ import kotlinx.android.synthetic.main.activity_movie_list.img_search_movie
 import kotlinx.android.synthetic.main.activity_movie_list.movie_recycler_view
 import kotlinx.android.synthetic.main.activity_movie_list.progressBar_in_movie_list
 import kotlinx.android.synthetic.main.activity_movie_list.swipeContainer
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
 class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
-    private val repository = DataRepository()
+    @Inject
+    lateinit var repository : DataRepository
+
     lateinit var factory: ViewModelProvider.Factory
 
     private lateinit var navController: NavController
@@ -102,7 +106,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     }
 
     private fun init(view: View) {
-
+        DaggerprovideRepository.create().getSearchMovieFragment(this)
         navController = Navigation.findNavController(view)
         imgSearchMovie = view.findViewById(R.id.img_search_movie)
         factory = BaseViewModelFactory(repository)

@@ -8,8 +8,9 @@ import com.example.jokerfinder.retrofit.RetrofitProvideClass
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class NetworkRepository () {
+class NetworkRepository @Inject constructor() {
 
     fun fetchMovieDetails(idMovie: Int, apiKey: String): Single<ResponseDetailMovie> {
         return RetrofitProvideClass.provideRetrofit()

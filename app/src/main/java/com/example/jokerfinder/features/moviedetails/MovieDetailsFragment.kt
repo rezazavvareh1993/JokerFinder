@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.di.BaseFragment
 import com.example.jokerfinder.features.di.BaseViewModelFactory
+import com.example.jokerfinder.features.di.DaggerProvideRepository
 import com.example.jokerfinder.features.moviedetails.castsofmovie.CastOfMovieViewModel
 import com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter.CastsMovieAdapter
 import com.example.jokerfinder.pojoes.Crew
@@ -81,6 +82,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
     }
 
     private fun init(view: View) {
+        DaggerProvideRepository.create().getMovieDetailsFragment(this)
         navController = Navigation.findNavController(view)
         imgBack = view.findViewById(R.id.img_back_movie_detail)
         factory = BaseViewModelFactory(repository)

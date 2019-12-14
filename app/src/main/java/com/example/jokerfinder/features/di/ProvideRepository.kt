@@ -6,7 +6,7 @@ import com.example.jokerfinder.repository.DataRepository
 import dagger.Component
 
 @Component(modules = [ModuleRepository::class])
-interface provideRepository {
+interface ProvideRepository {
 
     fun getRepository() : DataRepository
 

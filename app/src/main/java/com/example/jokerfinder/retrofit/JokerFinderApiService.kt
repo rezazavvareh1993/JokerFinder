@@ -9,7 +9,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-interface MovieFinderApi {
+interface JokerFinderApiService {
 
     @GET("search/movie")
     fun getMovieSearched(@Query("api_key") apiKey : String, @Query("query") query: String, @Query("page") page : Int) : Single<ResponseSearchMovie>

@@ -3,16 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_navigation"
-    app:startDestination="@id/splashFragment">
-    <fragment
-        android:id="@+id/splashFragment"
-        android:name="com.example.jokerfinder.features.startpage.SplashFragment"
-        android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
-        <action
-            android:id="@+id/action_splashFragment_to_searchMovieFragment"
-            app:destination="@id/searchMovieFragment" />
-    </fragment>
+    app:startDestination="@id/searchMovieFragment">
     <fragment
         android:id="@+id/searchMovieFragment"
         android:name="com.example.jokerfinder.features.searchmovie.SearchMovieFragment"
@@ -37,4 +28,14 @@
             android:id="@+id/action_movieDetailsFragment_to_searchMovieFragment"
             app:destination="@id/searchMovieFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/favoriteMovieFragment"
+        android:name="com.example.jokerfinder.features.favoritemovie.FavoriteMovieFragment"
+        android:label="fragment_favorite_movie"
+        tools:layout="@layout/fragment_favorite_movie" />
+    <fragment
+        android:id="@+id/aboutUsFragment"
+        android:name="com.example.jokerfinder.features.about.AboutUsFragment"
+        android:label="fragment_about_us"
+        tools:layout="@layout/fragment_about_us" />
 </navigation>

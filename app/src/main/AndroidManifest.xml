@@ -11,11 +11,15 @@
         android:roundIcon="@drawable/joker_main_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".features.Main.MainActivity">
+        <activity android:name=".features.startpage.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".features.MainActivity">
+
         </activity>
     </application>
 

@@ -1,4 +1,6 @@
 package com.example.jokerfinder.repository.localrepository
 
-class LocalRepository {
+import javax.inject.Inject
+
+class LocalRepository @Inject constructor() {
 }

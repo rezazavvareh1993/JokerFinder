@@ -3,16 +3,18 @@ package com.example.jokerfinder.repository.networkreopsitory
 import com.example.jokerfinder.pojoes.Credits
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.pojoes.ResponseSearchMovie
-import com.example.jokerfinder.retrofit.MovieFinderApi
-import com.example.jokerfinder.retrofit.RetrofitProvideClass
+import com.example.jokerfinder.retrofit.DaggerProvideRetrofitComponent
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class NetworkRepository () {
+class NetworkRepository @Inject constructor() {
+
+    val retrofitService = DaggerProvideRetrofitComponent.create().getRetrofitApiService()
 
     fun fetchMovieDetails(idMovie: Int, apiKey: String): Single<ResponseDetailMovie> {
-        return RetrofitProvideClass.provideRetrofit()
+        return retrofitService
             .getMovieDetails(
                 idMovie,
                 apiKey
@@ -22,7 +24,7 @@ class NetworkRepository () {
     }
 
     fun fetchCastsOfMovie(idMovie: Int, apiKey : String) : Single<Credits>{
-        return RetrofitProvideClass.provideRetrofit()
+        return retrofitService
             .getCastsOfMovie(
                 idMovie,
                 apiKey
@@ -32,7 +34,7 @@ class NetworkRepository () {
     }
 
         fun fetchMovieSearchData(movieName : String, apiKey: String, page : Int) : Single<ResponseSearchMovie>{
-            return RetrofitProvideClass.provideRetrofit()
+            return retrofitService
                 .getMovieSearched(
                     apiKey,
                     movieName,

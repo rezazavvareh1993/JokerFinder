@@ -5,15 +5,17 @@ import com.example.jokerfinder.pojoes.Credits
 
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.pojoes.ResponseSearchMovie
+import com.example.jokerfinder.repository.localrepository.LocalRepository
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import io.reactivex.Single
 
-class DataRepository {
+class DataRepository(val networkRepository: NetworkRepository, val localRepository: LocalRepository) {
     private val apiKey = MyConstantClass.APY_KEY
 
-    private val networkRepository = NetworkRepository()
 
+
+    /////////////////////////////////////////Network
 
     @SuppressLint("CheckResult")
     fun fetchMovieDetails(idMovie: Int): Single<ResponseDetailMovie> {
@@ -27,4 +29,6 @@ class DataRepository {
     fun fetchMovieSearchData(movieName: String, page: Int): Single<ResponseSearchMovie> {
         return networkRepository.fetchMovieSearchData(movieName, apiKey, page)
     }
+
+    ////////////////////////////////Local
 }

@@ -36,6 +36,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
     implementation 'androidx.core:core-ktx:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03"
@@ -70,14 +72,12 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.25.2'
 
     /////////////////////Navigation component
-    def nav_version = "2.1.0-alpha05"
-    implementation "androidx.navigation:navigation-fragment:$nav_version"
+    implementation "androidx.navigation:navigation-fragment:2.2.0-rc03"
     // For Kotlin use navigation-fragment-ktx
-    implementation "androidx.navigation:navigation-ui:$nav_version"
+    implementation "androidx.navigation:navigation-ui:2.2.0-rc03"
     // For Kotlin use navigation-ui-ktx
 
-    def material_version = "1.1.0-alpha07"
-    implementation "com.google.android.material:material:$material_version"
+    implementation "com.google.android.material:material:1.2.0-alpha02"
 
 
     testImplementation 'junit:junit:4.12'

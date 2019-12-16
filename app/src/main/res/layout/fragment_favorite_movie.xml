@@ -28,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_favorite_movie_list" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_favorite_movie_list"
+        tools:listitem="@layout/item_favorite_movie"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

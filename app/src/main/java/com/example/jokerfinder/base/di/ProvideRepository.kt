@@ -1,5 +1,6 @@
-package com.example.jokerfinder.features.di
+package com.example.jokerfinder.base.di
 
+import com.example.jokerfinder.features.favoritemovies.FavoriteMovieFragment
 import com.example.jokerfinder.features.moviedetails.MovieDetailsFragment
 import com.example.jokerfinder.features.searchmovie.SearchMovieFragment
 import com.example.jokerfinder.repository.DataRepository
@@ -12,5 +13,6 @@ interface ProvideRepository {
 
     fun getSearchMovieFragment(searchMovieFragment: SearchMovieFragment)
     fun getMovieDetailsFragment(movieDetailsFragment: MovieDetailsFragment)
+    fun getFavoriteMovieFragment(favoriteMovieFragment: FavoriteMovieFragment)
 
 }

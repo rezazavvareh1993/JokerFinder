@@ -16,10 +16,13 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.di.BaseFragment
+import com.example.jokerfinder.base.BaseFragment
+import com.example.jokerfinder.base.di.DaggerProvideRepository
 import com.example.jokerfinder.features.di.BaseViewModelFactory
-import com.example.jokerfinder.features.di.DaggerProvideRepository
+import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
+import com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter.FavoriteMoviesAdapter
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
+import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -45,6 +48,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     private lateinit var navController: NavController
     //////////////////////ViewModel
     private lateinit var searchMovieViewModel: SearchMovieViewModel
+    private lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
 
     /////////////////////Views
     private lateinit var imgSearchMovie: ImageView
@@ -57,13 +61,18 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
         val bundle = bundleOf("idMovie" to it)
         navController.navigate(R.id.action_searchMovieFragment_to_movieDetailsFragment, bundle)
     }
+
+    private val getFavoriteMovieFunction : (FavoriteMovieEntity) -> Unit = {
+        favoriteMovieViewModel.insertFavoriteMovie(it)
+    }
     ///////////////////Variable
     private var checkSearchButton = true
 
     ///////////////////Adapter
     private var adapter =
         MoviesAdapter(
-            getIdMovieLambdaFunction
+            getIdMovieLambdaFunction,
+            getFavoriteMovieFunction
         )
 
 
@@ -111,6 +120,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
         imgSearchMovie = view.findViewById(R.id.img_search_movie)
         factory = BaseViewModelFactory(repository)
         searchMovieViewModel = ViewModelProvider(this, factory).get(SearchMovieViewModel::class.java)
+        favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
     }
 
     private fun setOnClicks(view: View) {
@@ -136,6 +146,8 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
         movie_recycler_view.layoutManager = layoutManager
         movie_recycler_view.adapter = adapter
 
+
+/////////////////////////show next page when scroll last item
         movie_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

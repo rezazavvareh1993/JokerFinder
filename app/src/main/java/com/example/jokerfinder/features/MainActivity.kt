@@ -1,14 +1,11 @@
 package com.example.jokerfinder.features
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.di.BaseActivity
+import com.example.jokerfinder.base.BaseActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

@@ -2,6 +2,7 @@ package com.example.jokerfinder.features.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
 import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
 import com.example.jokerfinder.features.moviedetails.castsofmovie.CastOfMovieViewModel
 import com.example.jokerfinder.features.searchmovie.SearchMovieViewModel
@@ -20,6 +21,10 @@ class BaseViewModelFactory (val dataRepository: DataRepository) : ViewModelProvi
                 dataRepository
             ) as T
             modelClass.isAssignableFrom(CastOfMovieViewModel::class.java) -> CastOfMovieViewModel(
+                dataRepository
+            ) as T
+
+            modelClass.isAssignableFrom(CastOfMovieViewModel::class.java) -> FavoriteMovieViewModel(
                 dataRepository
             ) as T
             else -> throw IllegalArgumentException("No such ViewModel class ${modelClass.name}")

@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.di.BaseViewModel
+import com.example.jokerfinder.base.BaseViewModel
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass

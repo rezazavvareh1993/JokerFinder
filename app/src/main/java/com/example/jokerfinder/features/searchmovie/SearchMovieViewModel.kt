@@ -3,7 +3,7 @@ package com.example.jokerfinder.features.searchmovie
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.jokerfinder.base.di.BaseViewModel
+import com.example.jokerfinder.base.BaseViewModel
 import com.example.jokerfinder.pojoes.ResultModel
 import com.example.jokerfinder.repository.DataRepository
 import io.reactivex.disposables.CompositeDisposable

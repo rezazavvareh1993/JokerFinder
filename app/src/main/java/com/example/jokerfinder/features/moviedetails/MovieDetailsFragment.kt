@@ -15,9 +15,9 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.di.BaseFragment
+import com.example.jokerfinder.base.BaseFragment
+import com.example.jokerfinder.base.di.DaggerProvideRepository
 import com.example.jokerfinder.features.di.BaseViewModelFactory
-import com.example.jokerfinder.features.di.DaggerProvideRepository
 import com.example.jokerfinder.features.moviedetails.castsofmovie.CastOfMovieViewModel
 import com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter.CastsMovieAdapter
 import com.example.jokerfinder.pojoes.Crew

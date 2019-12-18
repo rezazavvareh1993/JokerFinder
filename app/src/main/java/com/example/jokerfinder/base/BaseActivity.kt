@@ -1,4 +1,4 @@
-package com.example.jokerfinder.base.di
+package com.example.jokerfinder.base
 
 import androidx.appcompat.app.AppCompatActivity
 

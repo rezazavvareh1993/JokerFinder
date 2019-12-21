@@ -24,7 +24,8 @@ abstract class MovieDataBase : RoomDatabase() {
                 return tempInstance
             }
             synchronized(this) {
-                val instance = Room.databaseBuilder(context , MovieDataBase::class.java, "favoriteMovie").build()
+
+                val instance = Room.databaseBuilder(context.applicationContext , MovieDataBase::class.java, "favoriteMovie").build()
                 INSTANCE = instance
                 return instance
             }

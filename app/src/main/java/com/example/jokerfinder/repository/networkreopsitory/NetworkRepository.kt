@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class NetworkRepository @Inject constructor() {
 
-    val retrofitService = DaggerProvideRetrofitComponent.create().getRetrofitApiService()
+    private val retrofitService = DaggerProvideRetrofitComponent.create().getRetrofitApiService()
 
     fun fetchMovieDetails(idMovie: Int, apiKey: String): Single<ResponseDetailMovie> {
         return retrofitService

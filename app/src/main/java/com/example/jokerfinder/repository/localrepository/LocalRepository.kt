@@ -8,9 +8,9 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class LocalRepository(application: BaseApplication) {
+class LocalRepository(baseApplication: BaseApplication) {
 
-    private val movieDAO = MovieDataBase.getDatabase(application).getFavoriteMovieDAO()
+    private val movieDAO = MovieDataBase.getDatabase(baseApplication).getFavoriteMovieDAO()
 
     fun fetchAllFavoriteMovies() : Single<List<FavoriteMovieEntity>> {
         return movieDAO.getAllFavoriteMovies()

@@ -55,6 +55,7 @@ class FavoriteMovieFragment : BaseFragment() {
     }
 
     private fun callGetListFavoriteMovies() {
+        favoriteMovieViewModel.fetchAllFavoriteMovies()
         favoriteMovieViewModel.getAllFavoriteMovies().observe(this, Observer {
             if(it != null)
                 adapter.submitList(it)

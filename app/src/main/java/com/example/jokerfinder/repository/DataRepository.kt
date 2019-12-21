@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers
 class DataRepository(private val networkRepository: NetworkRepository, baseApplication : BaseApplication ) {
 
     private val apiKey = MyConstantClass.APY_KEY
-    private val localRepository : LocalRepository = LocalRepository(baseApplication)
+    private val localRepository  = LocalRepository(baseApplication)
 
     /////////////////////////////////////////Network
 
@@ -40,7 +40,7 @@ class DataRepository(private val networkRepository: NetworkRepository, baseAppli
     fun fetchAllFavoriteMovies() : Single<List<FavoriteMovieEntity>> {
         return localRepository.fetchAllFavoriteMovies()
             .subscribeOn(Schedulers.io())
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) : Completable{

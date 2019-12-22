@@ -14,19 +14,27 @@ class BaseViewModelFactory (val dataRepository: DataRepository) : ViewModelProvi
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(SearchMovieViewModel::class.java) -> SearchMovieViewModel(
-                dataRepository
-            ) as T
-            modelClass.isAssignableFrom(MovieDetailsViewModel::class.java) -> MovieDetailsViewModel(
-                dataRepository
-            ) as T
-            modelClass.isAssignableFrom(CastOfMovieViewModel::class.java) -> CastOfMovieViewModel(
-                dataRepository
-            ) as T
+            modelClass.isAssignableFrom(SearchMovieViewModel::class.java) -> {
+                SearchMovieViewModel(
+                    dataRepository
+                ) as T
+            }
+            modelClass.isAssignableFrom(MovieDetailsViewModel::class.java) -> {
+                MovieDetailsViewModel(
+                    dataRepository
+                ) as T
+            }
+            modelClass.isAssignableFrom(CastOfMovieViewModel::class.java) -> {
+                CastOfMovieViewModel(
+                    dataRepository
+                ) as T
+            }
 
-            modelClass.isAssignableFrom(CastOfMovieViewModel::class.java) -> FavoriteMovieViewModel(
-                dataRepository
-            ) as T
+            modelClass.isAssignableFrom(CastOfMovieViewModel::class.java) -> {
+                FavoriteMovieViewModel(
+                    dataRepository
+                ) as T
+            }
             else -> throw IllegalArgumentException("No such ViewModel class ${modelClass.name}")
         }
     }

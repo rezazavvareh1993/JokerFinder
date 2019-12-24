@@ -30,12 +30,12 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteMovieFragment"
-        android:name="com.example.jokerfinder.features.favoritemovie.FavoriteMovieFragment"
+        android:name="com.example.jokerfinder.features.favoritemovies.FavoriteMoviesFragment"
         android:label="fragment_favorite_movie"
         tools:layout="@layout/fragment_favorite_movie" />
     <fragment
         android:id="@+id/aboutUsFragment"
-        android:name="com.example.jokerfinder.features.about.AboutUsFragment"
+        android:name="com.example.jokerfinder.features.about.AboutMeFragment"
         android:label="fragment_about_us"
         tools:layout="@layout/fragment_about_us" />
 </navigation>

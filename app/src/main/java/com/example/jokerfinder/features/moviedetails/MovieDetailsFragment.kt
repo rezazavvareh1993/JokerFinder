@@ -15,14 +15,12 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.di.BaseFragment
-import com.example.jokerfinder.features.di.BaseViewModelFactory
-import com.example.jokerfinder.features.di.DaggerProvideRepository
+import com.example.jokerfinder.base.BaseApplication
+import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.moviedetails.castsofmovie.CastOfMovieViewModel
 import com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter.CastsMovieAdapter
 import com.example.jokerfinder.pojoes.Crew
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
-import com.example.jokerfinder.repository.DataRepository
 import com.squareup.picasso.Picasso
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_movie_details.*
@@ -34,8 +32,6 @@ import javax.inject.Inject
 class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     @Inject
-    lateinit var repository : DataRepository
-
     lateinit var factory: ViewModelProvider.Factory
 
 
@@ -70,6 +66,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        injectFactory()
         init(view)
         loadingViews()
         callGetMovieDetails()
@@ -77,15 +74,20 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
         setOnClicks()
     }
 
+    private fun injectFactory() {
+        (activity?.application as BaseApplication)
+            .getApplicationComponent()
+            .injectToMovieDetailsFragment(this)
+    }
+
     private fun setOnClicks() {
         imgBack.setOnClickListener(this)
     }
 
     private fun init(view: View) {
-        DaggerProvideRepository.create().getMovieDetailsFragment(this)
+//        DaggerRepositoryComponent.create().getMovieDetailsFragment(this)
         navController = Navigation.findNavController(view)
         imgBack = view.findViewById(R.id.img_back_movie_detail)
-        factory = BaseViewModelFactory(repository)
         movieDetailViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
         castOfMovieViewModel = ViewModelProvider(this, factory).get(CastOfMovieViewModel::class.java)
     }

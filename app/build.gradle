@@ -71,6 +71,13 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     kapt 'com.google.dagger:dagger-compiler:2.25.2'
 
+    /////////////////////room database by rx
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    implementation "androidx.room:room-ktx:2.2.2"
+    kapt "androidx.room:room-compiler:$room_version"
+
     /////////////////////Navigation component
     implementation "androidx.navigation:navigation-fragment:2.2.0-rc03"
     // For Kotlin use navigation-fragment-ktx
@@ -78,7 +85,6 @@ dependencies {
     // For Kotlin use navigation-ui-ktx
 
     implementation "com.google.android.material:material:1.2.0-alpha02"
-
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

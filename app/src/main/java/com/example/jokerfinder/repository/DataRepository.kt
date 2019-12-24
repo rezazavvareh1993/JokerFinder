@@ -7,18 +7,18 @@ import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.pojoes.ResponseSearchMovie
-import com.example.jokerfinder.repository.localrepository.LocalRepository
+import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class DataRepository(private val networkRepository: NetworkRepository, baseApplication : BaseApplication ) {
+class DataRepository @Inject constructor(private val networkRepository: NetworkRepository, private val favoriteMovieDAO: FavoriteMovieDAO ) {
 
     private val apiKey = MyConstantClass.APY_KEY
-    private val localRepository  = LocalRepository(baseApplication)
 
     /////////////////////////////////////////Network
 
@@ -38,13 +38,19 @@ class DataRepository(private val networkRepository: NetworkRepository, baseAppli
     ////////////////////////////////Local
 
     fun fetchAllFavoriteMovies() : Single<List<FavoriteMovieEntity>> {
-        return localRepository.fetchAllFavoriteMovies()
+        return favoriteMovieDAO.getAllFavoriteMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) : Completable{
-        return localRepository.insertFavoriteMovie(favoriteMovieEntity)
+        return favoriteMovieDAO.saveFavoriteMovie(favoriteMovieEntity)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun deleteMovieFromFavotriteMovies(favoriteMovieEntity: FavoriteMovieEntity) : Completable{
+        return favoriteMovieDAO.delete(favoriteMovieEntity)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

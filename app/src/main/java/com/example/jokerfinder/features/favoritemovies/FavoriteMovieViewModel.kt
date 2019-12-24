@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 
 class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
     private var movieListMutableLiveData = MutableLiveData<List<FavoriteMovieEntity>>()
-    val compositeDisposable = CompositeDisposable()
+    private val compositeDisposable = CompositeDisposable()
 
     fun fetchAllFavoriteMovies (){
         compositeDisposable.add(
@@ -33,6 +33,15 @@ class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
             .subscribe({
                 Log.d("MyTag", "insert ${favoriteMovieEntity.movieName}")
             },{
+                Log.d("MyTag", it.message)
+            }))
+    }
+
+    fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity){
+        compositeDisposable.add(repository.deleteMovieFromFavotriteMovies(favoriteMovieEntity)
+            .subscribe ({
+                Log.d("MyTag", "delete ${favoriteMovieEntity.movieName}")
+            }, {
                 Log.d("MyTag", it.message)
             }))
     }

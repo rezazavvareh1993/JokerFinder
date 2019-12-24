@@ -60,6 +60,7 @@
                     tools:ignore="NestedWeights">
 
                     <ImageView
+                        android:id="@+id/img_add_favorite_movie"
                         android:layout_width="0dp"
                         android:layout_height="30dp"
                         android:layout_weight="0.2"

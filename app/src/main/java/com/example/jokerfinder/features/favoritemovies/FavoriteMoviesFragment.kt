@@ -11,8 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
+import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
-import com.example.jokerfinder.features.di.BaseViewModelFactory
+import com.example.jokerfinder.base.BaseViewModelFactory
 import com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter.FavoriteMoviesAdapter
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass
@@ -22,15 +23,18 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
-class FavoriteMovieFragment : BaseFragment() {
+class FavoriteMoviesFragment : BaseFragment() {
 
     @Inject
-    lateinit var repository : DataRepository
-
-    lateinit var adapter : FavoriteMoviesAdapter
-
-    lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
     lateinit var factory : ViewModelProvider.Factory
+    
+    lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
+
+    /////////////adapter
+    private val adapter =
+        FavoriteMoviesAdapter()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,9 +47,16 @@ class FavoriteMovieFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        injectFactory()
         init()
         callGetListFavoriteMovies()
         setUpRecyclerView()
+    }
+
+    private fun injectFactory() {
+        (activity?.application as BaseApplication)
+            .getApplicationComponent()
+            .injectToFavoriteMoviesFragment(this)
     }
 
     private fun setUpRecyclerView() {
@@ -67,8 +78,6 @@ class FavoriteMovieFragment : BaseFragment() {
     }
 
     private fun init() {
-
-        factory = BaseViewModelFactory(repository)
         favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
     }
 }

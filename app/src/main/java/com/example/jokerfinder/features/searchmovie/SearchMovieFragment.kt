@@ -16,11 +16,10 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
+import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
-import com.example.jokerfinder.base.di.DaggerProvideRepository
-import com.example.jokerfinder.features.di.BaseViewModelFactory
+import com.example.jokerfinder.base.BaseViewModelFactory
 import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
-import com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter.FavoriteMoviesAdapter
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.repository.DataRepository
@@ -41,8 +40,6 @@ import javax.inject.Inject
 class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
     @Inject
-    lateinit var repository : DataRepository
-
     lateinit var factory: ViewModelProvider.Factory
 
     private lateinit var navController: NavController
@@ -62,15 +59,20 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
         navController.navigate(R.id.action_searchMovieFragment_to_movieDetailsFragment, bundle)
     }
 
-    private val getFavoriteMovieFunction : (FavoriteMovieEntity) -> Unit = {
-        favoriteMovieViewModel.insertFavoriteMovie(it)
+    private val getFavoriteMovieFunction : (Boolean, FavoriteMovieEntity) -> Unit = { isLikedMovie, favoriteMovieEntity ->
+        if(isLikedMovie)
+            favoriteMovieViewModel.insertFavoriteMovie(favoriteMovieEntity)
+        else
+            favoriteMovieViewModel.deleteMovieFromFavoriteMovies(favoriteMovieEntity)
     }
     ///////////////////Variable
     private var checkSearchButton = true
+    private val favoriteMoviesIdList = arrayListOf<Int>()
 
     ///////////////////Adapter
     private var adapter =
         MoviesAdapter(
+            favoriteMoviesIdList,
             getIdMovieLambdaFunction,
             getFavoriteMovieFunction
         )
@@ -91,7 +93,9 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
         progressBar_in_movie_list.visibility = View.GONE
 
+        injectFactory()
         init(view)
+        callAllMovieFavorites()
         callGetListMovies()
         setUpRecyclerView()
         handleImgSearch(view)
@@ -110,15 +114,31 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
     }
 
+    private fun callAllMovieFavorites() {
+        favoriteMovieViewModel.fetchAllFavoriteMovies()
+        favoriteMovieViewModel.getAllFavoriteMovies().observe(this, Observer {
+            if(it != null){
+                for(favoriteMovieId in it ){
+                    favoriteMoviesIdList.add(favoriteMovieId.idMovie)
+                }
+            }
+        })
+    }
+
+    private fun injectFactory() {
+        (activity?.application as BaseApplication)
+            .getApplicationComponent()
+            .injectToSearchMovieFragment(this)
+    }
+
     private fun handleImgSearch(view: View) {
         setOnClicks(view)
     }
 
     private fun init(view: View) {
-        DaggerProvideRepository.create().getSearchMovieFragment(this)
+//        DaggerRepositoryComponent.create().getSearchMovieFragment(this)
         navController = Navigation.findNavController(view)
         imgSearchMovie = view.findViewById(R.id.img_search_movie)
-        factory = BaseViewModelFactory(repository)
         searchMovieViewModel = ViewModelProvider(this, factory).get(SearchMovieViewModel::class.java)
         favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
     }
@@ -196,10 +216,6 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
                 checkSearchButton = !checkSearchButton
             }
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
     }
 
 }

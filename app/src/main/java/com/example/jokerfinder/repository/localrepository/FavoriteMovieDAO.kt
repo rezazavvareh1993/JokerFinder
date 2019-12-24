@@ -18,9 +18,9 @@ interface FavoriteMovieDAO {
     fun saveFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) : Completable
 
     @Delete
-    fun delete(favoriteMovieEntity: FavoriteMovieEntity)
+    fun delete(favoriteMovieEntity: FavoriteMovieEntity) : Completable
 
     @Update
-    fun update(favoriteMovieEntity: FavoriteMovieEntity)
+    fun update(favoriteMovieEntity: FavoriteMovieEntity) : Completable
 //
 }

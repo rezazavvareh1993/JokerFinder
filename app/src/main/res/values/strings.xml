@@ -6,6 +6,10 @@
     <string name="character">Character :</string>
     <string name="released">Released :</string>
     <string name="vote_count">Vote Count :</string>
+    <string name="technologies_description">RxJava\nMVVM\nArchitecture components\n(LiveData,ViewModel,Room)\nDagger2\nRetrofit\nNavigation Component\nSingle Activity\nSafe Args</string>
+    <string name="app_description">This sample app tries to demonstrate how to implement latest technologies in Android Applications.  for more information kindly visit the github page.</string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

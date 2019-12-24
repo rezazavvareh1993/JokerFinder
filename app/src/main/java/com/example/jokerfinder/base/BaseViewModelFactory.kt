@@ -1,4 +1,4 @@
-package com.example.jokerfinder.features.di
+package com.example.jokerfinder.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -9,7 +9,7 @@ import com.example.jokerfinder.features.searchmovie.SearchMovieViewModel
 import com.example.jokerfinder.repository.DataRepository
 import java.lang.IllegalArgumentException
 
-class BaseViewModelFactory (val dataRepository: DataRepository) : ViewModelProvider.Factory {
+class BaseViewModelFactory (private val dataRepository: DataRepository) : ViewModelProvider.Factory {
 
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -30,7 +30,7 @@ class BaseViewModelFactory (val dataRepository: DataRepository) : ViewModelProvi
                 ) as T
             }
 
-            modelClass.isAssignableFrom(CastOfMovieViewModel::class.java) -> {
+            modelClass.isAssignableFrom(FavoriteMovieViewModel::class.java) -> {
                 FavoriteMovieViewModel(
                     dataRepository
                 ) as T

@@ -12,24 +12,4 @@ import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 abstract class MovieDataBase : RoomDatabase() {
 
     abstract fun getFavoriteMovieDAO() : FavoriteMovieDAO
-
-    companion object {
-        // Singleton prevents multiple instances of database opening at the
-        // same time.
-        @Volatile
-        private var INSTANCE: MovieDataBase? = null
-
-        fun getDatabase(application: BaseApplication): MovieDataBase {
-            val tempInstance = INSTANCE
-            if (tempInstance != null) {
-                return tempInstance
-            }
-            synchronized(this) {
-
-                val instance = Room.databaseBuilder(application.applicationContext , MovieDataBase::class.java, "favoriteMovie").build()
-                INSTANCE = instance
-                return instance
-            }
-        }
-    }
 }

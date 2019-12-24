@@ -42,7 +42,10 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
+
+    /////////////////////navController
     private lateinit var navController: NavController
+
     //////////////////////ViewModel
     private lateinit var searchMovieViewModel: SearchMovieViewModel
     private lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
@@ -55,7 +58,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
     ////////////////////Lambda Function
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
-        val bundle = bundleOf("idMovie" to it)
+        val bundle = bundleOf("movieId" to it)
         navController.navigate(R.id.action_searchMovieFragment_to_movieDetailsFragment, bundle)
     }
 

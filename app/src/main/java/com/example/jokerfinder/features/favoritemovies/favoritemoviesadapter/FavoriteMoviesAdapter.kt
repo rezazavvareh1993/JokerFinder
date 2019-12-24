@@ -10,11 +10,11 @@ import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_favorite_movie.view.*
 
-class FavoriteMoviesAdapter : ListAdapter<FavoriteMovieEntity, FavoriteMoviesAdapter.FavoriteMovieViewHolder>(FavoriteMovieDiffUtils()) {
+class FavoriteMoviesAdapter(private val getFavoriteMovieId : (Int) -> (Unit)) : ListAdapter<FavoriteMovieEntity, FavoriteMoviesAdapter.FavoriteMovieViewHolder>(FavoriteMovieDiffUtils()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteMovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_favorite_movie, parent, false)
-        return FavoriteMovieViewHolder(view)
+        return FavoriteMovieViewHolder(view, getFavoriteMovieId)
     }
 
     override fun onBindViewHolder(holder: FavoriteMovieViewHolder, position: Int) {
@@ -22,7 +22,7 @@ class FavoriteMoviesAdapter : ListAdapter<FavoriteMovieEntity, FavoriteMoviesAda
         holder.bind(getItem(position))
     }
 
-    class FavoriteMovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class FavoriteMovieViewHolder(itemView : View, private val getFavoriteMovieId : (Int) -> (Unit)) : RecyclerView.ViewHolder(itemView) {
 
         fun bind (favoriteMovieEntity: FavoriteMovieEntity){
 
@@ -32,7 +32,12 @@ class FavoriteMoviesAdapter : ListAdapter<FavoriteMovieEntity, FavoriteMoviesAda
             itemView.txt_name_favorite_name.text = favoriteMovieEntity.movieName
             itemView.txt_release_date_favorite_movie.text = favoriteMovieEntity.movieReleaseDate
             itemView.txt_rate_favorite_movie.text = favoriteMovieEntity.movieRate.toString()
+
+            itemView.setOnClickListener {
+                getFavoriteMovieId(favoriteMovieEntity.idMovie)
+            }
         }
+
 
         private fun getImageMovieByPicasso(uriImage: String) {
             Picasso

@@ -69,7 +69,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
         injectFactory()
         init(view)
         loadingViews()
-        callGetMovieDetails()
+        callMovieDetails()
         setUpRecyclerView()
         setOnClicks()
     }
@@ -85,7 +85,6 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
     }
 
     private fun init(view: View) {
-//        DaggerRepositoryComponent.create().getMovieDetailsFragment(this)
         navController = Navigation.findNavController(view)
         imgBack = view.findViewById(R.id.img_back_movie_detail)
         movieDetailViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
@@ -112,25 +111,24 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     }
 
-    private fun callGetMovieDetails() {
+    private fun callMovieDetails() {
 
-        movieDetailViewModel.fetchData(getIdMovie(), requireContext())
+        movieDetailViewModel.fetchData(getMovieSearchedId(), requireContext())
         movieDetailViewModel.getMovieDetailsData().observe(this, Observer {
 
             if(it != null){
                 bindData(it)
                 showViews()
-                callGetCastsOfMovie()
+                callCastsOfMovie()
             }
             progressBar.visibility  = View.GONE
         })
     }
 
-    private fun callGetCastsOfMovie(){
+    private fun callCastsOfMovie(){
 
-        castOfMovieViewModel.fetchCastOfMovieData(getIdMovie(), requireContext())
+        castOfMovieViewModel.fetchCastOfMovieData(getMovieSearchedId(), requireContext())
         castOfMovieViewModel.getCastOfMovieData().observe(this, Observer {
-
             adapter.submitList(it?.cast)
             it?.crew?.let { it1 -> getCrewOfMovie(it1) }
         })
@@ -145,15 +143,15 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
             when(i.job){
                 "Director" -> {
                     director += i.name +  ","
-                    txt_movie_detail_director.text = "Director : " + director
+                    txt_movie_detail_director.text = "Director : $director"
                 }
                 "Writer" -> {
                     writer += i.name + ","
-                    txt_movie_detail_writer.text = "Writer : " + writer
+                    txt_movie_detail_writer.text = "Writer : $writer"
                 }
                 "Producer" -> {
                     producer += i.name + ","
-                    txt_movie_detail_producer.text = "Producer : " + producer
+                    txt_movie_detail_producer.text = "Producer : $producer"
                 }
             }
         }
@@ -183,14 +181,15 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     }
 
-    private fun getIdMovie(): Int {
+
+    private fun getMovieSearchedId(): Int {
         val safeArgs = MovieDetailsFragmentArgs.fromBundle(requireArguments())
-        return safeArgs.idMovie
+        return safeArgs.movieId
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
-        disposable.clear()
     }
 
     override fun onClick(v: View?) {
@@ -200,6 +199,5 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
                 onDestroy()
             }
         }
-
     }
 }

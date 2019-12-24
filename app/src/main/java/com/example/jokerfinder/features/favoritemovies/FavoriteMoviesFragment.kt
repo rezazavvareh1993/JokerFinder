@@ -6,8 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
@@ -15,6 +18,7 @@ import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.base.BaseViewModelFactory
 import com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter.FavoriteMoviesAdapter
+import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import kotlinx.android.synthetic.main.fragment_favorite_movie.*
@@ -25,14 +29,26 @@ import javax.inject.Inject
  */
 class FavoriteMoviesFragment : BaseFragment() {
 
+    //////////////Inject
     @Inject
     lateinit var factory : ViewModelProvider.Factory
-    
+
+    ///////////////navController
+    lateinit var navController: NavController
+
+    ///////////////ViewModels
     lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
+    lateinit var movieDetailsViewModel: MovieDetailsViewModel
+
+    ////////////////lambdaFunctions
+    private val getFavoriteMovieId : (Int) -> Unit = {
+        val bundle = bundleOf("movieId" to it)
+        navController.navigate(R.id.action_favoriteMovieFragment_to_movieDetailsFragment, bundle)
+    }
 
     /////////////adapter
     private val adapter =
-        FavoriteMoviesAdapter()
+        FavoriteMoviesAdapter(getFavoriteMovieId)
 
 
 
@@ -48,7 +64,7 @@ class FavoriteMoviesFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         injectFactory()
-        init()
+        init(view)
         callGetListFavoriteMovies()
         setUpRecyclerView()
     }
@@ -77,7 +93,9 @@ class FavoriteMoviesFragment : BaseFragment() {
         })
     }
 
-    private fun init() {
+    private fun init(view: View) {
+        navController = Navigation.findNavController(view)
         favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
+        movieDetailsViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
     }
 }

@@ -18,7 +18,7 @@ class RoomModule(private val application: Application){
         application,
         MovieDataBase::class.java,
         "favoriteMovie.db"
-    ).build()
+    ).fallbackToDestructiveMigration().build()
 
     @Provides
     fun provideFavoriteMovieDAO(movieDataBase: MovieDataBase) : FavoriteMovieDAO{

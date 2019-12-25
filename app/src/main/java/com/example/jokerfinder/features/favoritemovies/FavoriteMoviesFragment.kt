@@ -1,12 +1,14 @@
 package com.example.jokerfinder.features.favoritemovies
 
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -46,6 +48,9 @@ class FavoriteMoviesFragment : BaseFragment() {
         navController.navigate(R.id.action_favoriteMovieFragment_to_movieDetailsFragment, bundle)
     }
 
+    /////////////Value
+    private lateinit var myContext : Context
+
     /////////////adapter
     private val adapter =
         FavoriteMoviesAdapter(getFavoriteMovieId)
@@ -83,12 +88,10 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     private fun callGetListFavoriteMovies() {
         favoriteMovieViewModel.fetchAllFavoriteMovies()
-        favoriteMovieViewModel.getAllFavoriteMovies().observe(this, Observer {
+        favoriteMovieViewModel.getAllFavoriteMovies().observe(this as LifecycleOwner, Observer {
             if(it != null)
                 adapter.submitList(it)
-            else
-                MyConstantClass.showToast(requireContext(), context?.resources?.getString(R.string.error_connection))
-
+            progress_bar_in_favorite_movies_fragment.visibility = View.GONE
 
         })
     }
@@ -97,5 +100,10 @@ class FavoriteMoviesFragment : BaseFragment() {
         navController = Navigation.findNavController(view)
         favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
         movieDetailsViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        myContext = context
     }
 }

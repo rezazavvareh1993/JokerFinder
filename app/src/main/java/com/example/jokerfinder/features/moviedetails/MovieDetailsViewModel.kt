@@ -16,7 +16,7 @@ class MovieDetailsViewModel(private  val repository: DataRepository) : BaseViewM
     private val disposable = CompositeDisposable()
 
 
-    fun fetchData (idMovie : Int, context : Context){
+    fun fetchMovieDetails (idMovie : Int, context : Context){
         disposable.add(repository.fetchMovieDetails(idMovie)
             .subscribe({
                 movieDetailsLiveData.value = it

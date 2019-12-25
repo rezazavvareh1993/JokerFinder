@@ -49,8 +49,14 @@ class DataRepository @Inject constructor(private val networkRepository: NetworkR
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun deleteMovieFromFavotriteMovies(favoriteMovieEntity: FavoriteMovieEntity) : Completable{
+    fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity) : Completable{
         return favoriteMovieDAO.delete(favoriteMovieEntity)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun findByMovieId(movieId : Int) : Single<FavoriteMovieEntity>{
+        return favoriteMovieDAO.findByMovieId(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

@@ -8,7 +8,7 @@ import android.os.Handler
 import com.example.jokerfinder.R
 import com.example.jokerfinder.features.MainActivity
 import com.example.jokerfinder.utils.MyConstantClass
-import kotlinx.android.synthetic.main.fragment_splash.*
+import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
 

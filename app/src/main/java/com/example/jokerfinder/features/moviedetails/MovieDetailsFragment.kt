@@ -2,12 +2,14 @@ package com.example.jokerfinder.features.moviedetails
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -17,13 +19,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
+import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
 import com.example.jokerfinder.features.moviedetails.castsofmovie.CastOfMovieViewModel
 import com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter.CastsMovieAdapter
 import com.example.jokerfinder.pojoes.Crew
+import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
+import com.example.jokerfinder.utils.MyConstantClass
 import com.squareup.picasso.Picasso
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_movie_details.*
+import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
 /**
@@ -31,29 +35,30 @@ import javax.inject.Inject
  */
 class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
+
+    ////////////Inject
     @Inject
     lateinit var factory: ViewModelProvider.Factory
 
-
+    ///////////////////navController
     lateinit var navController: NavController
 
     ///////////////Views
     private lateinit var imgBack : ImageView
 
-    //////////////disposable
-    private val disposable = CompositeDisposable()
-
     /////////////adapter
     private val adapter =
         CastsMovieAdapter()
 
+    /////////////values
+    private var isLikeMovie = false
+    private lateinit var favoriteMovieEntity: FavoriteMovieEntity
+    private lateinit var myContext: Context
+
     /////////////////////viewModels
+    private lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
     private lateinit var movieDetailViewModel : MovieDetailsViewModel
     private lateinit var castOfMovieViewModel: CastOfMovieViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +75,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
         init(view)
         loadingViews()
         callMovieDetails()
+        isMovieInDataBase()
         setUpRecyclerView()
         setOnClicks()
     }
@@ -82,11 +88,13 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun setOnClicks() {
         imgBack.setOnClickListener(this)
+        img_like_movie_in_details_movie_fragment.setOnClickListener(this)
     }
 
     private fun init(view: View) {
         navController = Navigation.findNavController(view)
         imgBack = view.findViewById(R.id.img_back_movie_detail)
+        favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
         movieDetailViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
         castOfMovieViewModel = ViewModelProvider(this, factory).get(CastOfMovieViewModel::class.java)
     }
@@ -99,7 +107,8 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun loadingViews() {
 
-        progressBar.visibility = View.VISIBLE
+        progress_bar_in_movie_details_fragment_for_Details.visibility = View.VISIBLE
+        img_like_movie_in_details_movie_fragment.visibility = View.GONE
         cv_logo_detail_movie.visibility = View.GONE
         img_main_detail_movie.visibility = View.GONE
         txt_movie_detail_overview.visibility = View.GONE
@@ -113,24 +122,39 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun callMovieDetails() {
 
-        movieDetailViewModel.fetchData(getMovieSearchedId(), requireContext())
-        movieDetailViewModel.getMovieDetailsData().observe(this, Observer {
+        movieDetailViewModel.fetchMovieDetails(getMovieSearchedId(), myContext)
+        movieDetailViewModel.getMovieDetailsData().observe(this as LifecycleOwner, Observer {
 
             if(it != null){
+                saveMovieInformationForUsingDataBase(it)
                 bindData(it)
                 showViews()
                 callCastsOfMovie()
             }
-            progressBar.visibility  = View.GONE
+            progress_bar_in_movie_details_fragment_for_Details.visibility  = View.GONE
         })
+    }
+
+    private fun saveMovieInformationForUsingDataBase(it: ResponseDetailMovie) {
+        favoriteMovieEntity = FavoriteMovieEntity(
+            it.id,
+            it.title,
+            it.releaseDate,
+            it.voteAverage,
+            it.posterPath
+        )
     }
 
     private fun callCastsOfMovie(){
 
         castOfMovieViewModel.fetchCastOfMovieData(getMovieSearchedId(), requireContext())
-        castOfMovieViewModel.getCastOfMovieData().observe(this, Observer {
-            adapter.submitList(it?.cast)
-            it?.crew?.let { it1 -> getCrewOfMovie(it1) }
+        castOfMovieViewModel.getCastOfMovieData().observe(this as LifecycleOwner, Observer {
+            if(it != null){
+                adapter.submitList(it.cast)
+                getCrewOfMovie(it.crew)
+            }
+            progress_bar_in_movie_details_fragment_for_stars.visibility = View.GONE
+
         })
     }
 
@@ -159,7 +183,8 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun showViews() {
 
-        progressBar.visibility  = View.GONE
+        progress_bar_in_movie_details_fragment_for_Details.visibility  = View.GONE
+        img_like_movie_in_details_movie_fragment.visibility = View.VISIBLE
         cv_logo_detail_movie.visibility = View.VISIBLE
         img_main_detail_movie.visibility = View.VISIBLE
         txt_movie_detail_overview.visibility = View.VISIBLE
@@ -188,16 +213,38 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    private fun isMovieInDataBase(){
+        favoriteMovieViewModel.findMovieByMovieId(getMovieSearchedId())
+        favoriteMovieViewModel.getIsMovieInDataBase().observe(this as LifecycleOwner, Observer {
+            if(it)
+                img_like_movie_in_details_movie_fragment.setImageResource(R.drawable.ic_favorite_red_24dp)
+            else
+                img_like_movie_in_details_movie_fragment.setImageResource(R.drawable.ic_favorite_border_red_24dp)
+        })
     }
 
     override fun onClick(v: View?) {
         when(v!!.id){
-            R.id.img_back_movie_detail ->{
+            R.id.img_back_movie_detail -> {
                 navController.navigate(R.id.action_movieDetailsFragment_to_searchMovieFragment)
                 onDestroy()
             }
+            R.id.img_like_movie_in_details_movie_fragment -> {
+                isLikeMovie = !isLikeMovie
+
+                if(isLikeMovie){
+                    favoriteMovieViewModel.insertFavoriteMovie(favoriteMovieEntity)
+                    img_like_movie_in_details_movie_fragment.setImageResource(R.drawable.ic_favorite_red_24dp)
+                }else{
+                    favoriteMovieViewModel.deleteMovieFromFavoriteMovies(favoriteMovieEntity)
+                    img_like_movie_in_details_movie_fragment.setImageResource(R.drawable.ic_favorite_border_red_24dp)
+                }
+            }
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        myContext = context
     }
 }

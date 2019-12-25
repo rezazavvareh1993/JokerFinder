@@ -34,7 +34,7 @@ class FavoriteMoviesAdapter(private val getFavoriteMovieId : (Int) -> (Unit)) : 
             itemView.txt_rate_favorite_movie.text = favoriteMovieEntity.movieRate.toString()
 
             itemView.setOnClickListener {
-                getFavoriteMovieId(favoriteMovieEntity.idMovie)
+                getFavoriteMovieId(favoriteMovieEntity.movieId)
             }
         }
 

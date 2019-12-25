@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "favoriteMovie")
 class FavoriteMovieEntity (
     @PrimaryKey(autoGenerate = true)
-    var idMovie: Int,
+    var movieId: Int,
     @ColumnInfo(name = "movieName") var movieName : String,
     @ColumnInfo(name = "movieReleaseDate") var movieReleaseDate : String,
     @ColumnInfo(name = "movieRate") var movieRate : Double,

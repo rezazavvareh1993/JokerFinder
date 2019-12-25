@@ -49,7 +49,7 @@ dependencies {
 
     ///////////////////////Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'//for support RX by retrofit
 
     //////////////////////RX
@@ -75,16 +75,16 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.room:room-rxjava2:$room_version"
-    implementation "androidx.room:room-ktx:2.2.2"
+    implementation "androidx.room:room-ktx:2.2.3"
     kapt "androidx.room:room-compiler:$room_version"
 
     /////////////////////Navigation component
-    implementation "androidx.navigation:navigation-fragment:2.2.0-rc03"
+    implementation "androidx.navigation:navigation-fragment:2.2.0-rc04"
     // For Kotlin use navigation-fragment-ktx
-    implementation "androidx.navigation:navigation-ui:2.2.0-rc03"
+    implementation "androidx.navigation:navigation-ui:2.2.0-rc04"
     // For Kotlin use navigation-ui-ktx
 
-    implementation "com.google.android.material:material:1.2.0-alpha02"
+    implementation "com.google.android.material:material:1.2.0-alpha03"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

@@ -16,6 +16,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:gravity="center"
             android:text="@string/app_description"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/guideline9"
@@ -23,11 +24,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline7" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/appCompatImageView"
             android:layout_width="410dp"
             android:layout_height="161dp"
-            android:src="@drawable/joker_main_logo"
+            android:src="@drawable/joker_logo"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/guideline7"
             app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="238dp" />
+            app:layout_constraintGuide_begin="284dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

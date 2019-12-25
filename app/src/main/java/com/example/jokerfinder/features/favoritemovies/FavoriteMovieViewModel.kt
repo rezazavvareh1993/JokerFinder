@@ -10,8 +10,10 @@ import io.reactivex.disposables.CompositeDisposable
 
 class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
     private var movieListMutableLiveData = MutableLiveData<List<FavoriteMovieEntity>>()
+    private var isMovieInDataBaseMutableLiveData = MutableLiveData<Boolean>()
     private val compositeDisposable = CompositeDisposable()
 
+    /////////////////////////get all favoriteMovie from dataBase
     fun fetchAllFavoriteMovies (){
         compositeDisposable.add(
             repository.fetchAllFavoriteMovies()
@@ -28,6 +30,7 @@ class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
         return movieListMutableLiveData
     }
 
+    //////////////////////insert Movie to dataBase
     fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) {
         compositeDisposable.add(repository.insertFavoriteMovie(favoriteMovieEntity)
             .subscribe({
@@ -37,13 +40,30 @@ class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
             }))
     }
 
+    ////////////////////////delete Movie from dataBase
     fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity){
-        compositeDisposable.add(repository.deleteMovieFromFavotriteMovies(favoriteMovieEntity)
+        compositeDisposable.add(repository.deleteMovieFromFavoriteMovies(favoriteMovieEntity)
             .subscribe ({
                 Log.d("MyTag", "delete ${favoriteMovieEntity.movieName}")
             }, {
                 Log.d("MyTag", it.message)
             }))
+    }
+
+
+    ///////////////////////////findMovieByData
+    fun findMovieByMovieId(movieId : Int ){
+        compositeDisposable.add(repository.findByMovieId(movieId)
+            .subscribe({
+                isMovieInDataBaseMutableLiveData.value =true
+            },{
+                Log.d("MyTag", it.message)
+                isMovieInDataBaseMutableLiveData.value =false
+            }))
+    }
+
+    fun getIsMovieInDataBase() : LiveData<Boolean>{
+        return isMovieInDataBaseMutableLiveData
     }
 
     override fun onCleared() {

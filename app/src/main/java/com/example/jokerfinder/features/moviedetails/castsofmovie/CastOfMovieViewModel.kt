@@ -22,7 +22,6 @@ class CastOfMovieViewModel(private val repository: DataRepository) : ViewModel()
 
                 },{
                     Log.d("MyTag", it.message)
-                    MyConstantClass.showToast(context, it.message)
                     castOfMovieMutableLiveData.value = null
                 })
         )

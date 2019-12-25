@@ -8,13 +8,13 @@ class FavoriteMovieDiffUtils : DiffUtil.ItemCallback<FavoriteMovieEntity>() {
         oldItem: FavoriteMovieEntity,
         newItem: FavoriteMovieEntity
     ): Boolean {
-        return oldItem.idMovie == newItem.idMovie
+        return oldItem.movieId == newItem.movieId
     }
 
     override fun areContentsTheSame(
         oldItem: FavoriteMovieEntity,
         newItem: FavoriteMovieEntity
     ): Boolean {
-        return oldItem.idMovie == newItem.idMovie
+        return oldItem.movieId == newItem.movieId
     }
 }

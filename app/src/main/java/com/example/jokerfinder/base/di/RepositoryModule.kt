@@ -1,6 +1,5 @@
 package com.example.jokerfinder.base.di
 
-import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository

@@ -101,7 +101,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun setUpRecyclerView() {
         cast_recycler_view.setHasFixedSize(true)
-        cast_recycler_view.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        cast_recycler_view.layoutManager = LinearLayoutManager(myContext, RecyclerView.HORIZONTAL, false)
         cast_recycler_view.adapter = adapter
     }
 

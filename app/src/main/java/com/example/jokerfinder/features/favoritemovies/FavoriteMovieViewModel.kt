@@ -50,7 +50,6 @@ class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
             }))
     }
 
-
     ///////////////////////////findMovieByData
     fun findMovieByMovieId(movieId : Int ){
         compositeDisposable.add(repository.findByMovieId(movieId)

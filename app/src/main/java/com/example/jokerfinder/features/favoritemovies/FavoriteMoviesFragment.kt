@@ -81,7 +81,7 @@ class FavoriteMoviesFragment : BaseFragment() {
     }
 
     private fun setUpRecyclerView() {
-        val layoutManager =  LinearLayoutManager(context , RecyclerView.VERTICAL, false)
+        val layoutManager =  LinearLayoutManager(myContext , RecyclerView.VERTICAL, false)
         favorite_movie_recycler_view.layoutManager = layoutManager
         favorite_movie_recycler_view.adapter = adapter
     }

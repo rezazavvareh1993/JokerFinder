@@ -134,8 +134,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     private fun setUpRecyclerView() {
 
         movie_recycler_view.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-
+        val layoutManager = LinearLayoutManager(myContext, RecyclerView.HORIZONTAL, false)
         movie_recycler_view.layoutManager = layoutManager
         movie_recycler_view.adapter = adapter
 

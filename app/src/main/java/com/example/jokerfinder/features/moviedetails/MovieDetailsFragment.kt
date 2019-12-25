@@ -125,12 +125,12 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
         movieDetailViewModel.fetchMovieDetails(getMovieSearchedId(), myContext)
         movieDetailViewModel.getMovieDetailsData().observe(this as LifecycleOwner, Observer {
 
-            if(it != null){
-                saveMovieInformationForUsingDataBase(it)
-                bindData(it)
-                showViews()
-                callCastsOfMovie()
-            }
+                it?.let {
+                    saveMovieInformationForUsingDataBase(it)
+                    bindData(it)
+                    showViews()
+                    callCastsOfMovie()
+                }
             progress_bar_in_movie_details_fragment_for_Details.visibility  = View.GONE
         })
     }
@@ -149,12 +149,14 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
         castOfMovieViewModel.fetchCastOfMovieData(getMovieSearchedId(), requireContext())
         castOfMovieViewModel.getCastOfMovieData().observe(this as LifecycleOwner, Observer {
-            if(it != null){
-                adapter.submitList(it.cast)
-                getCrewOfMovie(it.crew)
-            }
-            progress_bar_in_movie_details_fragment_for_stars.visibility = View.GONE
 
+            it?.let {
+                adapter.submitList(it.cast)
+                it.crew?.let {
+                        it1 -> getCrewOfMovie(it1) }
+            }
+
+            progress_bar_in_movie_details_fragment_for_stars.visibility = View.GONE
         })
     }
 

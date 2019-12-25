@@ -156,8 +156,8 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     private fun callGetListMovies() {
         searchMovieViewModel.fetchMovieSearchData(getMovieName(),false, myContext)
         searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, Observer {
-            if(it != null )
-                adapter.submitList(it)
+
+            it?.let { adapter.submitList(it) }
             progress_bar_in_search_movie_fragment.visibility = View.GONE
             swipeContainer.isRefreshing = false
         })

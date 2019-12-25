@@ -89,8 +89,8 @@ class FavoriteMoviesFragment : BaseFragment() {
     private fun callGetListFavoriteMovies() {
         favoriteMovieViewModel.fetchAllFavoriteMovies()
         favoriteMovieViewModel.getAllFavoriteMovies().observe(this as LifecycleOwner, Observer {
-            if(it != null)
-                adapter.submitList(it)
+
+            it?.let { adapter.submitList(it) }
             progress_bar_in_favorite_movies_fragment.visibility = View.GONE
 
         })

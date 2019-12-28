@@ -30,12 +30,11 @@ class CastsMovieAdapter : ListAdapter<Cast, CastsMovieAdapter.CastViewHolder>(
     class CastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(cast : Cast){
-            val uriImage = "https://image.tmdb.org/t/p/w500" + cast.profilePath
+            val uriImage = "https://image.tmdb.org/t/p/w500${cast.profilePath}"
             getImageMovieByPicasso(uriImage)
 
-            itemView.txt_character_cast.text = "Character : " + cast.character
-            itemView.txt_name_cast.text = "Name : " + cast.name
-
+            itemView.txt_character_cast.text = "Character : ${cast.character}"
+            itemView.txt_name_cast.text = "Name : ${cast.name}"
         }
 
         private fun getImageMovieByPicasso(uriImage: String) {

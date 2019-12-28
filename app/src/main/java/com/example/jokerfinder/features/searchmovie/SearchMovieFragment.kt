@@ -1,6 +1,7 @@
 package com.example.jokerfinder.features.searchmovie
 
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -18,20 +21,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
-import com.example.jokerfinder.base.BaseViewModelFactory
-import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
-import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_movie_list.edt_movie_name_search
-import kotlinx.android.synthetic.main.activity_movie_list.img_search_movie
-import kotlinx.android.synthetic.main.activity_movie_list.movie_recycler_view
-import kotlinx.android.synthetic.main.activity_movie_list.progressBar_in_movie_list
-import kotlinx.android.synthetic.main.activity_movie_list.swipeContainer
+import kotlinx.android.synthetic.main.fragment_search_movie.*
 import javax.inject.Inject
 
 /**
@@ -39,13 +34,15 @@ import javax.inject.Inject
  */
 class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
+
+    /////////////////Injects
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-
+    /////////////////////navController
     private lateinit var navController: NavController
+
     //////////////////////ViewModel
     private lateinit var searchMovieViewModel: SearchMovieViewModel
-    private lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
 
     /////////////////////Views
     private lateinit var imgSearchMovie: ImageView
@@ -55,29 +52,19 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
     ////////////////////Lambda Function
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
-        val bundle = bundleOf("idMovie" to it)
+        val bundle = bundleOf("movieId" to it)
         navController.navigate(R.id.action_searchMovieFragment_to_movieDetailsFragment, bundle)
     }
 
-    private val getFavoriteMovieFunction : (Boolean, FavoriteMovieEntity) -> Unit = { isLikedMovie, favoriteMovieEntity ->
-        if(isLikedMovie)
-            favoriteMovieViewModel.insertFavoriteMovie(favoriteMovieEntity)
-        else
-            favoriteMovieViewModel.deleteMovieFromFavoriteMovies(favoriteMovieEntity)
-    }
     ///////////////////Variable
     private var checkSearchButton = true
-    private val favoriteMoviesIdList = arrayListOf<Int>()
+    private lateinit var myContext: Context
 
     ///////////////////Adapter
     private var adapter =
         MoviesAdapter(
-            favoriteMoviesIdList,
-            getIdMovieLambdaFunction,
-            getFavoriteMovieFunction
+            getIdMovieLambdaFunction
         )
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,11 +78,10 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
         super.onViewCreated(view, savedInstanceState)
 
 
-        progressBar_in_movie_list.visibility = View.GONE
+        progress_bar_in_search_movie_fragment.visibility = View.GONE
 
         injectFactory()
         init(view)
-        callAllMovieFavorites()
         callGetListMovies()
         setUpRecyclerView()
         handleImgSearch(view)
@@ -114,17 +100,6 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
     }
 
-    private fun callAllMovieFavorites() {
-        favoriteMovieViewModel.fetchAllFavoriteMovies()
-        favoriteMovieViewModel.getAllFavoriteMovies().observe(this, Observer {
-            if(it != null){
-                for(favoriteMovieId in it ){
-                    favoriteMoviesIdList.add(favoriteMovieId.idMovie)
-                }
-            }
-        })
-    }
-
     private fun injectFactory() {
         (activity?.application as BaseApplication)
             .getApplicationComponent()
@@ -136,11 +111,9 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     }
 
     private fun init(view: View) {
-//        DaggerRepositoryComponent.create().getSearchMovieFragment(this)
         navController = Navigation.findNavController(view)
         imgSearchMovie = view.findViewById(R.id.img_search_movie)
         searchMovieViewModel = ViewModelProvider(this, factory).get(SearchMovieViewModel::class.java)
-        favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
     }
 
     private fun setOnClicks(view: View) {
@@ -161,8 +134,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     private fun setUpRecyclerView() {
 
         movie_recycler_view.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-
+        val layoutManager = LinearLayoutManager(myContext, RecyclerView.HORIZONTAL, false)
         movie_recycler_view.layoutManager = layoutManager
         movie_recycler_view.adapter = adapter
 
@@ -175,20 +147,17 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
                 val total = layoutManager.itemCount
                 if (total > 0)
                     if (total - 1 == lastItem)
-                        searchMovieViewModel.fetchMovieSearchData(edt_movie_name_search.text.toString(),  true)
+                        searchMovieViewModel.fetchMovieSearchData(edt_movie_name_search.text.toString(),  true, myContext)
             }
         })
     }
 
     private fun callGetListMovies() {
-        searchMovieViewModel.fetchMovieSearchData(getMovieName(),false)
-        searchMovieViewModel.getSearchMovieData().observe(this, Observer {
-            if(it != null ){
-                adapter.submitList(it)
-            }else{
-                MyConstantClass.showToast(requireContext(), context?.resources?.getString(R.string.error_connection))
-            }
-            progressBar_in_movie_list.visibility = View.GONE
+        searchMovieViewModel.fetchMovieSearchData(getMovieName(),false, myContext)
+        searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, Observer {
+
+            it?.let { adapter.submitList(it) }
+            progress_bar_in_search_movie_fragment.visibility = View.GONE
             swipeContainer.isRefreshing = false
         })
     }
@@ -202,12 +171,17 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
         disposable.clear()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        myContext = context
+    }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.img_search_movie -> {
                 if(checkSearchButton){
                     callGetListMovies()
-                    progressBar_in_movie_list.visibility = View.VISIBLE
+                    progress_bar_in_search_movie_fragment.visibility = View.VISIBLE
                     img_search_movie.setImageResource(R.drawable.ic_clear_)
                 }else{
                     edt_movie_name_search.text.clear()
@@ -217,5 +191,4 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
             }
         }
     }
-
 }

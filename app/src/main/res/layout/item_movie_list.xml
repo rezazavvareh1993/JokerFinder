@@ -54,24 +54,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1.5"
-                    android:weightSum="1"
                     android:orientation="horizontal"
                     android:gravity="center"
                     tools:ignore="NestedWeights">
 
-                    <ImageView
-                        android:id="@+id/img_add_favorite_movie"
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="0.2"
-                        android:src="@drawable/ic_favorite_border_red_24dp"
-                        tools:ignore="NestedWeights" />
-
                     <ScrollView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1.5"
                         android:layout_gravity="center"
-                        android:layout_weight="0.6">
+                        >
                         <TextView
                             android:gravity="center"
                             android:id="@+id/txt_name_movie"

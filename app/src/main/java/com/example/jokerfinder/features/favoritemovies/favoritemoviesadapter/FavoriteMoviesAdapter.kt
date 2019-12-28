@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_favorite_movie.view.*
 
 class FavoriteMoviesAdapter(private val getFavoriteMovieId : (Int) -> (Unit)) : ListAdapter<FavoriteMovieEntity, FavoriteMoviesAdapter.FavoriteMovieViewHolder>(FavoriteMovieDiffUtils()) {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteMovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_favorite_movie, parent, false)
         return FavoriteMovieViewHolder(view, getFavoriteMovieId)
@@ -20,6 +19,10 @@ class FavoriteMoviesAdapter(private val getFavoriteMovieId : (Int) -> (Unit)) : 
     override fun onBindViewHolder(holder: FavoriteMovieViewHolder, position: Int) {
         val position = holder.layoutPosition
         holder.bind(getItem(position))
+    }
+
+    fun getRoomAt(position: Int) : FavoriteMovieEntity{
+        return getItem(position)
     }
 
     class FavoriteMovieViewHolder(itemView : View, private val getFavoriteMovieId : (Int) -> (Unit)) : RecyclerView.ViewHolder(itemView) {

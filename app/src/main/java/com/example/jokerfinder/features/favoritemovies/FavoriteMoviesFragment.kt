@@ -119,7 +119,6 @@ class FavoriteMoviesFragment : BaseFragment() {
     private fun undoDelete() {
         favoriteMovieViewModel.insertFavoriteMovie(lastFavoriteMovieEntityDeleted)
         callGetListFavoriteMovies()
-
     }
 
     private fun injectFactory() {

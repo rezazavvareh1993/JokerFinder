@@ -87,20 +87,44 @@
             app:layout_constraintTop_toTopOf="parent"
             android:indeterminateTint="@color/colorPrimaryDark"/>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_recycler_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_search_layout"
-            tools:listitem="@layout/item_movie_list" />
+            android:weightSum="1">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/movie_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.9"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/item_movie_list" />
+
+
+            <ProgressBar
+                android:id="@+id/progress_bar_pagination_in_search_movie_fragment"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:indeterminateTint="@color/colorPrimaryDark"
+                app:layout_constraintBottom_toTopOf="@+id/movie_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                android:layout_marginRight="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/movie_recycler_view"
+                android:visibility="gone" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </LinearLayout>
 
 

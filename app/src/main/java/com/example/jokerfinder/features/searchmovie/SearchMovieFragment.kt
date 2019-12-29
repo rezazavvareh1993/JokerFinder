@@ -146,8 +146,10 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
                 val lastItem = layoutManager.findLastVisibleItemPosition()
                 val total = layoutManager.itemCount
                 if (total > 0)
-                    if (total - 1 == lastItem)
+                    if (total - 1 == lastItem){
                         searchMovieViewModel.fetchMovieSearchData(edt_movie_name_search.text.toString(),  true, myContext)
+                        progress_bar_pagination_in_search_movie_fragment.visibility = View.VISIBLE
+                    }
             }
         })
     }
@@ -158,6 +160,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
             it?.let { adapter.submitList(it) }
             progress_bar_in_search_movie_fragment.visibility = View.GONE
+            progress_bar_pagination_in_search_movie_fragment.visibility = View.GONE
             swipeContainer.isRefreshing = false
         })
     }

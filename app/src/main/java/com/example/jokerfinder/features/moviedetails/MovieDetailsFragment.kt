@@ -4,11 +4,11 @@ package com.example.jokerfinder.features.moviedetails
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,7 +25,6 @@ import com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter.Ca
 import com.example.jokerfinder.pojoes.Crew
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
-import com.example.jokerfinder.utils.MyConstantClass
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject

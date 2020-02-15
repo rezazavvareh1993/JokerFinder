@@ -2,7 +2,6 @@ package com.example.jokerfinder.features.favoritemovies
 
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -102,7 +101,7 @@ class FavoriteMoviesFragment : BaseFragment() {
     private fun showUndoSnackBar(view: View) {
 
         val snackBar = Snackbar.make(
-            view, "وسیله مورد نظر پاک شد. ",
+            view, "Your movie has been deleted.",
             Snackbar.LENGTH_LONG
         )
         snackBar.setAction(
@@ -111,7 +110,7 @@ class FavoriteMoviesFragment : BaseFragment() {
             undoDelete()
         }
             .setActionTextColor(resources.getColor(R.color.colorPrimary))
-        snackBar.setActionTextColor(Color.BLUE)
+        snackBar.setActionTextColor(resources.getColor(R.color.colorAccent))
         snackBar.show()
 
     }
@@ -139,7 +138,6 @@ class FavoriteMoviesFragment : BaseFragment() {
 
             it?.let { adapter.submitList(it) }
             progress_bar_in_favorite_movies_fragment.visibility = View.GONE
-
         })
     }
 

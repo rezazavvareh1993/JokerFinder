@@ -24,7 +24,7 @@ class SearchMovieViewModel (private val repository: DataRepository): BaseViewMod
     private var searchMovieMutableLiveData = MutableLiveData<List<ResultModel>>()
     private val disposable = CompositeDisposable()
 
-    fun fetchMovieSearchData(movieName : String, isLoadMore : Boolean, context: Context){
+    fun fetchMovieSearchData(movieName : String, isLoadMore : Boolean){
         if (isLoading) return
 
         if (movieName.isNotEmpty())

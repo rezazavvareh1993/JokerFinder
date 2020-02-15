@@ -8,6 +8,9 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
+apply plugin: 'com.google.gms.google-services'
+
+
 
 
 def lifecycle_version = "2.1.0"
@@ -17,12 +20,16 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
-        applicationId "com.example.moviefinder"
+        applicationId "com.example.jokerfinder"
         minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
     }
     buildTypes {
         release {
@@ -48,9 +55,9 @@ dependencies {
 
 
     ///////////////////////Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
-    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'//for support RX by retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.0'//for support RX by retrofit
 
     //////////////////////RX
     implementation "io.reactivex.rxjava2:rxjava:2.2.13"
@@ -67,9 +74,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     //////////////////////Dagger
-    implementation 'com.google.dagger:dagger:2.25.2'
+    implementation 'com.google.dagger:dagger:2.25.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt 'com.google.dagger:dagger-compiler:2.25.2'
+    kapt 'com.google.dagger:dagger-compiler:2.25.4'
 
     /////////////////////room database by rx
     implementation "androidx.room:room-runtime:$room_version"
@@ -85,6 +92,12 @@ dependencies {
     // For Kotlin use navigation-ui-ktx
 
     implementation "com.google.android.material:material:1.2.0-alpha03"
+
+    // FireBase
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation "com.google.firebase:firebase-core:17.2.1"
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

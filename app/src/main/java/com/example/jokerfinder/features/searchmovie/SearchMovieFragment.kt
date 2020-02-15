@@ -1,16 +1,14 @@
 package com.example.jokerfinder.features.searchmovie
 
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -22,7 +20,6 @@ import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
-import com.example.jokerfinder.utils.MyConstantClass
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -147,7 +144,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
                 val total = layoutManager.itemCount
                 if (total > 0)
                     if (total - 1 == lastItem){
-                        searchMovieViewModel.fetchMovieSearchData(edt_movie_name_search.text.toString(),  true, myContext)
+                        searchMovieViewModel.fetchMovieSearchData(edt_movie_name_search.text.toString(),  true)
                         progress_bar_pagination_in_search_movie_fragment.visibility = View.VISIBLE
                     }
             }
@@ -155,7 +152,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     }
 
     private fun callGetListMovies() {
-        searchMovieViewModel.fetchMovieSearchData(getMovieName(),false, myContext)
+        searchMovieViewModel.fetchMovieSearchData(getMovieName(),false)
         searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, Observer {
 
             it?.let { adapter.submitList(it) }

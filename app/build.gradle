@@ -98,6 +98,11 @@ dependencies {
     implementation "com.google.firebase:firebase-core:17.2.1"
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
 
+    implementation "androidx.paging:paging-runtime:2.1.2" // For Kotlin use paging-runtime-ktx
+
+// Logging
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.2'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

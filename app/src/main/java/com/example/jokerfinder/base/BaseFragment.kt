@@ -2,5 +2,4 @@ package com.example.jokerfinder.base
 
 import androidx.fragment.app.Fragment
 
-open class BaseFragment : Fragment()  {
-}
+open class BaseFragment : Fragment()

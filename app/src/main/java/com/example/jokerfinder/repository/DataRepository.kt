@@ -32,8 +32,9 @@ class DataRepository @Inject constructor(private val networkRepository: NetworkR
     }
 
     fun fetchMovieSearchData(movieName: String, page: Int): Single<ResponseSearchMovie> {
-        return networkRepository.fetchMovieSearchData(movieName, apiKey, page)
+        return networkRepository.fetchMovieSearchData(movieName, page, apiKey)
     }
+    //test
 
     ////////////////////////////////Local
 

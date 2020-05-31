@@ -3,6 +3,7 @@ package com.example.jokerfinder.base.di
 import android.app.Application
 import com.example.jokerfinder.features.favoritemovies.FavoriteMoviesFragment
 import com.example.jokerfinder.features.moviedetails.MovieDetailsFragment
+import com.example.jokerfinder.features.pagingtest.SearchMovieFragmentTest
 import com.example.jokerfinder.features.searchmovie.SearchMovieFragment
 import dagger.Component
 
@@ -10,6 +11,7 @@ import dagger.Component
 interface ApplicationComponent {
 
     fun injectToSearchMovieFragment(searchMovieFragment: SearchMovieFragment)
+    fun injectToSearchMovieFragment(searchMovieFragmentTest: SearchMovieFragmentTest)
     fun injectToMovieDetailsFragment(movieDetailsFragment : MovieDetailsFragment)
     fun injectToFavoriteMoviesFragment(favoriteMoviesFragment : FavoriteMoviesFragment)
 

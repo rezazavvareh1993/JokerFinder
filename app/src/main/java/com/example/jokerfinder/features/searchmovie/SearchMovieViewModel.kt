@@ -1,16 +1,12 @@
 package com.example.jokerfinder.features.searchmovie
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseViewModel
 import com.example.jokerfinder.pojoes.ResultModel
 import com.example.jokerfinder.repository.DataRepository
-import com.example.jokerfinder.utils.MyConstantClass
 import io.reactivex.disposables.CompositeDisposable
-
 
 class SearchMovieViewModel (private val repository: DataRepository): BaseViewModel() {
 
@@ -23,6 +19,7 @@ class SearchMovieViewModel (private val repository: DataRepository): BaseViewMod
 
     private var searchMovieMutableLiveData = MutableLiveData<List<ResultModel>>()
     private val disposable = CompositeDisposable()
+
 
     fun fetchMovieSearchData(movieName : String, isLoadMore : Boolean){
         if (isLoading) return
@@ -37,7 +34,7 @@ class SearchMovieViewModel (private val repository: DataRepository): BaseViewMod
                 .subscribe({
                     isLoading = false
                     if(it.results.isEmpty())
-                        shouldLoadMore = false
+                      shouldLoadMore = false
 
                     list.addAll(it.results)
                     searchMovieMutableLiveData.value = list
@@ -45,7 +42,6 @@ class SearchMovieViewModel (private val repository: DataRepository): BaseViewMod
                 },{
                     isLoading = false
                     searchMovieMutableLiveData.value = null
-//                    MyConstantClass.showToast(context, context.resources?.getString(R.string.error_connection))
                     Log.d("MyTag",it.message)
                 })
         )

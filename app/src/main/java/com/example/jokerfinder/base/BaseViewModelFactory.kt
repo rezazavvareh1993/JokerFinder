@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
 import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
 import com.example.jokerfinder.features.moviedetails.castsofmovie.CastOfMovieViewModel
+import com.example.jokerfinder.features.pagingtest.SearchMovieViewModelTest
 import com.example.jokerfinder.features.searchmovie.SearchMovieViewModel
 import com.example.jokerfinder.repository.DataRepository
 import java.lang.IllegalArgumentException
@@ -16,6 +17,12 @@ class BaseViewModelFactory (private val dataRepository: DataRepository) : ViewMo
         return when {
             modelClass.isAssignableFrom(SearchMovieViewModel::class.java) -> {
                 SearchMovieViewModel(
+                    dataRepository
+                ) as T
+            }
+
+            modelClass.isAssignableFrom(SearchMovieViewModelTest::class.java) -> {
+                SearchMovieViewModelTest(
                     dataRepository
                 ) as T
             }

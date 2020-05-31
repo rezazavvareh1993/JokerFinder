@@ -14,12 +14,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
+import com.example.jokerfinder.features.pagingtest.TestAdapter
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -136,7 +138,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
         movie_recycler_view.adapter = adapter
 
 
-/////////////////////////show next page when scroll last item
+///////////////////////show next page when scroll last item
         movie_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -154,7 +156,6 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     private fun callGetListMovies() {
         searchMovieViewModel.fetchMovieSearchData(getMovieName(),false)
         searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, Observer {
-
             it?.let { adapter.submitList(it) }
             progress_bar_in_search_movie_fragment.visibility = View.GONE
             progress_bar_pagination_in_search_movie_fragment.visibility = View.GONE

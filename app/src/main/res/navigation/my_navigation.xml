@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_navigation"
-    app:startDestination="@id/searchMovieFragment">
+    app:startDestination="@id/searchMovieFragmenttest">
     <fragment
         android:id="@+id/searchMovieFragment"
         android:name="com.example.jokerfinder.features.searchmovie.SearchMovieFragment"
@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_movieDetailsFragment_to_searchMovieFragment"
             app:destination="@id/searchMovieFragment" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_searchMovieFragmenttest"
+            app:destination="@id/searchMovieFragmenttest" />
     </fragment>
     <fragment
         android:id="@+id/favoriteMovieFragment"
@@ -43,4 +46,12 @@
         android:name="com.example.jokerfinder.features.about.AboutMeFragment"
         android:label="fragment_about_us"
         tools:layout="@layout/fragment_about_us" />
+    <fragment
+        android:id="@+id/searchMovieFragmenttest"
+        android:name="com.example.jokerfinder.features.pagingtest.SearchMovieFragmentTest"
+        android:label="SearchMovieFragmenttest" >
+        <action
+            android:id="@+id/action_searchMovieFragmenttest_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
 </navigation>

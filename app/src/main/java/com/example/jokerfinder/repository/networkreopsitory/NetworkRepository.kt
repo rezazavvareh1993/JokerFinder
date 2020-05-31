@@ -33,7 +33,7 @@ class NetworkRepository @Inject constructor() {
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-        fun fetchMovieSearchData(movieName : String, apiKey: String, page : Int) : Single<ResponseSearchMovie>{
+        fun fetchMovieSearchData(movieName : String, page: Int, apiKey: String) : Single<ResponseSearchMovie>{
             return retrofitService
                 .getMovieSearched(
                     apiKey,
@@ -43,4 +43,6 @@ class NetworkRepository @Inject constructor() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
         }
+
+    //test
 }

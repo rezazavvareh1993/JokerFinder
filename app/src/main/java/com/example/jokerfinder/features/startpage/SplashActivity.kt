@@ -5,9 +5,13 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.example.jokerfinder.utils.MyConstantClass
+import android.util.Log
+import android.widget.Toast
 import com.example.jokerfinder.R
-import com.example.jokerfinder.features.searchmovie.SearchMovieActivity
+import com.example.jokerfinder.features.MainActivity
+import com.example.jokerfinder.utils.MyConstantClass
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
@@ -16,11 +20,27 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        retriveTokenFcm()
         readFormatType()
         startActivityByDelay()
-
-
     }
+
+    private fun retriveTokenFcm() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("MyTag", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+
+                // Log and toast
+//                val msg = getString(R.string.msg_token_fmt, token)
+                Log.d("MyTag", token)
+                Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
+            })    }
 
     private fun readFormatType() {
         val typeFace = Typeface.createFromAsset(assets, "billion_stars_personal_use.ttf")
@@ -29,10 +49,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startActivityByDelay() {
+
         Handler().postDelayed({
-            val intent = Intent(this@SplashActivity, SearchMovieActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }, MyConstantClass.SPLASH_ACTIVITY_TIME)
     }
 }
+

@@ -35,12 +35,9 @@ class SplashActivity : AppCompatActivity() {
 
                 // Get new Instance ID token
                 val token = task.result?.token
-
-                // Log and toast
-//                val msg = getString(R.string.msg_token_fmt, token)
                 Log.d("MyTag", token)
-                Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
-            })    }
+            })
+    }
 
     private fun readFormatType() {
         val typeFace = Typeface.createFromAsset(assets, "billion_stars_personal_use.ttf")

@@ -27,12 +27,13 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
-class SearchMovieFragmentTest : BaseFragment() ,View.OnClickListener{
+class SearchMovieFragmentTest : BaseFragment(), View.OnClickListener {
 
 
     /////////////////Injects
     @Inject
     lateinit var factory: ViewModelProvider.Factory
+
     /////////////////////navController
     private lateinit var navController: NavController
 
@@ -108,7 +109,8 @@ class SearchMovieFragmentTest : BaseFragment() ,View.OnClickListener{
     private fun init(view: View) {
         navController = Navigation.findNavController(view)
         imgSearchMovie = view.findViewById(R.id.img_search_movie)
-        searchMovieViewModel = ViewModelProvider(this, factory).get(SearchMovieViewModelTest::class.java)
+        searchMovieViewModel =
+            ViewModelProvider(this, factory).get(SearchMovieViewModelTest::class.java)
     }
 
     private fun setOnClicks(view: View) {
@@ -120,7 +122,7 @@ class SearchMovieFragmentTest : BaseFragment() ,View.OnClickListener{
                 .filter { it.isEmpty() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    if(!checkSearchButton)
+                    if (!checkSearchButton)
                         img_search_movie.setImageResource(R.drawable.ic_search)
                 }
         )
@@ -135,14 +137,16 @@ class SearchMovieFragmentTest : BaseFragment() ,View.OnClickListener{
     }
 
     private fun callGetListMovies() {
-        searchMovieViewModel.fetchMovieSearchData("x")
+
+        searchMovieViewModel.fetchMovieSearchData(getMovieName())
         searchMovieViewModel.getSearchMovieData().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            progress_bar_in_search_movie_fragment.visibility = View.GONE
         })
     }
 
     private fun getMovieName(): String {
-        return  edt_movie_name_search.text.toString()
+        return edt_movie_name_search.text.toString()
     }
 
     override fun onDestroy() {
@@ -158,11 +162,11 @@ class SearchMovieFragmentTest : BaseFragment() ,View.OnClickListener{
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.img_search_movie -> {
-                if(checkSearchButton){
+                if (checkSearchButton) {
                     callGetListMovies()
                     progress_bar_in_search_movie_fragment.visibility = View.VISIBLE
                     img_search_movie.setImageResource(R.drawable.ic_clear_)
-                }else{
+                } else {
                     edt_movie_name_search.text.clear()
                     img_search_movie.setImageResource(R.drawable.ic_search)
                 }

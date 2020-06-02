@@ -13,16 +13,15 @@ import kotlin.coroutines.CoroutineContext
  * Created by Morris on 03,June,2019
  */
 class UserDataSource(
-    coroutineContext: CoroutineContext,
+    private val viewModelScope: CoroutineScope,
     private val searchedName: String,
     private val apiKey: String
 ) : PageKeyedDataSource<Int, ResultModel>() {
 
     private val job = Job()
-    private val scope = CoroutineScope(coroutineContext + job)
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, ResultModel>) {
         val service = ApiServiceBuilder.getClient().create(ApiService::class.java)
-        scope.launch {
+        viewModelScope.launch {
             try {
                 val response = service.getMovieSearched(apiKey, searchedName, params.key)
                 when {
@@ -34,7 +33,7 @@ class UserDataSource(
                         else
                             0
                         responseItems?.let {
-                            callback.onResult(responseItems, key)
+                            callback.onResult(it, key)
                         }
                     }
                 }
@@ -49,7 +48,7 @@ class UserDataSource(
         callback: LoadInitialCallback<Int, ResultModel>
     ) {
         val service = ApiServiceBuilder.getClient().create(ApiService::class.java)
-        scope.launch {
+        viewModelScope.launch {
             try {
                 val response = service.getMovieSearched(apiKey, searchedName, FIRST_PAGE)
                 when {
@@ -57,7 +56,7 @@ class UserDataSource(
                         val apiResponse = response.body()!!
                         val responseItems = apiResponse.results
                         responseItems?.let {
-                            callback.onResult(responseItems, null, FIRST_PAGE + 1)
+                            callback.onResult(it, null, FIRST_PAGE + 1)
                         }
                     }
                 }
@@ -69,7 +68,7 @@ class UserDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, ResultModel>) {
         val service = ApiServiceBuilder.getClient().create(ApiService::class.java)
-        scope.launch {
+        viewModelScope.launch {
             try {
                 val response = service.getMovieSearched(apiKey, searchedName, params.key)
                 when {
@@ -78,7 +77,7 @@ class UserDataSource(
                         val responseItems = apiResponse.results
                         val key = params.key + 1
                         responseItems?.let {
-                            callback.onResult(responseItems, key)
+                            callback.onResult(it, key)
                         }
                     }
                 }

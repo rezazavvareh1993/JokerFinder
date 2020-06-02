@@ -28,8 +28,6 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class SearchMovieFragmentTest : BaseFragment(), View.OnClickListener {
-
-
     /////////////////Injects
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -137,16 +135,20 @@ class SearchMovieFragmentTest : BaseFragment(), View.OnClickListener {
     }
 
     private fun callGetListMovies() {
+            searchMovieViewModel.getMovieName().observe(viewLifecycleOwner, Observer {
+                edt_movie_name_search.setText(it)
+                if(!searchMovieViewModel.isLastName()){
+                    searchMovieViewModel.fetchMovieSearchData(it)
+                    fetchData()
+                }
+            })
+    }
 
-        searchMovieViewModel.fetchMovieSearchData(getMovieName())
+    private fun fetchData(){
         searchMovieViewModel.getSearchMovieData().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             progress_bar_in_search_movie_fragment.visibility = View.GONE
         })
-    }
-
-    private fun getMovieName(): String {
-        return edt_movie_name_search.text.toString()
     }
 
     override fun onDestroy() {
@@ -164,8 +166,10 @@ class SearchMovieFragmentTest : BaseFragment(), View.OnClickListener {
             R.id.img_search_movie -> {
                 if (checkSearchButton) {
                     callGetListMovies()
-                    progress_bar_in_search_movie_fragment.visibility = View.VISIBLE
+//                    progress_bar_in_search_movie_fragment.visibility = View.VISIBLE
                     img_search_movie.setImageResource(R.drawable.ic_clear_)
+                    searchMovieViewModel.setMovieName(edt_movie_name_search.text.toString())
+
                 } else {
                     edt_movie_name_search.text.clear()
                     img_search_movie.setImageResource(R.drawable.ic_search)

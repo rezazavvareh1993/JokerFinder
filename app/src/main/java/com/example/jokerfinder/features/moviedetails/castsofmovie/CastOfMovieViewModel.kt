@@ -20,7 +20,7 @@ class CastOfMovieViewModel(private val repository: DataRepository) : ViewModel()
                 .subscribe({
                     castOfMovieMutableLiveData.value = it
                 },{
-                    Log.d("MyTag", it.message)
+                    Log.d("MyTag", it.message!!)
                     castOfMovieMutableLiveData.value = null
                 })
         )

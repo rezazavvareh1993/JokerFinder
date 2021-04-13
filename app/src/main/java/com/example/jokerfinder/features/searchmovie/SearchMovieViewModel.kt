@@ -42,7 +42,7 @@ class SearchMovieViewModel (private val repository: DataRepository): BaseViewMod
                 },{
                     isLoading = false
                     searchMovieMutableLiveData.value = null
-                    Log.d("MyTag",it.message)
+                    Log.d("MyTag",it.message!!)
                 })
         )
     }

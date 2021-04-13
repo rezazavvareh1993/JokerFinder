@@ -35,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
 
                 // Get new Instance ID token
                 val token = task.result?.token
-                Log.d("MyTag", token)
+                Log.d("MyTag", token!!)
             })
     }
 

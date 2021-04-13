@@ -21,7 +21,7 @@ class MovieDetailsViewModel(private  val repository: DataRepository) : BaseViewM
             .subscribe({
                 movieDetailsLiveData.value = it
             },{
-                Log.d("MyTag", it.message)
+                Log.d("MyTag", it.message!!)
                 MyConstantClass.showToast(context, context.resources.getString(R.string.error_connection))
                 movieDetailsLiveData.value = null
             })

@@ -22,7 +22,7 @@ class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
                         movieListMutableLiveData.value = it
                     else
                         movieListMutableLiveData.value = null
-                },{ Log.d("MyTag", it.message)})
+                },{ Log.d("MyTag", it.message!!)})
         )
     }
 
@@ -36,7 +36,7 @@ class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
             .subscribe({
                 Log.d("MyTag", "insert ${favoriteMovieEntity.movieName}")
             },{
-                Log.d("MyTag", it.message)
+                Log.d("MyTag", it.message!!)
             }))
     }
 
@@ -46,7 +46,7 @@ class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
             .subscribe ({
                 Log.d("MyTag", "delete ${favoriteMovieEntity.movieName}")
             }, {
-                Log.d("MyTag", it.message)
+                Log.d("MyTag", it.message!!)
             }))
     }
 
@@ -56,7 +56,7 @@ class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
             .subscribe({
                 isMovieInDataBaseMutableLiveData.value =true
             },{
-                Log.d("MyTag", it.message)
+                Log.d("MyTag", it.message!!)
                 isMovieInDataBaseMutableLiveData.value =false
             }))
     }

@@ -8,7 +8,7 @@ dapp/src/main/java/com/example/jokerfinder/features/moviedetails/castsofmovie/Ca
 ‹
 [app/src/main/java/com/example/jokerfinder/features/favoritemovies/FavoriteMovieViewModel.kt,4/6/4639379548fa23625e6f0eeecc6676d1d587d23a
 …
-Uapp/src/main/java/com/example/jokerfinder/features/searchmovie/SearchMovieFragment.kt,b/0/b0203f8aa5faafc10b4da332ca651266022b1b73
+Uapp/src/main/java/com/example/jokerfinder/features/searchmovie/SearchMovieFragment.kt,b\0\b0203f8aa5faafc10b4da332ca651266022b1b73
 †
 Vapp/src/main/java/com/example/jokerfinder/features/searchmovie/SearchMovieViewModel.kt,8/9/896c8b45aeb1f4b94336b924e107791bf2509e04
 v
@@ -30,17 +30,17 @@ H
 P
  app/src/main/AndroidManifest.xml,8/c/8c55c3ccc257e5907959013f99656e4c8ec3903e
 ‡
-Wapp/src/main/java/com/example/jokerfinder/features/moviedetails/MovieDetailsFragment.kt,7/0/70e54a7d09f74e8c453b40ca15f8385d32610cbe
+Wapp/src/main/java/com/example/jokerfinder/features/moviedetails/MovieDetailsFragment.kt,7\0\70e54a7d09f74e8c453b40ca15f8385d32610cbe
 A
 gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
 <
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 ‹
-[app/src/main/java/com/example/jokerfinder/features/favoritemovies/FavoriteMoviesFragment.kt,a/5/a582948f1702d829870cec78e9c0fd2d8921783b
+[app/src/main/java/com/example/jokerfinder/features/favoritemovies/FavoriteMoviesFragment.kt,a\5\a582948f1702d829870cec78e9c0fd2d8921783b
 r
-Bapp/src/main/java/com/example/jokerfinder/features/MainActivity.kt,f/2/f2f84e3c90b96cad1a98937e58f52810846a9fa7
+Bapp/src/main/java/com/example/jokerfinder/features/MainActivity.kt,f\2\f2f84e3c90b96cad1a98937e58f52810846a9fa7
 ~
-Napp/src/main/java/com/example/jokerfinder/features/startpage/SplashActivity.kt,d/e/de9446217b02c9f2fe6f7ad104ebf9e03a9e8b5e
+Napp/src/main/java/com/example/jokerfinder/features/startpage/SplashActivity.kt,d\e\de9446217b02c9f2fe6f7ad104ebf9e03a9e8b5e
 }
 Mapp/src/main/java/com/example/jokerfinder/utils/MyFirebaseMessagingService.kt,8/1/8135fe9aa0b83eff21f3764fd353516f37ee7884
 
@@ -83,7 +83,7 @@ p
 ‚
 Rapp/src/main/java/com/example/jokerfinder/features/pagingtest/ApiServiceBuilder.kt,d/f/dfbc08281de2996b50634b46df81228dce0a865b
 ˆ
-Xapp/src/main/java/com/example/jokerfinder/features/pagingtest/SearchMovieFragmentTest.kt,0/7/079618e9f8ee751205040f08a917054d5fcc8664
+Xapp/src/main/java/com/example/jokerfinder/features/pagingtest/SearchMovieFragmentTest.kt,0\7\079618e9f8ee751205040f08a917054d5fcc8664
 ‰
 Yapp/src/main/java/com/example/jokerfinder/features/pagingtest/SearchMovieViewModelTest.kt,e/a/ea7f40cd1baec3c7ba0b1092b554f23475329afd
 
@@ -104,3 +104,5 @@ v
 Fapp/src/main/java/com/example/jokerfinder/base/di/ApplicationModule.kt,5\c\5c7a10449f17869c0769e1522e37df76c89b9c8f
 X
 (gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+{
+Kapp/src/main/java/com/example/jokerfinder/features/about/AboutMeFragment.kt,f\2\f245c56c8a751f4de2c4497b478da67da56e1d84

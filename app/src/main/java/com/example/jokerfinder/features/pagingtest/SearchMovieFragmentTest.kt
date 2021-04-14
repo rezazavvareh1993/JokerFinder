@@ -74,7 +74,7 @@ class SearchMovieFragmentTest : BaseFragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
 
-        progress_bar_in_search_movie_fragment.visibility = View.GONE
+        pbrSearch.visibility = View.GONE
 
         injectFactory()
         init(view)
@@ -108,32 +108,32 @@ class SearchMovieFragmentTest : BaseFragment(), View.OnClickListener {
 
     private fun init(view: View) {
         navController = Navigation.findNavController(view)
-        imgSearchMovie = view.findViewById(R.id.img_search_movie)
+        imgSearchMovie = view.findViewById(R.id.imgSearch)
         searchMovieViewModel =
             ViewModelProvider(this, factory).get(SearchMovieViewModelTest::class.java)
     }
 
     private fun setOnClicks(view: View) {
-        view.findViewById<ImageView>(R.id.img_search_movie).setOnClickListener(this) //click
+        view.findViewById<ImageView>(R.id.imgSearch).setOnClickListener(this) //click
 
         disposable.add( //////when edt search is empty
             RxTextView
-                .textChanges(edt_movie_name_search)
+                .textChanges(edtSearch)
                 .filter { it.isEmpty() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (!checkSearchButton)
-                        img_search_movie.setImageResource(R.drawable.ic_search)
+                        imgSearch.setImageResource(R.drawable.ic_search)
                 }
         )
     }
 
     private fun setUpRecyclerView() {
 
-        movie_recycler_view.setHasFixedSize(true)
+        recyclerMovie.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(myContext, RecyclerView.HORIZONTAL, false)
-        movie_recycler_view.layoutManager = layoutManager
-        movie_recycler_view.adapter = adapter
+        recyclerMovie.layoutManager = layoutManager
+        recyclerMovie.adapter = adapter
     }
 
     private fun callGetListMovies() {
@@ -141,12 +141,12 @@ class SearchMovieFragmentTest : BaseFragment(), View.OnClickListener {
         searchMovieViewModel.fetchMovieSearchData(getMovieName())
         searchMovieViewModel.getSearchMovieData().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            progress_bar_in_search_movie_fragment.visibility = View.GONE
+            pbrSearch.visibility = View.GONE
         })
     }
 
     private fun getMovieName(): String {
-        return edt_movie_name_search.text.toString()
+        return edtSearch.text.toString()
     }
 
     override fun onDestroy() {
@@ -161,14 +161,14 @@ class SearchMovieFragmentTest : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.img_search_movie -> {
+            R.id.imgSearch -> {
                 if (checkSearchButton) {
                     callGetListMovies()
-                    progress_bar_in_search_movie_fragment.visibility = View.VISIBLE
-                    img_search_movie.setImageResource(R.drawable.ic_clear_)
+                    pbrSearch.visibility = View.VISIBLE
+                    imgSearch.setImageResource(R.drawable.ic_clear_)
                 } else {
-                    edt_movie_name_search.text.clear()
-                    img_search_movie.setImageResource(R.drawable.ic_search)
+                    edtSearch.text.clear()
+                    imgSearch.setImageResource(R.drawable.ic_search)
                 }
                 checkSearchButton = !checkSearchButton
             }

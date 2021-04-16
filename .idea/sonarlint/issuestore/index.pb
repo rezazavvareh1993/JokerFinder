@@ -106,3 +106,5 @@ X
 (gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
 {
 Kapp/src/main/java/com/example/jokerfinder/features/about/AboutMeFragment.kt,f\2\f245c56c8a751f4de2c4497b478da67da56e1d84
+L
+.idea/codeStyles/Project.xml,6\e\6ecd6000a7b6f4a2884412ff19f74193ed089648

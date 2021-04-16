@@ -22,6 +22,9 @@ Thumbs.db
 # OSX files
 .DS_Store
 
+# Index
+*.pb
+
 # Android Studio
 *.iml
 .idea
@@ -35,8 +38,7 @@ output.json
 #NDK
 obj/
 .externalNativeBuild
-*.iml
-.gradle
+
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -44,10 +46,8 @@ obj/
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
 /build
 /captures
-.externalNativeBuild
 .cxx
 /.idea/sonarlint/issuestore/a/8/a8cd3154ef03f9584f497d3fd462b37f252a4ac2
 /.idea/sonarlint/issuestore/e/c/ec16ac96f06b598f6a044deb27ac351dd1f9aec4

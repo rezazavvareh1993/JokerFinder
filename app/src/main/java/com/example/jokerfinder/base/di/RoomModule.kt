@@ -1,28 +1,23 @@
 package com.example.jokerfinder.base.di
 
-import android.app.Application
-import androidx.room.Room
+import android.content.Context
+import com.example.jokerfinder.repository.localrepository.FavoriteDBRepository
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
-import com.example.jokerfinder.utils.MovieDataBase
+import com.example.jokerfinder.utils.MovieDB
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 
+@InstallIn(ApplicationComponent::class)
 @Module
-class RoomModule(private val application: Application){
-
-    var dataBase: MovieDataBase = Room.databaseBuilder(
-        application,
-        MovieDataBase::class.java,
-        "favoriteMovie.db"
-    ).fallbackToDestructiveMigration().build()
+object DBModule {
 
     @Provides
-    fun provideFavoriteMovieDAO() : FavoriteMovieDAO{
-        return dataBase.getFavoriteMovieDAO()
+    fun provideFavoriteMovieDAO(@ApplicationContext appContext: Context) : FavoriteMovieDAO{
+        return MovieDB.getInstance(appContext).favoriteMovieDAO
     }
 
     @Provides
-    fun provideMovieDataBase() : MovieDataBase{
-        return dataBase
-    }
+    fun provideMovieDataBaseRepository(favoriteMovieDAO: FavoriteMovieDAO) = FavoriteDBRepository(favoriteMovieDAO)
 }

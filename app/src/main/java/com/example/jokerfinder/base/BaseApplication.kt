@@ -6,8 +6,10 @@ import com.example.jokerfinder.base.di.ApplicationComponent
 import com.example.jokerfinder.base.di.ApplicationModule
 import com.example.jokerfinder.base.di.DaggerApplicationComponent
 import com.example.jokerfinder.base.di.RoomModule
+import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
+@HiltAndroidApp
 class BaseApplication : Application() {
     lateinit var component : ApplicationComponent
 

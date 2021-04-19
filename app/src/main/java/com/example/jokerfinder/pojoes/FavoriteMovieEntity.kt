@@ -8,8 +8,8 @@ import androidx.room.PrimaryKey
 class FavoriteMovieEntity (
     @PrimaryKey(autoGenerate = true)
     var movieId: Int,
-    @ColumnInfo(name = "movieName") var movieName : String,
-    @ColumnInfo(name = "movieReleaseDate") var movieReleaseDate : String,
-    @ColumnInfo(name = "movieRate") var movieRate : Double,
-    @ColumnInfo(name = "moviePicUrl") var moviePicUrl : String
+    val movieName : String,
+    val movieReleaseDate : String,
+    val movieRate : Double,
+    val moviePicUrl : String
 )

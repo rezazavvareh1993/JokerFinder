@@ -46,7 +46,7 @@ Mapp/src/main/java/com/example/jokerfinder/utils/MyFirebaseMessagingService.kt,
 ù
 mapp/src/main/java/com/example/jokerfinder/features/moviedetails/castsofmovie/castadapter/CastsMovieAdapter.kt,9/7/9745e5b554a01b660003b184951ebbc7eb98d218
 å
-\app/src/main/java/com/example/jokerfinder/features/searchmovie/movieadapter/MoviesAdapter.kt,0/7/07fba30da7a6e4880a3eea71ff84d1a2830c89d2
+\app/src/main/java/com/example/jokerfinder/features/searchmovie/movieadapter/MoviesAdapter.kt,0\7\07fba30da7a6e4880a3eea71ff84d1a2830c89d2
 î
 dapp/src/main/java/com/example/jokerfinder/features/searchmovie/movieadapter/MovieDiffUtilCallback.kt,9/4/946785d58c6f1cd66084e4d313cb18115b011909
 à

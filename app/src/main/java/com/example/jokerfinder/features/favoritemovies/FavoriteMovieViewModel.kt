@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import com.example.jokerfinder.base.BaseViewModel
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.repository.DataRepository
+import com.example.jokerfinder.repository.localrepository.FavoriteDBRepository
 import io.reactivex.disposables.CompositeDisposable
 
-class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
+class FavoriteMovieViewModel @ViewModelInject constructor(private val favoriteDBRepository: FavoriteDBRepository) : BaseViewModel() {
     private var movieListMutableLiveData = MutableLiveData<List<FavoriteMovieEntity>>()
     private var isMovieInDataBaseMutableLiveData = MutableLiveData<Boolean>()
     private val compositeDisposable = CompositeDisposable()

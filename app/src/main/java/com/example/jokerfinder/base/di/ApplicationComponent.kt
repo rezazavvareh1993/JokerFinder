@@ -1,20 +1,12 @@
 package com.example.jokerfinder.base.di
 
-import android.app.Application
-import com.example.jokerfinder.features.favoritemovies.FavoriteMoviesFragment
-import com.example.jokerfinder.features.moviedetails.MovieDetailsFragment
-import com.example.jokerfinder.features.pagingtest.SearchMovieFragmentTest
-import com.example.jokerfinder.features.searchmovie.SearchMovieFragment
-import dagger.Component
 
-@Component(modules = [ApplicationModule::class, RoomModule::class, RepositoryModule::class, BaseViewModelFactoryModule::class])
-interface ApplicationComponent {
+import dagger.hilt.DefineComponent
+import javax.inject.Singleton
 
-    fun injectToSearchMovieFragment(searchMovieFragment: SearchMovieFragment)
-    fun injectToSearchMovieFragment(searchMovieFragmentTest: SearchMovieFragmentTest)
-    fun injectToMovieDetailsFragment(movieDetailsFragment : MovieDetailsFragment)
-    fun injectToFavoriteMoviesFragment(favoriteMoviesFragment : FavoriteMoviesFragment)
-
-    fun application() : Application
-
-}
+/**
+ *  A Hilt component that has the lifetime of the application.
+ */
+@Singleton
+@DefineComponent
+interface ApplicationComponent {}

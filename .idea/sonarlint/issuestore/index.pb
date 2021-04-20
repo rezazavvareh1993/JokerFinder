@@ -6,7 +6,7 @@ dapp/src/main/java/com/example/jokerfinder/features/moviedetails/castsofmovie/Ca
 @
 app/build.gradle,f\4\f4a01d6a4fcb971362ec00a83903fd3902f52164
 ‹
-[app/src/main/java/com/example/jokerfinder/features/favoritemovies/FavoriteMovieViewModel.kt,4/6/4639379548fa23625e6f0eeecc6676d1d587d23a
+[app/src/main/java/com/example/jokerfinder/features/favoritemovies/FavoriteMovieViewModel.kt,4\6\4639379548fa23625e6f0eeecc6676d1d587d23a
 …
 Uapp/src/main/java/com/example/jokerfinder/features/searchmovie/SearchMovieFragment.kt,b\0\b0203f8aa5faafc10b4da332ca651266022b1b73
 †
@@ -66,7 +66,7 @@ Aapp/src/main/java/com/example/jokerfinder/base/BaseApplication.kt,e\0\e06d24d5
 o
 ?app/src/main/java/com/example/jokerfinder/base/BaseViewModel.kt,5\c\5cfce65c6d49e07125d2668db08978cf0d7e3ec0
 v
-Fapp/src/main/java/com/example/jokerfinder/repository/DataRepository.kt,e/c/ec16ac96f06b598f6a044deb27ac351dd1f9aec4
+Fapp/src/main/java/com/example/jokerfinder/repository/DataRepository.kt,e\c\ec16ac96f06b598f6a044deb27ac351dd1f9aec4
 y
 Iapp/src/main/java/com/example/jokerfinder/pojoes/ResponseSearchMovie.java,4/f/4f861a54a72ed553e53c85ed888d5c56e091aabf
 
@@ -108,3 +108,11 @@ X
 Kapp/src/main/java/com/example/jokerfinder/features/about/AboutMeFragment.kt,f\2\f245c56c8a751f4de2c4497b478da67da56e1d84
 L
 .idea/codeStyles/Project.xml,6\e\6ecd6000a7b6f4a2884412ff19f74193ed089648
+ˆ
+Xapp/src/main/java/com/example/jokerfinder/repository/localrepository/FavoriteMovieDAO.kt,d\3\d33bec8d4f5b26f3b237663921bab48466d6b447
+w
+Gapp/src/main/java/com/example/jokerfinder/pojoes/FavoriteMovieEntity.kt,4\a\4aa8efc3113625636fada1da83476c14363b4027
+Œ
+\app/src/main/java/com/example/jokerfinder/repository/localrepository/FavoriteDBRepository.kt,1\c\1c3d4c0616ac33fb8ff78c93b0f351ca9cf010ce
+j
+:app/src/main/java/com/example/jokerfinder/utils/MovieDB.kt,0\6\068bc129c7f469262db309eea1c614946b4018b6

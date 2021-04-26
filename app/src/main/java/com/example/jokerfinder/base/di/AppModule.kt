@@ -44,7 +44,6 @@ object AppModule {
     fun provideRetrofit(gson: Gson): Retrofit = Retrofit.Builder()
         .baseUrl("https://rickandmortyapi.com/api/")
         .addConverterFactory(GsonConverterFactory.create(gson))
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
 
     @Provides

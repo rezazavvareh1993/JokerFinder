@@ -12,6 +12,9 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
@@ -24,9 +27,11 @@ class DataRepository @Inject constructor(
     /////////////////////////////////////////Network
 
     @SuppressLint("CheckResult")
-    fun fetchMovieDetails(idMovie: Int): Single<ResponseDetailMovie> {
-        return networkRepository.fetchMovieDetails(idMovie, apiKey)
-    }
+    fun fetchMovieDetails(idMovie: Int) = flow {
+        val response = networkRepository.fetchMovieDetails(idMovie, apiKey)
+        if (response.isSuccessful)
+            emit(response.body())
+    }.flowOn(Dispatchers.IO)
 
     fun fetchCastsOfMovie(idMovie: Int): Single<Credits> {
         return networkRepository.fetchCastsOfMovie(idMovie, apiKey)

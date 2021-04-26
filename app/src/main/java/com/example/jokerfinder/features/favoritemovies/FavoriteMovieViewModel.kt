@@ -3,12 +3,16 @@ package com.example.jokerfinder.features.favoritemovies
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.jokerfinder.base.BaseViewModel
+import androidx.lifecycle.ViewModel
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
+@HiltViewModel
+class FavoriteMovieViewModel @Inject constructor(private val repository: DataRepository) : ViewModel() {
+
     private var movieListMutableLiveData = MutableLiveData<List<FavoriteMovieEntity>>()
     private var isMovieInDataBaseMutableLiveData = MutableLiveData<Boolean>()
     private val compositeDisposable = CompositeDisposable()

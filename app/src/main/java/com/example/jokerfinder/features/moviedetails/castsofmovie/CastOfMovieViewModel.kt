@@ -8,9 +8,12 @@ import androidx.lifecycle.ViewModel
 import com.example.jokerfinder.pojoes.Credits
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class CastOfMovieViewModel(private val repository: DataRepository) : ViewModel() {
+@HiltViewModel
+class CastOfMovieViewModel @Inject constructor(private val repository: DataRepository) : ViewModel() {
     private val disposable = CompositeDisposable()
     private var castOfMovieMutableLiveData = MutableLiveData<Credits>()
 

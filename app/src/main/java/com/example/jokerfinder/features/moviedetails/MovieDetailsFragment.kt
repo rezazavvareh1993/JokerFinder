@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,18 +28,16 @@ import com.example.jokerfinder.pojoes.Crew
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
+@AndroidEntryPoint
 class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
-
-    ////////////Inject
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
 
     ///////////////////navController
     lateinit var navController: NavController
@@ -55,9 +55,9 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
     private lateinit var myContext: Context
 
     /////////////////////viewModels
-    private lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
-    private lateinit var movieDetailViewModel : MovieDetailsViewModel
-    private lateinit var castOfMovieViewModel: CastOfMovieViewModel
+    private val favoriteMovieViewModel: FavoriteMovieViewModel by activityViewModels()
+    private val movieDetailViewModel : MovieDetailsViewModel by viewModels()
+    private val castOfMovieViewModel: CastOfMovieViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,20 +69,12 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        injectFactory()
         init(view)
         loadingViews()
         callMovieDetails()
         isMovieInDataBase()
         setUpRecyclerView()
         setOnClicks()
-    }
-
-    private fun injectFactory() {
-        (activity?.application as BaseApplication)
-            .getApplicationComponent()
-            .injectToMovieDetailsFragment(this)
     }
 
     private fun setOnClicks() {
@@ -93,9 +85,6 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
     private fun init(view: View) {
         navController = Navigation.findNavController(view)
         imgBack = view.findViewById(R.id.img_back_movie_detail)
-        favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
-        movieDetailViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
-        castOfMovieViewModel = ViewModelProvider(this, factory).get(CastOfMovieViewModel::class.java)
     }
 
     private fun setUpRecyclerView() {

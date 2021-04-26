@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +22,7 @@ import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
 import com.jakewharton.rxbinding2.widget.RxTextView
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_search_movie.*
@@ -29,12 +31,11 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
+@AndroidEntryPoint
 class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
     private lateinit var navController: NavController
-    private lateinit var searchMovieViewModel: SearchMovieViewModel
+    private val searchMovieViewModel: SearchMovieViewModel by viewModels()
     private lateinit var imgSearchMovie: ImageView
     private val disposable = CompositeDisposable()
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
@@ -62,7 +63,6 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
         pbrSearch.visibility = View.GONE
 
-        injectFactory()
         init(view)
         callGetListMovies()
         setUpRecyclerView()
@@ -82,12 +82,6 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
     }
 
-    private fun injectFactory() {
-        (activity?.application as BaseApplication)
-            .getApplicationComponent()
-            .injectToSearchMovieFragment(this)
-    }
-
     private fun handleImgSearch(view: View) {
         setOnClicks(view)
     }
@@ -95,7 +89,6 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     private fun init(view: View) {
         navController = Navigation.findNavController(view)
         imgSearchMovie = view.findViewById(R.id.imgSearch)
-        searchMovieViewModel = ViewModelProvider(this, factory).get(SearchMovieViewModel::class.java)
     }
 
     private fun setOnClicks(view: View) {

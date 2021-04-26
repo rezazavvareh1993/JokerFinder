@@ -8,54 +8,50 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter.FavoriteMoviesAdapter
 import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite_movie.*
-import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
+@AndroidEntryPoint
 class FavoriteMoviesFragment : BaseFragment() {
 
     //////////////Inject
-    @Inject
-    lateinit var factory : ViewModelProvider.Factory
+    private val favoriteMovieViewModel: FavoriteMovieViewModel by viewModels()
+    private val movieDetailsViewModel: MovieDetailsViewModel by activityViewModels()
 
     ///////////////navController
     lateinit var navController: NavController
 
-    ///////////////ViewModels
-    lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
-    lateinit var movieDetailsViewModel: MovieDetailsViewModel
-
     ////////////////lambdaFunctions
-    private val getFavoriteMovieId : (Int) -> Unit = {
+    private val getFavoriteMovieId: (Int) -> Unit = {
         val bundle = bundleOf("movieId" to it)
         navController.navigate(R.id.action_favoriteMovieFragment_to_movieDetailsFragment, bundle)
     }
 
     /////////////Value
-    private lateinit var myContext : Context
+    private lateinit var myContext: Context
     private lateinit var lastFavoriteMovieEntityDeleted: FavoriteMovieEntity
 
     /////////////adapter
     private val adapter =
         FavoriteMoviesAdapter(getFavoriteMovieId)
-
 
 
     override fun onCreateView(
@@ -68,8 +64,6 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        injectFactory()
         init(view)
         callGetListFavoriteMovies()
         setUpRecyclerView()
@@ -97,7 +91,6 @@ class FavoriteMoviesFragment : BaseFragment() {
     }
 
 
-
     private fun showUndoSnackBar(view: View) {
 
         val snackBar = Snackbar.make(
@@ -120,14 +113,8 @@ class FavoriteMoviesFragment : BaseFragment() {
         callGetListFavoriteMovies()
     }
 
-    private fun injectFactory() {
-        (activity?.application as BaseApplication)
-            .getApplicationComponent()
-            .injectToFavoriteMoviesFragment(this)
-    }
-
     private fun setUpRecyclerView() {
-        val layoutManager =  LinearLayoutManager(myContext , RecyclerView.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(myContext, RecyclerView.VERTICAL, false)
         favorite_movie_recycler_view.layoutManager = layoutManager
         favorite_movie_recycler_view.adapter = adapter
     }
@@ -143,8 +130,7 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     private fun init(view: View) {
         navController = Navigation.findNavController(view)
-        favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
-        movieDetailsViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
+
     }
 
     override fun onAttach(context: Context) {

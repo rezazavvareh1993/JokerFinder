@@ -3,15 +3,13 @@ package com.example.jokerfinder.repository.networkreopsitory
 import com.example.jokerfinder.pojoes.Credits
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.pojoes.ResponseSearchMovie
-import com.example.jokerfinder.retrofit.DaggerProvideRetrofitComponent
+import com.example.jokerfinder.retrofit.JokerFinderApiService
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class NetworkRepository @Inject constructor() {
-
-    private val retrofitService = DaggerProvideRetrofitComponent.create().getRetrofitApiService()
+class NetworkRepository @Inject constructor(private val retrofitService: JokerFinderApiService) {
 
     fun fetchMovieDetails(idMovie: Int, apiKey: String): Single<ResponseDetailMovie> {
         return retrofitService

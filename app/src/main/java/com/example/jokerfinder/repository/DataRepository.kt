@@ -1,10 +1,8 @@
 package com.example.jokerfinder.repository
 
 import android.annotation.SuppressLint
-import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.pojoes.Credits
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
-
 import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.pojoes.ResponseSearchMovie
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
@@ -16,7 +14,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class DataRepository @Inject constructor(private val networkRepository: NetworkRepository, private val favoriteMovieDAO: FavoriteMovieDAO ) {
+class DataRepository @Inject constructor(
+    private val networkRepository: NetworkRepository,
+    private val favoriteMovieDAO: FavoriteMovieDAO
+) {
 
     private val apiKey = MyConstantClass.APY_KEY
 
@@ -38,25 +39,25 @@ class DataRepository @Inject constructor(private val networkRepository: NetworkR
 
     ////////////////////////////////Local
 
-    fun fetchAllFavoriteMovies() : Single<List<FavoriteMovieEntity>> {
+    fun fetchAllFavoriteMovies(): Single<List<FavoriteMovieEntity>> {
         return favoriteMovieDAO.getAllFavoriteMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) : Completable{
+    fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity): Completable {
         return favoriteMovieDAO.saveFavoriteMovie(favoriteMovieEntity)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity) : Completable{
+    fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity): Completable {
         return favoriteMovieDAO.delete(favoriteMovieEntity)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun findByMovieId(movieId : Int) : Single<FavoriteMovieEntity>{
+    fun findByMovieId(movieId: Int): Single<FavoriteMovieEntity> {
         return favoriteMovieDAO.findByMovieId(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

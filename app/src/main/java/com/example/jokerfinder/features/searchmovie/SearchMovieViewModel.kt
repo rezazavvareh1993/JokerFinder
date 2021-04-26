@@ -3,12 +3,16 @@ package com.example.jokerfinder.features.searchmovie
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.jokerfinder.base.BaseViewModel
 import com.example.jokerfinder.pojoes.ResultModel
 import com.example.jokerfinder.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
+import javax.inject.Inject
 
-class SearchMovieViewModel (private val repository: DataRepository): BaseViewModel() {
+@HiltViewModel
+class SearchMovieViewModel @Inject constructor (private val repository: DataRepository): ViewModel() {
 
     private var page = 1
     private var shouldLoadMore = true

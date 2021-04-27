@@ -11,14 +11,8 @@ dapp/src/main/java/com/example/jokerfinder/features/moviedetails/castsofmovie/Ca
 Uapp/src/main/java/com/example/jokerfinder/features/searchmovie/SearchMovieFragment.kt,b\0\b0203f8aa5faafc10b4da332ca651266022b1b73
 †
 Vapp/src/main/java/com/example/jokerfinder/features/searchmovie/SearchMovieViewModel.kt,8\9\896c8b45aeb1f4b94336b924e107791bf2509e04
-y
-Iapp/src/main/java/com/example/jokerfinder/base/di/ApplicationComponent.kt,a\4\a4bce8a4c2f6eb8c96c573823ecbf551212102fe
 {
 Kapp/src/main/java/com/example/jokerfinder/retrofit/JokerFinderApiService.kt,7\2\7209d12cfcc52679fc622ad1a9a33ebe5cc50fdb
-t
-Dapp/src/main/java/com/example/jokerfinder/retrofit/RetrofitModule.kt,9/3/937d90886579677a535c193081a1a18f8ee1eddf
-~
-Napp/src/main/java/com/example/jokerfinder/retrofit/ProvideRetrofitComponent.kt,d\b\dbf4e8fd114e6a5c3f372fce6068690f05ddf05c
 ‹
 [app/src/main/java/com/example/jokerfinder/repository/networkreopsitory/NetworkRepository.kt,a\c\acdaf41d93b1f910282f5b10d574ed7e40baae3a
 n
@@ -67,23 +61,9 @@ v
 Fapp/src/main/java/com/example/jokerfinder/repository/DataRepository.kt,e\c\ec16ac96f06b598f6a044deb27ac351dd1f9aec4
 y
 Iapp/src/main/java/com/example/jokerfinder/pojoes/ResponseSearchMovie.java,4/f/4f861a54a72ed553e53c85ed888d5c56e091aabf
-|
-Lapp/src/main/java/com/example/jokerfinder/features/pagingtest/TestAdapter.kt,0/7/079039ab5f29d5442e6c6ee8abd73f5595108315
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-p
-@app/src/main/java/com/example/jokerfinder/retrofit/ApiService.kt,2/6/265716b6b4875f18c5718544a57794be01c51766
-‚
-Rapp/src/main/java/com/example/jokerfinder/features/pagingtest/ApiServiceBuilder.kt,d/f/dfbc08281de2996b50634b46df81228dce0a865b
-ˆ
-Xapp/src/main/java/com/example/jokerfinder/features/pagingtest/SearchMovieFragmentTest.kt,0\7\079618e9f8ee751205040f08a917054d5fcc8664
-‰
-Yapp/src/main/java/com/example/jokerfinder/features/pagingtest/SearchMovieViewModelTest.kt,e/a/ea7f40cd1baec3c7ba0b1092b554f23475329afd
-
-Oapp/src/main/java/com/example/jokerfinder/features/pagingtest/UserDataSource.kt,f/b/fba55b8ea35d736d1e0e01d7d712683a1a09b0a4
-†
-Vapp/src/main/java/com/example/jokerfinder/features/pagingtest/UserDataSourceFactory.kt,c/a/ca5a158ac8c6c9b2d9fdfd8c8650108c783c11b0
 ;
 gradlew.bat,2\a\2a45a911a8f1836b0b6c5b758962572012d8f8c3
 7
@@ -106,3 +86,5 @@ j
 :app/src/main/java/com/example/jokerfinder/utils/MovieDB.kt,0\6\068bc129c7f469262db309eea1c614946b4018b6
 n
 >app/src/main/java/com/example/jokerfinder/base/di/AppModule.kt,a\3\a308ab3807140eafcf2f9bd62da0369c7146ba87
+y
+Iapp/src/main/java/com/example/jokerfinder/pojoes/ResponseDetailMovie.java,7\d\7d4cf024dcd4cc6a25a59614d23c22bb08d03bdf

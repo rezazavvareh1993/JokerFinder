@@ -19,5 +19,5 @@ interface JokerFinderApiService {
     suspend fun getMovieDetails(@Path("movie_id")movieId : Int, @Query("api_key") apiKey : String) :  Response<ResponseDetailMovie>
 
     @GET("movie/{movie_id}/credits")
-    suspend fun getCastsOfMovie(@Path("movie_id")movieId: Int, @Query("api_key") apiKey: String) : Credits
+    suspend fun getCastsOfMovie(@Path("movie_id")movieId: Int, @Query("api_key") apiKey: String) : Response<Credits>
 }

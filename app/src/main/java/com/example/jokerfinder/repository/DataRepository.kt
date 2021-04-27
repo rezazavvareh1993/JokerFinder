@@ -33,9 +33,11 @@ class DataRepository @Inject constructor(
             emit(response.body())
     }.flowOn(Dispatchers.IO)
 
-    fun fetchCastsOfMovie(idMovie: Int): Single<Credits> {
-        return networkRepository.fetchCastsOfMovie(idMovie, apiKey)
-    }
+    fun fetchCastsOfMovie(idMovie: Int) = flow {
+        val response = networkRepository.fetchCastsOfMovie(idMovie, apiKey)
+        if(response.isSuccessful)
+            emit(response.body())
+    }.flowOn(Dispatchers.IO)
 
     fun fetchMovieSearchData(movieName: String, page: Int): Single<ResponseSearchMovie> {
         return networkRepository.fetchMovieSearchData(movieName, page, apiKey)

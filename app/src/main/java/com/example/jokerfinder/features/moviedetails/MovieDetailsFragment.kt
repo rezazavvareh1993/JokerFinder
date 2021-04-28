@@ -135,7 +135,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun callCastsOfMovie(){
 
-        castOfMovieViewModel.fetchCastOfMovieData(getMovieSearchedId(), requireContext())
+        castOfMovieViewModel.fetchCastOfMovieData(getMovieSearchedId())
         castOfMovieViewModel.getCastOfMovieData().observe(this as LifecycleOwner, Observer {
 
             it?.let {

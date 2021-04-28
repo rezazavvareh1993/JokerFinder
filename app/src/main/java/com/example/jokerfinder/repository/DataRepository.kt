@@ -1,17 +1,10 @@
 package com.example.jokerfinder.repository
 
 import android.annotation.SuppressLint
-import com.example.jokerfinder.pojoes.Credits
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
-import com.example.jokerfinder.pojoes.ResponseDetailMovie
-import com.example.jokerfinder.pojoes.ResponseSearchMovie
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.utils.MyConstantClass
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -35,38 +28,38 @@ class DataRepository @Inject constructor(
 
     fun fetchCastsOfMovie(idMovie: Int) = flow {
         val response = networkRepository.fetchCastsOfMovie(idMovie, apiKey)
-        if(response.isSuccessful)
+        if (response.isSuccessful)
             emit(response.body())
     }.flowOn(Dispatchers.IO)
 
-    fun fetchMovieSearchData(movieName: String, page: Int): Single<ResponseSearchMovie> {
-        return networkRepository.fetchMovieSearchData(movieName, page, apiKey)
-    }
-    //test
+    fun fetchMovieSearchData(movieName: String, page: Int) = flow {
+        val response = networkRepository.fetchMovieSearchData(movieName, page, apiKey)
+        if (response.isSuccessful)
+            emit(response.body())
+    }.flowOn(Dispatchers.IO)
 
     ////////////////////////////////Local
 
-    fun fetchAllFavoriteMovies(): Single<List<FavoriteMovieEntity>> {
-        return favoriteMovieDAO.getAllFavoriteMovies()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun fetchAllFavoriteMovies() = flow {
+        val data = favoriteMovieDAO.getAllFavoriteMovies()
+        if (!data.isNullOrEmpty())
+            emit(data)
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) {
+        favoriteMovieDAO.saveFavoriteMovie(favoriteMovieEntity)
+    }
+//    = flow {
+
+//        if (!data.isNullOrEmpty())
+//            emit(data)
+//    }.flowOn(Dispatchers.IO)
+
+    suspend fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity) {
+        favoriteMovieDAO.delete(favoriteMovieEntity)
     }
 
-    fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity): Completable {
-        return favoriteMovieDAO.saveFavoriteMovie(favoriteMovieEntity)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity): Completable {
-        return favoriteMovieDAO.delete(favoriteMovieEntity)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun findByMovieId(movieId: Int): Single<FavoriteMovieEntity> {
-        return favoriteMovieDAO.findByMovieId(movieId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    suspend fun findByMovieId(movieId: Int) {
+        favoriteMovieDAO.findByMovieId(movieId)
     }
 }

@@ -10,17 +10,17 @@ import io.reactivex.Single
 interface FavoriteMovieDAO {
 
     @Query("SELECT * FROM favoriteMovie")
-    fun getAllFavoriteMovies(): Single<List<FavoriteMovieEntity>>
+    suspend fun getAllFavoriteMovies(): List<FavoriteMovieEntity>
 
     @Query("SELECT * FROM favoriteMovie WHERE movieId LIKE :movieId")
-    fun findByMovieId(movieId: Int): Single<FavoriteMovieEntity>
+    suspend fun findByMovieId(movieId: Int): FavoriteMovieEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) : Completable
+    suspend fun saveFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity)
 
     @Delete
-    fun delete(favoriteMovieEntity: FavoriteMovieEntity) : Completable
+    suspend fun delete(favoriteMovieEntity: FavoriteMovieEntity)
 
     @Update
-    fun update(favoriteMovieEntity: FavoriteMovieEntity) : Completable
+    suspend fun update(favoriteMovieEntity: FavoriteMovieEntity)
 }

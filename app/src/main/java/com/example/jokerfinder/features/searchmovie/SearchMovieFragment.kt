@@ -8,36 +8,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
-import com.jakewharton.rxbinding2.widget.RxTextView
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_search_movie.*
-import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
  */
 @AndroidEntryPoint
-class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
+class SearchMovieFragment : BaseFragment(), View.OnClickListener {
 
     private lateinit var navController: NavController
     private val searchMovieViewModel: SearchMovieViewModel by viewModels()
     private lateinit var imgSearchMovie: ImageView
-    private val disposable = CompositeDisposable()
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
         val bundle = bundleOf("movieId" to it)
         navController.navigate(R.id.action_searchMovieFragment_to_movieDetailsFragment, bundle)
@@ -93,17 +86,11 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
 
     private fun setOnClicks(view: View) {
         view.findViewById<ImageView>(R.id.imgSearch).setOnClickListener(this) //click
-
-        disposable.add( //////when edt search is empty
-            RxTextView
-                .textChanges(edtSearch)
-                .filter { it.isEmpty() }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if(!checkSearchButton)
-                        imgSearch.setImageResource(R.drawable.ic_search)
-                }
-        )
+        edtSearch.addTextChangedListener {
+            if (it.toString().isEmpty())
+                if (!checkSearchButton)
+                    imgSearch.setImageResource(R.drawable.ic_search)
+        }
     }
 
     private fun setUpRecyclerView() {
@@ -118,8 +105,8 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
                 val lastItem = layoutManager.findLastVisibleItemPosition()
                 val total = layoutManager.itemCount
                 if (total > 0)
-                    if (total - 1 == lastItem){
-                        searchMovieViewModel.fetchMovieSearchData(edtSearch.text.toString(),  true)
+                    if (total - 1 == lastItem) {
+                        searchMovieViewModel.fetchMovieSearchData(edtSearch.text.toString(), true)
                         pbrPagination.visibility = View.VISIBLE
                     }
             }
@@ -127,8 +114,8 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     }
 
     private fun callGetListMovies() {
-        searchMovieViewModel.fetchMovieSearchData(getMovieName(),false)
-        searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, Observer {
+        searchMovieViewModel.fetchMovieSearchData(getMovieName(), false)
+        searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, {
             it?.let { adapter.submitList(it) }
             pbrSearch.visibility = View.GONE
             pbrPagination.visibility = View.GONE
@@ -137,12 +124,7 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     }
 
     private fun getMovieName(): String {
-        return  edtSearch.text.toString()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposable.clear()
+        return edtSearch.text.toString()
     }
 
     override fun onAttach(context: Context) {
@@ -153,11 +135,11 @@ class SearchMovieFragment : BaseFragment() ,View.OnClickListener{
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.imgSearch -> {
-                if(checkSearchButton){
+                if (checkSearchButton) {
                     callGetListMovies()
                     pbrSearch.visibility = View.VISIBLE
                     imgSearch.setImageResource(R.drawable.ic_clear_)
-                }else{
+                } else {
                     edtSearch.text.clear()
                     imgSearch.setImageResource(R.drawable.ic_search)
                 }

@@ -1,18 +1,21 @@
 package com.example.jokerfinder.features.searchmovie
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.jokerfinder.base.BaseViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.jokerfinder.pojoes.ResultModel
 import com.example.jokerfinder.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchMovieViewModel @Inject constructor (private val repository: DataRepository): ViewModel() {
+class SearchMovieViewModel @Inject constructor(private val repository: DataRepository) :
+    ViewModel() {
 
     private var page = 1
     private var shouldLoadMore = true
@@ -20,12 +23,9 @@ class SearchMovieViewModel @Inject constructor (private val repository: DataRepo
     private var movieName = ""
     private var isLoading = false
 
-
     private var searchMovieMutableLiveData = MutableLiveData<List<ResultModel>>()
-    private val disposable = CompositeDisposable()
 
-
-    fun fetchMovieSearchData(movieName : String, isLoadMore : Boolean){
+    fun fetchMovieSearchData(movieName: String, isLoadMore: Boolean) {
         if (isLoading) return
 
         if (movieName.isNotEmpty())
@@ -33,22 +33,22 @@ class SearchMovieViewModel @Inject constructor (private val repository: DataRepo
 
         prepareDataToSearch(isLoadMore)
 
-        disposable.add(
-            repository.fetchMovieSearchData(movieName,page)
-                .subscribe({
+        viewModelScope.launch {
+            try {
+                repository.fetchMovieSearchData(movieName, page).collect {
                     isLoading = false
-                    if(it.results.isEmpty())
-                      shouldLoadMore = false
+                    if (it?.results?.isEmpty()!!)
+                        shouldLoadMore = false
 
                     list.addAll(it.results)
                     searchMovieMutableLiveData.value = list
-
-                },{
-                    isLoading = false
-                    searchMovieMutableLiveData.value = null
-                    Log.d("MyTag",it.message!!)
-                })
-        )
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
+                isLoading = false
+                searchMovieMutableLiveData.value = null
+            }
+        }
     }
 
     private fun prepareDataToSearch(isLoadMore: Boolean) {
@@ -62,13 +62,5 @@ class SearchMovieViewModel @Inject constructor (private val repository: DataRepo
         }
     }
 
-    fun getSearchMovieData() : LiveData<List<ResultModel>> = searchMovieMutableLiveData
-
-    /**
-     * Clearing the RX disposables
-     */
-    override fun onCleared() {
-        super.onCleared()
-        disposable.clear()
-    }
+    fun getSearchMovieData(): LiveData<List<ResultModel>> = searchMovieMutableLiveData
 }

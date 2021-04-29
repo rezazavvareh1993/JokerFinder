@@ -49,11 +49,6 @@ class DataRepository @Inject constructor(
     suspend fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) {
         favoriteMovieDAO.saveFavoriteMovie(favoriteMovieEntity)
     }
-//    = flow {
-
-//        if (!data.isNullOrEmpty())
-//            emit(data)
-//    }.flowOn(Dispatchers.IO)
 
     suspend fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity) {
         favoriteMovieDAO.delete(favoriteMovieEntity)

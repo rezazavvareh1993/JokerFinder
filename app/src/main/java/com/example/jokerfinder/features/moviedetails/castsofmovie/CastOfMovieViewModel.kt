@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.jokerfinder.pojoes.Credits
 import com.example.jokerfinder.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class CastOfMovieViewModel @Inject constructor(private val repository: DataRepos
     private var castOfMovieMutableLiveData = MutableLiveData<Credits>()
 
     fun fetchCastOfMovieData(idMovie: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.fetchCastsOfMovie(idMovie).collect {
                     castOfMovieMutableLiveData.value = it

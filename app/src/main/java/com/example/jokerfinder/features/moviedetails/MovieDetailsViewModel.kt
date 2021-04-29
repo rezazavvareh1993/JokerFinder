@@ -12,6 +12,7 @@ import com.example.jokerfinder.pojoes.ResponseDetailMovie
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class MovieDetailsViewModel @Inject constructor(private val repository: DataRepo
 //    }
 
     fun fetchMovieDetails(idMovie: Int, context: Context) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.fetchMovieDetails(idMovie).collect {
                     movieDetailsLiveData.value = it

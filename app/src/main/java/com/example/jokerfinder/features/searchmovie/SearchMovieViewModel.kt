@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.jokerfinder.pojoes.ResultModel
 import com.example.jokerfinder.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,7 +34,7 @@ class SearchMovieViewModel @Inject constructor(private val repository: DataRepos
 
         prepareDataToSearch(isLoadMore)
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.fetchMovieSearchData(movieName, page).collect {
                     isLoading = false

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class FavoriteMovieViewModel @Inject constructor(private val repository: DataRep
     /////////////////////////get all favoriteMovie from dataBase
     fun fetchAllFavoriteMovies() {
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.fetchAllFavoriteMovies().collect {
                     movieListMutableLiveData.value = it

@@ -114,7 +114,8 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun callGetListMovies() {
-        searchMovieViewModel.fetchMovieSearchData(getMovieName(), false)
+        if(getMovieName().isNotEmpty())
+            searchMovieViewModel.fetchMovieSearchData(getMovieName(), false)
         searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, {
             it?.let { adapter.submitList(it) }
             pbrSearch.visibility = View.GONE

@@ -22,27 +22,19 @@ class MovieDetailsViewModel @Inject constructor(private val repository: DataRepo
     ViewModel() {
     private var movieDetailsLiveData = MutableLiveData<ResponseDetailMovie>()
 
-//    viewModelScope.launch {
-//        try {
-//
-//        } catch (e: Exception) {
-//            Log.d(TAG, e.message.toString())
-//        }
-//    }
-
-    fun fetchMovieDetails(idMovie: Int, context: Context) {
+    fun fetchMovieDetails(idMovie: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.fetchMovieDetails(idMovie).collect {
-                    movieDetailsLiveData.value = it
+                    movieDetailsLiveData.postValue(it)
                 }
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
-                MyConstantClass.showToast(
-                    context,
-                    context.resources.getString(R.string.error_connection)
-                )
-                movieDetailsLiveData.value = null
+//                MyConstantClass.showToast(
+//                    context,
+//                    context.resources.getString(R.string.error_connection)
+//                )
+                movieDetailsLiveData.postValue(null)
             }
         }
     }

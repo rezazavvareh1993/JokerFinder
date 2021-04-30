@@ -42,7 +42,7 @@ class SearchMovieViewModel @Inject constructor(private val repository: DataRepos
                         shouldLoadMore = false
 
                     list.addAll(it.results)
-                    searchMovieMutableLiveData.value = list
+                    searchMovieMutableLiveData.postValue(list)
                 }
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())

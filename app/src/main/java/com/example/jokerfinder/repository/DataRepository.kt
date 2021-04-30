@@ -1,11 +1,14 @@
 package com.example.jokerfinder.repository
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.LiveData
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -54,7 +57,9 @@ class DataRepository @Inject constructor(
         favoriteMovieDAO.delete(favoriteMovieEntity)
     }
 
-    suspend fun findByMovieId(movieId: Int) {
-        favoriteMovieDAO.findByMovieId(movieId)
+    fun findByMovieId(movieId: Int): LiveData<FavoriteMovieEntity> {
+        val x = favoriteMovieDAO.findByMovieId(movieId)
+        return  x
     }
+
 }

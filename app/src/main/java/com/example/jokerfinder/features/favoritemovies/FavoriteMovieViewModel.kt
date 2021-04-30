@@ -27,10 +27,10 @@ class FavoriteMovieViewModel @Inject constructor(private val repository: DataRep
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.fetchAllFavoriteMovies().collect {
-                    movieListMutableLiveData.value = it
+                    movieListMutableLiveData.postValue(it)
                 }
             } catch (e: Exception) {
-                movieListMutableLiveData.value = null
+                movieListMutableLiveData.postValue(null)
                 Log.d(TAG, e.message.toString())
             }
         }
@@ -67,14 +67,16 @@ class FavoriteMovieViewModel @Inject constructor(private val repository: DataRep
 
     ///////////////////////////findMovieByData
     fun findMovieByMovieId(movieId: Int) {
-
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.findByMovieId(movieId)
-                isMovieInDataBaseMutableLiveData.value = true
+                val data = repository.findByMovieId(movieId)
+                if (data?.value != null)
+                    isMovieInDataBaseMutableLiveData.postValue(true)
+                else
+                    isMovieInDataBaseMutableLiveData.postValue(false)
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
-                isMovieInDataBaseMutableLiveData.value = false
+                isMovieInDataBaseMutableLiveData.postValue(false)
             }
         }
     }

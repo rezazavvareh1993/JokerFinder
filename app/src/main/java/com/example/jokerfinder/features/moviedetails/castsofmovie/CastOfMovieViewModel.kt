@@ -23,11 +23,11 @@ class CastOfMovieViewModel @Inject constructor(private val repository: DataRepos
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 repository.fetchCastsOfMovie(idMovie).collect {
-                    castOfMovieMutableLiveData.value = it
+                    castOfMovieMutableLiveData.postValue(it)
                 }
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
-                castOfMovieMutableLiveData.value = null
+                castOfMovieMutableLiveData.postValue(null)
             }
         }
     }

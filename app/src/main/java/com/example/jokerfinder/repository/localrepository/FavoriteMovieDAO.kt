@@ -1,10 +1,8 @@
 package com.example.jokerfinder.repository.localrepository
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
-import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface FavoriteMovieDAO {
@@ -13,7 +11,7 @@ interface FavoriteMovieDAO {
     suspend fun getAllFavoriteMovies(): List<FavoriteMovieEntity>
 
     @Query("SELECT * FROM favoriteMovie WHERE movieId LIKE :movieId")
-    suspend fun findByMovieId(movieId: Int): FavoriteMovieEntity
+    fun findByMovieId(movieId: Int): LiveData<FavoriteMovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity)

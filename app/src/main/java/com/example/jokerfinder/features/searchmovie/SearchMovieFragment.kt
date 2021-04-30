@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -15,11 +16,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
+import com.example.jokerfinder.pojo.ResultModel
+import com.example.jokerfinder.utils.response.GeneralResponse
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search_movie.*
 import kotlinx.coroutines.Job
@@ -66,6 +70,7 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
         callGetListMovies()
         setUpRecyclerView()
         handleImgSearch(view)
+        observeSearchData()
 
 
         swipeContainer.setOnRefreshListener {
@@ -79,6 +84,26 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
             android.R.color.holo_red_light
         )
 
+    }
+
+    private fun observeSearchData() {
+        searchMovieViewModel.gerSearchData().removeObservers(viewLifecycleOwner)
+        searchMovieViewModel.gerSearchData().observe(viewLifecycleOwner, {
+            it?.let {
+                when (it) {
+                    is GeneralResponse.Loading ->
+                        pbrPagination.visibility = View.VISIBLE
+                    is GeneralResponse.Success -> {
+                        pbrSearch.visibility = View.GONE
+                        pbrPagination.visibility = View.GONE
+                        swipeContainer.isRefreshing = false
+                        setDataToAdapter(it.data!!)
+                    }
+                    is GeneralResponse.Error ->
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
 
     private fun handleImgSearch(view: View) {
@@ -100,36 +125,20 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerView() {
-
         recyclerMovie.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(myContext, RecyclerView.HORIZONTAL, false)
         recyclerMovie.layoutManager = layoutManager
         recyclerMovie.adapter = adapter
-//        recyclerMovie.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                val lastItem = layoutManager.findLastVisibleItemPosition()
-//                val total = layoutManager.itemCount
-//                if (total > 0)
-//                    if (total - 1 == lastItem) {
-//                        searchMovieViewModel.fetchMovieSearchData(edtSearch.text.toString(), true)
-//                        pbrPagination.visibility = View.VISIBLE
-//                    }
-//            }
-//        })
+    }
+
+    private fun setDataToAdapter(data: PagingData<ResultModel>) {
+        job?.cancel()
+        job = lifecycleScope.launch { adapter.submitData(data) }
     }
 
     private fun callGetListMovies() {
-        job?.cancel()
         if (getMovieName().isNotEmpty())
-            job = lifecycleScope.launch {
-                searchMovieViewModel.fetchMovieSearchData(getMovieName())?.collectLatest {
-                    pbrSearch.visibility = View.GONE
-                    pbrPagination.visibility = View.GONE
-                    swipeContainer.isRefreshing = false
-                    adapter.submitData(it)
-                }
-            }
+            searchMovieViewModel.fetchMovieSearchData(getMovieName())
     }
 
     private fun getMovieName(): String {

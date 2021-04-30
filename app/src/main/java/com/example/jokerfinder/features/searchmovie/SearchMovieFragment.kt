@@ -12,6 +12,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,10 @@ import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search_movie.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
@@ -31,6 +36,7 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
     private lateinit var navController: NavController
     private val searchMovieViewModel: SearchMovieViewModel by viewModels()
     private lateinit var imgSearchMovie: ImageView
+    private var job: Job? = null
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
         val bundle = bundleOf("movieId" to it)
         navController.navigate(R.id.action_searchMovieFragment_to_movieDetailsFragment, bundle)
@@ -99,29 +105,31 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
         val layoutManager = LinearLayoutManager(myContext, RecyclerView.HORIZONTAL, false)
         recyclerMovie.layoutManager = layoutManager
         recyclerMovie.adapter = adapter
-        recyclerMovie.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastItem = layoutManager.findLastVisibleItemPosition()
-                val total = layoutManager.itemCount
-                if (total > 0)
-                    if (total - 1 == lastItem) {
-                        searchMovieViewModel.fetchMovieSearchData(edtSearch.text.toString(), true)
-                        pbrPagination.visibility = View.VISIBLE
-                    }
-            }
-        })
+//        recyclerMovie.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val lastItem = layoutManager.findLastVisibleItemPosition()
+//                val total = layoutManager.itemCount
+//                if (total > 0)
+//                    if (total - 1 == lastItem) {
+//                        searchMovieViewModel.fetchMovieSearchData(edtSearch.text.toString(), true)
+//                        pbrPagination.visibility = View.VISIBLE
+//                    }
+//            }
+//        })
     }
 
     private fun callGetListMovies() {
-        if(getMovieName().isNotEmpty())
-            searchMovieViewModel.fetchMovieSearchData(getMovieName(), false)
-        searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, {
-            it?.let { adapter.submitList(it) }
-            pbrSearch.visibility = View.GONE
-            pbrPagination.visibility = View.GONE
-            swipeContainer.isRefreshing = false
-        })
+        job?.cancel()
+        if (getMovieName().isNotEmpty())
+            job = lifecycleScope.launch {
+                searchMovieViewModel.fetchMovieSearchData(getMovieName())?.collectLatest {
+                    pbrSearch.visibility = View.GONE
+                    pbrPagination.visibility = View.GONE
+                    swipeContainer.isRefreshing = false
+                    adapter.submitData(it)
+                }
+            }
     }
 
     private fun getMovieName(): String {

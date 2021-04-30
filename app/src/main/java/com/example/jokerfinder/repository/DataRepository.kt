@@ -2,13 +2,12 @@ package com.example.jokerfinder.repository
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.LiveData
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
+import com.example.jokerfinder.pojo.ResponseSearchMovie
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -35,11 +34,8 @@ class DataRepository @Inject constructor(
             emit(response.body())
     }.flowOn(Dispatchers.IO)
 
-    fun fetchMovieSearchData(movieName: String, page: Int) = flow {
-        val response = networkRepository.fetchMovieSearchData(movieName, page, apiKey)
-        if (response.isSuccessful)
-            emit(response.body())
-    }.flowOn(Dispatchers.IO)
+    suspend fun fetchMovieSearchData(movieName: String, page: Int) : ResponseSearchMovie =
+        networkRepository.fetchMovieSearchData(movieName, page, apiKey)
 
     ////////////////////////////////Local
 

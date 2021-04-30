@@ -2,7 +2,6 @@ package com.example.jokerfinder.features.moviedetails
 
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,25 +12,21 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
-import com.example.jokerfinder.features.moviedetails.castsofmovie.CastOfMovieViewModel
-import com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter.CastsMovieAdapter
-import com.example.jokerfinder.pojoes.Crew
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
-import com.example.jokerfinder.pojoes.ResponseDetailMovie
+import com.example.jokerfinder.features.moviedetails.adapter.CastsMovieAdapter
+import com.example.jokerfinder.pojo.Crew
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
+import com.example.jokerfinder.pojo.ResponseDetailMovie
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
-import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass.
@@ -57,7 +52,6 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
     /////////////////////viewModels
     private val favoriteMovieViewModel: FavoriteMovieViewModel by activityViewModels()
     private val movieDetailViewModel : MovieDetailsViewModel by viewModels()
-    private val castOfMovieViewModel: CastOfMovieViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -135,8 +129,8 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun callCastsOfMovie(){
 
-        castOfMovieViewModel.fetchCastOfMovieData(getMovieSearchedId())
-        castOfMovieViewModel.getCastOfMovieData().observe(this as LifecycleOwner, Observer {
+        movieDetailViewModel.fetchCastOfMovieData(getMovieSearchedId())
+        movieDetailViewModel.getCastOfMovieData().observe(this as LifecycleOwner, Observer {
 
             it?.let {
                 adapter.submitList(it.cast)

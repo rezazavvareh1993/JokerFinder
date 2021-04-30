@@ -1,6 +1,5 @@
-package com.example.jokerfinder.pojoes
+package com.example.jokerfinder.base.db
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

@@ -27,7 +27,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
         <!-- [END fcm_default_icon] -->
-        <activity android:name=".features.startpage.SplashActivity">
+        <activity android:name=".features.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

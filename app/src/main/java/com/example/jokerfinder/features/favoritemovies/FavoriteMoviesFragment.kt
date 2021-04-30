@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseFragment
-import com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter.FavoriteMoviesAdapter
+import com.example.jokerfinder.features.favoritemovies.adapter.FavoriteMoviesAdapter
 import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite_movie.*

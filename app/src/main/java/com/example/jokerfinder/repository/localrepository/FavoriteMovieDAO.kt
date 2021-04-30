@@ -2,7 +2,7 @@ package com.example.jokerfinder.repository.localrepository
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
 
 @Dao
 interface FavoriteMovieDAO {

@@ -1,4 +1,4 @@
-package com.example.jokerfinder.features.startpage
+package com.example.jokerfinder.features.splash
 
 import android.content.Intent
 import android.graphics.Typeface
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.widget.Toast
 import com.example.jokerfinder.R
 import com.example.jokerfinder.features.MainActivity
 import com.example.jokerfinder.utils.MyConstantClass

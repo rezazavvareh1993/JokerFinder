@@ -1,41 +1,36 @@
 package com.example.jokerfinder.features.moviedetails.castsofmovie
 
-import android.content.Context
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.jokerfinder.pojoes.Credits
 import com.example.jokerfinder.repository.DataRepository
-import com.example.jokerfinder.utils.MyConstantClass
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CastOfMovieViewModel @Inject constructor(private val repository: DataRepository) : ViewModel() {
-    private val disposable = CompositeDisposable()
+class CastOfMovieViewModel @Inject constructor(private val repository: DataRepository) :
+    ViewModel() {
     private var castOfMovieMutableLiveData = MutableLiveData<Credits>()
 
-    fun fetchCastOfMovieData(idMovie : Int, context: Context){
-        disposable.add(
-            repository.fetchCastsOfMovie(idMovie)
-                .subscribe({
-                    castOfMovieMutableLiveData.value = it
-                },{
-                    Log.d("MyTag", it.message!!)
-                    castOfMovieMutableLiveData.value = null
-                })
-        )
+    fun fetchCastOfMovieData(idMovie: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                repository.fetchCastsOfMovie(idMovie).collect {
+                    castOfMovieMutableLiveData.postValue(it)
+                }
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
+                castOfMovieMutableLiveData.postValue(null)
+            }
+        }
     }
 
-    fun getCastOfMovieData() : LiveData<Credits> = castOfMovieMutableLiveData
-
-    /**
-     * Clearing the RX disposable
-     */
-    override fun onCleared() {
-        super.onCleared()
-        disposable.clear()
-    }
+    fun getCastOfMovieData(): LiveData<Credits> = castOfMovieMutableLiveData
 }

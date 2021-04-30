@@ -1,17 +1,16 @@
 package com.example.jokerfinder.repository
 
 import android.annotation.SuppressLint
-import com.example.jokerfinder.pojoes.Credits
+import androidx.lifecycle.LiveData
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
-import com.example.jokerfinder.pojoes.ResponseDetailMovie
-import com.example.jokerfinder.pojoes.ResponseSearchMovie
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.utils.MyConstantClass
-import io.reactivex.Completable
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
@@ -24,42 +23,43 @@ class DataRepository @Inject constructor(
     /////////////////////////////////////////Network
 
     @SuppressLint("CheckResult")
-    fun fetchMovieDetails(idMovie: Int): Single<ResponseDetailMovie> {
-        return networkRepository.fetchMovieDetails(idMovie, apiKey)
-    }
+    fun fetchMovieDetails(idMovie: Int) = flow {
+        val response = networkRepository.fetchMovieDetails(idMovie, apiKey)
+        if (response.isSuccessful)
+            emit(response.body())
+    }.flowOn(Dispatchers.IO)
 
-    fun fetchCastsOfMovie(idMovie: Int): Single<Credits> {
-        return networkRepository.fetchCastsOfMovie(idMovie, apiKey)
-    }
+    fun fetchCastsOfMovie(idMovie: Int) = flow {
+        val response = networkRepository.fetchCastsOfMovie(idMovie, apiKey)
+        if (response.isSuccessful)
+            emit(response.body())
+    }.flowOn(Dispatchers.IO)
 
-    fun fetchMovieSearchData(movieName: String, page: Int): Single<ResponseSearchMovie> {
-        return networkRepository.fetchMovieSearchData(movieName, page, apiKey)
-    }
-    //test
+    fun fetchMovieSearchData(movieName: String, page: Int) = flow {
+        val response = networkRepository.fetchMovieSearchData(movieName, page, apiKey)
+        if (response.isSuccessful)
+            emit(response.body())
+    }.flowOn(Dispatchers.IO)
 
     ////////////////////////////////Local
 
-    fun fetchAllFavoriteMovies(): Single<List<FavoriteMovieEntity>> {
-        return favoriteMovieDAO.getAllFavoriteMovies()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun fetchAllFavoriteMovies() = flow {
+        val data = favoriteMovieDAO.getAllFavoriteMovies()
+        if (!data.isNullOrEmpty())
+            emit(data)
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) {
+        favoriteMovieDAO.saveFavoriteMovie(favoriteMovieEntity)
     }
 
-    fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity): Completable {
-        return favoriteMovieDAO.saveFavoriteMovie(favoriteMovieEntity)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    suspend fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity) {
+        favoriteMovieDAO.delete(favoriteMovieEntity)
     }
 
-    fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity): Completable {
-        return favoriteMovieDAO.delete(favoriteMovieEntity)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+    fun findByMovieId(movieId: Int): LiveData<FavoriteMovieEntity> {
+        val x = favoriteMovieDAO.findByMovieId(movieId)
+        return  x
     }
 
-    fun findByMovieId(movieId: Int): Single<FavoriteMovieEntity> {
-        return favoriteMovieDAO.findByMovieId(movieId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
 }

@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
@@ -52,7 +53,6 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
     /////////////values
     private var isLikeMovie = false
     private lateinit var favoriteMovieEntity: FavoriteMovieEntity
-    private lateinit var myContext: Context
 
     /////////////////////viewModels
     private val favoriteMovieViewModel: FavoriteMovieViewModel by activityViewModels()
@@ -89,7 +89,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun setUpRecyclerView() {
         cast_recycler_view.setHasFixedSize(true)
-        cast_recycler_view.layoutManager = LinearLayoutManager(myContext, RecyclerView.HORIZONTAL, false)
+        cast_recycler_view.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         cast_recycler_view.adapter = adapter
     }
 
@@ -110,8 +110,8 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun callMovieDetails() {
 
-        movieDetailViewModel.fetchMovieDetails(getMovieSearchedId(), myContext)
-        movieDetailViewModel.getMovieDetailsData().observe(this as LifecycleOwner, Observer {
+        movieDetailViewModel.fetchMovieDetails(getMovieSearchedId(),)
+        movieDetailViewModel.getMovieDetailsData().observe(this as LifecycleOwner, {
 
                 it?.let {
                     saveMovieInformationForUsingDataBase(it)
@@ -135,7 +135,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
 
     private fun callCastsOfMovie(){
 
-        castOfMovieViewModel.fetchCastOfMovieData(getMovieSearchedId(), requireContext())
+        castOfMovieViewModel.fetchCastOfMovieData(getMovieSearchedId())
         castOfMovieViewModel.getCastOfMovieData().observe(this as LifecycleOwner, Observer {
 
             it?.let {
@@ -216,8 +216,7 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
     override fun onClick(v: View?) {
         when(v!!.id){
             R.id.img_back_movie_detail -> {
-                navController.navigate(R.id.action_movieDetailsFragment_to_searchMovieFragment)
-                onDestroy()
+                findNavController().navigateUp()
             }
             R.id.img_like_movie_in_details_movie_fragment -> {
                 isLikeMovie = !isLikeMovie
@@ -231,10 +230,5 @@ class MovieDetailsFragment : BaseFragment() ,View.OnClickListener{
                 }
             }
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        myContext = context
     }
 }

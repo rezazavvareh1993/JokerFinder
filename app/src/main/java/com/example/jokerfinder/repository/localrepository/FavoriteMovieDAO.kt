@@ -1,26 +1,24 @@
 package com.example.jokerfinder.repository.localrepository
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
 import com.example.jokerfinder.pojoes.FavoriteMovieEntity
-import io.reactivex.Completable
-import io.reactivex.Single
 
 @Dao
 interface FavoriteMovieDAO {
 
     @Query("SELECT * FROM favoriteMovie")
-    fun getAllFavoriteMovies(): Single<List<FavoriteMovieEntity>>
+    suspend fun getAllFavoriteMovies(): List<FavoriteMovieEntity>
 
     @Query("SELECT * FROM favoriteMovie WHERE movieId LIKE :movieId")
-    fun findByMovieId(movieId: Int): Single<FavoriteMovieEntity>
+    fun findByMovieId(movieId: Int): LiveData<FavoriteMovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) : Completable
+    suspend fun saveFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity)
 
     @Delete
-    fun delete(favoriteMovieEntity: FavoriteMovieEntity) : Completable
+    suspend fun delete(favoriteMovieEntity: FavoriteMovieEntity)
 
     @Update
-    fun update(favoriteMovieEntity: FavoriteMovieEntity) : Completable
+    suspend fun update(favoriteMovieEntity: FavoriteMovieEntity)
 }

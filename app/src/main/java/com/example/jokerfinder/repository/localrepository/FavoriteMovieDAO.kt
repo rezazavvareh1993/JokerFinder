@@ -11,7 +11,7 @@ interface FavoriteMovieDAO {
     suspend fun getAllFavoriteMovies(): List<FavoriteMovieEntity>
 
     @Query("SELECT * FROM favoriteMovie WHERE movieId LIKE :movieId")
-    fun findByMovieId(movieId: Int): LiveData<FavoriteMovieEntity>
+    fun findByMovieId(movieId: Int): FavoriteMovieEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity)

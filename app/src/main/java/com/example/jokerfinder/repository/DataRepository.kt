@@ -53,8 +53,8 @@ class DataRepository @Inject constructor(
         favoriteMovieDAO.delete(favoriteMovieEntity)
     }
 
-    fun findByMovieId(movieId: Int): LiveData<FavoriteMovieEntity> {
-        val x = favoriteMovieDAO.findByMovieId(movieId)
+    fun findByMovieId(movieId: Int): FavoriteMovieEntity? {
+         val x = favoriteMovieDAO.findByMovieId(movieId)
         return  x
     }
 

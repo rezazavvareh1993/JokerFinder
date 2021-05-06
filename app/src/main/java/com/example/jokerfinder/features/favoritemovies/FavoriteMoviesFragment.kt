@@ -12,12 +12,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.base.db.FavoriteMovieEntity
+import com.example.jokerfinder.databinding.FragmentFavoriteMovieBinding
 import com.example.jokerfinder.features.favoritemovies.adapter.FavoriteMoviesAdapter
 import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -29,28 +31,31 @@ import kotlinx.android.synthetic.main.fragment_favorite_movie.*
  */
 @AndroidEntryPoint
 class FavoriteMoviesFragment : BaseFragment() {
+    private var _binding: FragmentFavoriteMovieBinding? = null
 
+    private val binding get() = _binding!!
     private val favoriteMovieViewModel: FavoriteMovieViewModel by viewModels()
-    private val movieDetailsViewModel: MovieDetailsViewModel by activityViewModels()
     private lateinit var lastFavoriteMovieEntityDeleted: FavoriteMovieEntity
     private lateinit var adapter: FavoriteMoviesAdapter
-    private lateinit var navController: NavController
     private val getFavoriteMovieId: (Int) -> Unit = {
         val bundle = bundleOf("movieId" to it)
-        navController.navigate(R.id.action_favoriteMovieFragment_to_movieDetailsFragment, bundle)
+        findNavController().navigate(
+            R.id.action_favoriteMovieFragment_to_movieDetailsFragment,
+            bundle
+        )
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentFavoriteMovieBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_movie, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        navController = Navigation.findNavController(requireView())
         callGetListFavoriteMovies()
         setUpRecyclerView()
         itemTouchHelper()
@@ -96,9 +101,9 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     private fun setUpRecyclerView() {
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-        rcyFavoriteMovie.layoutManager = layoutManager
+        binding.rcyFavoriteMovie.layoutManager = layoutManager
         adapter = FavoriteMoviesAdapter(getFavoriteMovieId)
-        rcyFavoriteMovie.adapter = adapter
+        binding.rcyFavoriteMovie.adapter = adapter
     }
 
     private fun callGetListFavoriteMovies() {
@@ -107,5 +112,10 @@ class FavoriteMoviesFragment : BaseFragment() {
             it?.let { adapter.submitList(it) }
             pbrFavoriteMovie.visibility = View.GONE
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

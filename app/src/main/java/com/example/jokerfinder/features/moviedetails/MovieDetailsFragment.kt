@@ -10,32 +10,34 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseFragment
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
+import com.example.jokerfinder.base.extensions.makeGone
+import com.example.jokerfinder.base.extensions.makeVisible
+import com.example.jokerfinder.databinding.FragmentMovieDetailsBinding
 import com.example.jokerfinder.features.favoritemovies.FavoriteMovieViewModel
 import com.example.jokerfinder.features.moviedetails.adapter.CastsMovieAdapter
 import com.example.jokerfinder.pojo.Crew
-import com.example.jokerfinder.base.db.FavoriteMovieEntity
 import com.example.jokerfinder.pojo.ResponseDetailMovie
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
 /**
- * A simple [Fragment] subclass.
+ * A simple [Fragment] subclass for see details of a movie and actors
  */
 @AndroidEntryPoint
 class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
+    private var _binding: FragmentMovieDetailsBinding? = null
 
+    private val binding get() = _binding!!
     private val movieDetailViewModel: MovieDetailsViewModel by viewModels()
     private val favoriteMovieViewModel: FavoriteMovieViewModel by activityViewModels()
     private var isLikeMovie = false
-    private lateinit var navController: NavController
     private lateinit var adapter: CastsMovieAdapter
     private lateinit var favoriteMovieEntity: FavoriteMovieEntity
 
@@ -43,14 +45,12 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_details, container, false)
+        _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        navController = Navigation.findNavController(requireView())
         loadingViews()
         callMovieDetails()
         isMovieInDataBase()
@@ -59,30 +59,30 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setOnClicks() {
-        imgBack.setOnClickListener(this)
-        imgLikeMovie.setOnClickListener(this)
+        binding.imgBack.setOnClickListener(this)
+        binding.imgLikeMovie.setOnClickListener(this)
     }
 
     private fun setUpRecyclerView() {
-        rcyCast.setHasFixedSize(true)
-        rcyCast.layoutManager =
+        binding.rcyCast.setHasFixedSize(true)
+        binding.rcyCast.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         adapter = CastsMovieAdapter()
-        rcyCast.adapter = adapter
+        binding.rcyCast.adapter = adapter
     }
 
     private fun loadingViews() {
 
-        pbrMovieDetails.visibility = View.VISIBLE
-        imgLikeMovie.visibility = View.GONE
-        cardMovieLogo.visibility = View.GONE
-        imgMainMovie.visibility = View.GONE
-        txtOverview.visibility = View.GONE
-        txtTitle.visibility = View.GONE
-        txtDirector.visibility = View.GONE
-        txtRate.visibility = View.GONE
-        txtWriter.visibility = View.GONE
-        txtProducer.visibility = View.GONE
+        binding.pbrMovieDetails.makeVisible()
+        binding.imgLikeMovie.makeGone()
+        binding.cardMovieLogo.makeGone()
+        binding.imgMainMovie.makeGone()
+        binding.txtOverview.makeGone()
+        binding.txtTitle.makeGone()
+        binding.txtDirector.makeGone()
+        binding.txtRate.makeGone()
+        binding.txtWriter.makeGone()
+        binding.txtProducer.makeGone()
     }
 
     private fun callMovieDetails() {
@@ -94,7 +94,7 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
                 showViews()
                 callCastsOfMovie()
             }
-            pbrMovieDetails.visibility = View.GONE
+            binding.pbrMovieDetails.makeGone()
         })
     }
 
@@ -111,7 +111,7 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
                 adapter.submitList(it.cast)
                 credits.crew?.let { crew -> getCrewOfMovie(crew) }
             }
-            pbrCast.visibility = View.GONE
+            pbrCast.makeGone()
         })
     }
 
@@ -140,24 +140,22 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
 
     private fun showViews() {
 
-        pbrMovieDetails.visibility = View.GONE
-        imgLikeMovie.visibility = View.VISIBLE
-        cardMovieLogo.visibility = View.VISIBLE
-        imgMainMovie.visibility = View.VISIBLE
-        txtOverview.visibility = View.VISIBLE
-        txtTitle.visibility = View.VISIBLE
-        txtDirector.visibility = View.VISIBLE
-        txtRate.visibility = View.VISIBLE
-        txtWriter.visibility = View.VISIBLE
-        txtProducer.visibility = View.VISIBLE
+        binding.pbrMovieDetails.makeGone()
+        binding.imgLikeMovie.makeVisible()
+        binding.cardMovieLogo.makeVisible()
+        binding.imgMainMovie.makeVisible()
+        binding.txtOverview.makeVisible()
+        binding.txtTitle.makeVisible()
+        binding.txtDirector.makeVisible()
+        binding.txtRate.makeVisible()
+        binding.txtWriter.makeVisible()
+        binding.txtProducer.makeVisible()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun bindData(responseDetailMovie: ResponseDetailMovie) {
-
-        txtOverview.text = responseDetailMovie.overview
-        txtTitle.text = responseDetailMovie.originalTitle
-        txtRate.text = "Rate :  " + responseDetailMovie.voteAverage.toString()
+        binding.txtOverview.text = responseDetailMovie.overview
+        binding.txtTitle.text = responseDetailMovie.originalTitle
+        binding.txtRate.text = "Rate :  ${responseDetailMovie.voteAverage}"
         Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.backdropPath)
             .into(imgMainMovie)
         Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.posterPath)
@@ -175,9 +173,9 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
         favoriteMovieViewModel.findMovieByMovieId(getMovieSearchedId())
         favoriteMovieViewModel.getIsMovieInDataBase().observe(this as LifecycleOwner, {
             if (it)
-                imgLikeMovie.setImageResource(R.drawable.ic_favorite_red)
+                binding.imgLikeMovie.setImageResource(R.drawable.ic_favorite_red)
             else
-                imgLikeMovie.setImageResource(R.drawable.ic_favorite_border)
+                binding.imgLikeMovie.setImageResource(R.drawable.ic_favorite_border)
         })
     }
 
@@ -190,12 +188,17 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
                 isLikeMovie = !isLikeMovie
                 if (isLikeMovie) {
                     favoriteMovieViewModel.insertFavoriteMovie(favoriteMovieEntity)
-                    imgLikeMovie.setImageResource(R.drawable.ic_favorite_red)
+                    binding.imgLikeMovie.setImageResource(R.drawable.ic_favorite_red)
                 } else {
                     favoriteMovieViewModel.deleteMovieFromFavoriteMovies(favoriteMovieEntity)
-                    imgLikeMovie.setImageResource(R.drawable.ic_favorite_border)
+                    binding.imgLikeMovie.setImageResource(R.drawable.ic_favorite_border)
                 }
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

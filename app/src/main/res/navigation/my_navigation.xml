@@ -8,7 +8,7 @@
         android:id="@+id/searchMovieFragment"
         android:name="com.example.jokerfinder.features.searchmovie.SearchMovieFragment"
         android:label="fragment_search_movie"
-        tools:layout="@layout/fragment_search_movie" >
+        tools:layout="@layout/fragment_search_movie">
         <action
             android:id="@+id/action_searchMovieFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
@@ -17,12 +17,12 @@
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.jokerfinder.features.moviedetails.MovieDetailsFragment"
         android:label="fragment_movie_details"
-        tools:layout="@layout/fragment_movie_details" >
+        tools:layout="@layout/fragment_movie_details">
 
-        <argument android:name="movieId"
-            app:argType="integer"
+        <argument
+            android:name="movieId"
             android:defaultValue="0"
-            />
+            app:argType="integer" />
 
         <action
             android:id="@+id/action_movieDetailsFragment_to_searchMovieFragment"
@@ -32,7 +32,7 @@
         android:id="@+id/favoriteMovieFragment"
         android:name="com.example.jokerfinder.features.favoritemovies.FavoriteMoviesFragment"
         android:label="fragment_favorite_movie"
-        tools:layout="@layout/fragment_favorite_movie" >
+        tools:layout="@layout/fragment_favorite_movie">
         <action
             android:id="@+id/action_favoriteMovieFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />

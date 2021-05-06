@@ -49,8 +49,7 @@ class DataRepository @Inject constructor(
     }
 
     fun findByMovieId(movieId: Int): FavoriteMovieEntity? {
-        val x = favoriteMovieDAO.findByMovieId(movieId)
-        return x
+        return favoriteMovieDAO.findByMovieId(movieId)
     }
 
 }

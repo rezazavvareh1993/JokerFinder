@@ -19,13 +19,22 @@ class SearchMovieViewModel @Inject constructor(private val repository: DataRepos
 
     lateinit var dataFlow: Flow<PagingData<ResultModel>>
     private var lastName = ""
+    private var movieName = ""
 
-    fun fetchMovieSearchData(movieName: String) {
+    fun fetchMovieSearchData() {
         if (lastName == movieName) return
         dataFlow = Pager(PagingConfig(pageSize = 10)) {
             MoviePageResource(repository, movieName)
         }.flow.cachedIn(viewModelScope)
         lastName = movieName
     }
+
+    fun setMovieName(name: String) {
+        movieName = name
+    }
+
+    fun getMovieName() = movieName
+
+    fun isSameName() = movieName == lastName
 }
 

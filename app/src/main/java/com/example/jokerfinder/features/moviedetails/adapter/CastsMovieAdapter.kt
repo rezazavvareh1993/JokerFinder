@@ -3,6 +3,7 @@ package com.example.jokerfinder.features.moviedetails.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
@@ -27,20 +28,24 @@ class CastsMovieAdapter : ListAdapter<Cast, CastsMovieAdapter.CastViewHolder>(
         val position = holder.layoutPosition
         holder.bind(getItem(position))
     }
+
     class CastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(cast : Cast){
+        fun bind(cast: Cast) {
             val uriImage = "https://image.tmdb.org/t/p/w500${cast.profilePath}"
-            getImageMovieByPicasso(uriImage)
-
-            itemView.txt_character_cast.text = "Character : ${cast.character}"
-            itemView.txt_name_cast.text = "Name : ${cast.name}"
+            with(itemView) {
+                Picasso.get().load(uriImage).into(imgCastPic)
+                txtCharacterCast.text = "Character : ${cast.character}"
+                txtNameCast.text = "Name : ${cast.name}"
+            }
         }
+    }
 
-        private fun getImageMovieByPicasso(uriImage: String) {
+    class CastDiffUtilCallBack : DiffUtil.ItemCallback<Cast>() {
+        override fun areItemsTheSame(oldItem: Cast, newItem: Cast) =
+            oldItem.castId == newItem.castId
 
-            Picasso.get().load(uriImage).into(itemView.img_cast_pic)
-        }
-
+        override fun areContentsTheSame(oldItem: Cast, newItem: Cast) =
+            oldItem.castId == newItem.castId
     }
 }

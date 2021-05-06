@@ -81,7 +81,6 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerView() {
-        binding.recyclerMovie.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         binding.recyclerMovie.layoutManager = layoutManager
         adapter = MoviesAdapter(getIdMovieLambdaFunction)
@@ -90,8 +89,8 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
 
     private fun setDataToRecyclerView() {
         job?.cancel()
-        if (binding.edtSearch.text.toString().isNotEmpty()) {
-            searchMovieViewModel.fetchMovieSearchData(binding.edtSearch.text.toString())
+        if (searchMovieViewModel.getMovieName().isNotEmpty()) {
+            searchMovieViewModel.fetchMovieSearchData()
             job = lifecycleScope.launch {
                 searchMovieViewModel.dataFlow.collectLatest { adapter.submitData(it) }
             }
@@ -123,9 +122,12 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
         when (v!!.id) {
             R.id.imgSearch -> {
                 if (checkSearchButton) {
-                    binding.pbrSearch.makeVisible()
-                    setDataToRecyclerView()
-                    binding.imgSearch.setImageResource(R.drawable.ic_clear_)
+                    searchMovieViewModel.setMovieName(binding.edtSearch.text.toString())
+                    if(!searchMovieViewModel.isSameName()) {
+                        binding.pbrSearch.makeVisible()
+                        setDataToRecyclerView()
+                        binding.imgSearch.setImageResource(R.drawable.ic_clear)
+                    }
                 } else {
                     binding.edtSearch.text.clear()
                     cancelLoading()

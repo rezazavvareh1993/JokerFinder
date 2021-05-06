@@ -52,9 +52,9 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         loadingViews()
+        setUpRecyclerView()
         callMovieDetails()
         isMovieInDataBase()
-        setUpRecyclerView()
         setOnClicks()
     }
 
@@ -64,7 +64,6 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun setUpRecyclerView() {
-        binding.rcyCast.setHasFixedSize(true)
         binding.rcyCast.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         adapter = CastsMovieAdapter()
@@ -106,7 +105,8 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
 
     private fun callCastsOfMovie() {
         movieDetailViewModel.fetchCastOfMovieData(getMovieSearchedId())
-        movieDetailViewModel.getCastOfMovieData().observe(this as LifecycleOwner, {
+        movieDetailViewModel.getCastOfMovieData().removeObservers(viewLifecycleOwner)
+        movieDetailViewModel.getCastOfMovieData().observe(viewLifecycleOwner, {
             it?.let { credits ->
                 adapter.submitList(it.cast)
                 credits.crew?.let { crew -> getCrewOfMovie(crew) }

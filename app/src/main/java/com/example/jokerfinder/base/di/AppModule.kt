@@ -4,8 +4,8 @@ import android.content.Context
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
-import com.example.jokerfinder.retrofit.JokerFinderApiService
-import com.example.jokerfinder.utils.MovieDB
+import com.example.jokerfinder.repository.networkreopsitory.retrofit.JokerFinderApiService
+import com.example.jokerfinder.base.db.MovieDB
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module

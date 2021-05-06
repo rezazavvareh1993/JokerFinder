@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
 import com.example.jokerfinder.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,14 +21,11 @@ class FavoriteMovieViewModel @Inject constructor(private val repository: DataRep
     private var movieListMutableLiveData = MutableLiveData<List<FavoriteMovieEntity>>()
     private var isMovieInDataBaseMutableLiveData = MutableLiveData<Boolean>()
 
-    /////////////////////////get all favoriteMovie from dataBase
     fun fetchAllFavoriteMovies() {
-
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.fetchAllFavoriteMovies().collect {
-                    movieListMutableLiveData.postValue(it)
-                }
+                repository.fetchAllFavoriteMovies()
+                    .collect { movieListMutableLiveData.postValue(it) }
             } catch (e: Exception) {
                 movieListMutableLiveData.postValue(null)
                 Log.d(TAG, e.message.toString())
@@ -40,9 +37,7 @@ class FavoriteMovieViewModel @Inject constructor(private val repository: DataRep
         return movieListMutableLiveData
     }
 
-    //////////////////////insert Movie to dataBase
     fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) {
-
         viewModelScope.launch {
             try {
                 repository.insertFavoriteMovie(favoriteMovieEntity)
@@ -53,7 +48,6 @@ class FavoriteMovieViewModel @Inject constructor(private val repository: DataRep
         }
     }
 
-    ////////////////////////delete Movie from dataBase
     fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity) {
         viewModelScope.launch {
             try {
@@ -65,12 +59,11 @@ class FavoriteMovieViewModel @Inject constructor(private val repository: DataRep
         }
     }
 
-    ///////////////////////////findMovieByData
     fun findMovieByMovieId(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val data = repository.findByMovieId(movieId)
-                if (data?.value != null)
+                if (data != null)
                     isMovieInDataBaseMutableLiveData.postValue(true)
                 else
                     isMovieInDataBaseMutableLiveData.postValue(false)
@@ -81,7 +74,6 @@ class FavoriteMovieViewModel @Inject constructor(private val repository: DataRep
         }
     }
 
-    fun getIsMovieInDataBase(): LiveData<Boolean> {
-        return isMovieInDataBaseMutableLiveData
-    }
+    fun getIsMovieInDataBase() = isMovieInDataBaseMutableLiveData
+
 }

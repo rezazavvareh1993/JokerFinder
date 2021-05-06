@@ -1,10 +1,9 @@
-package com.example.jokerfinder.utils
+package com.example.jokerfinder.base.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 
 @Database(entities = [FavoriteMovieEntity::class], version = 2, exportSchema = false)

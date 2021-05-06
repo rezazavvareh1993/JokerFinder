@@ -1,4 +1,4 @@
-package com.example.jokerfinder.features.moviedetails.castsofmovie.castadapter
+package com.example.jokerfinder.features.moviedetails.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.pojoes.Cast
+import com.example.jokerfinder.pojo.Cast
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_casts_list.view.*
 

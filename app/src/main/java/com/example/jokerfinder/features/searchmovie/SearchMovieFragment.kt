@@ -1,151 +1,143 @@
 package com.example.jokerfinder.features.searchmovie
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseFragment
+import com.example.jokerfinder.base.extensions.makeInVisible
+import com.example.jokerfinder.base.extensions.makeVisible
+import com.example.jokerfinder.databinding.FragmentSearchMovieBinding
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search_movie.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 /**
- * A simple [Fragment] subclass.
+ * A simple [Fragment] subclass for search movies
  */
 @AndroidEntryPoint
 class SearchMovieFragment : BaseFragment(), View.OnClickListener {
 
-    private lateinit var navController: NavController
+    private var _binding: FragmentSearchMovieBinding? = null
+    private val binding get() = _binding!!
     private val searchMovieViewModel: SearchMovieViewModel by viewModels()
-    private lateinit var imgSearchMovie: ImageView
+    private var checkSearchButton = true
+    private var job: Job? = null
+    private lateinit var adapter: MoviesAdapter
     private val getIdMovieLambdaFunction: (Int) -> Unit = {
         val bundle = bundleOf("movieId" to it)
-        navController.navigate(R.id.action_searchMovieFragment_to_movieDetailsFragment, bundle)
-    }
-    private var checkSearchButton = true
-    private lateinit var myContext: Context
-    private var adapter =
-        MoviesAdapter(
-            getIdMovieLambdaFunction
+        findNavController().navigate(
+            R.id.action_searchMovieFragment_to_movieDetailsFragment,
+            bundle
         )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_movie, container, false)
+        _binding = FragmentSearchMovieBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        pbrSearch.visibility = View.GONE
-
-        init(view)
-        callGetListMovies()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        init()
         setUpRecyclerView()
-        handleImgSearch(view)
+        setDataToRecyclerView()
+        handleLoading()
+    }
 
 
-        swipeContainer.setOnRefreshListener {
-            callGetListMovies()
-        }
+    private fun init() {
+        binding.imgSearch.setOnClickListener(this)
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(
+        binding.swipeContainer.setColorSchemeResources(
             android.R.color.holo_blue_bright,
             android.R.color.holo_green_light,
             android.R.color.holo_orange_light,
             android.R.color.holo_red_light
         )
+        binding.swipeContainer.setOnRefreshListener { setDataToRecyclerView() }
 
-    }
-
-    private fun handleImgSearch(view: View) {
-        setOnClicks(view)
-    }
-
-    private fun init(view: View) {
-        navController = Navigation.findNavController(view)
-        imgSearchMovie = view.findViewById(R.id.imgSearch)
-    }
-
-    private fun setOnClicks(view: View) {
-        view.findViewById<ImageView>(R.id.imgSearch).setOnClickListener(this) //click
-        edtSearch.addTextChangedListener {
-            if (it.toString().isEmpty())
-                if (!checkSearchButton)
-                    imgSearch.setImageResource(R.drawable.ic_search)
+        binding.edtSearch.addTextChangedListener {
+            if (it.toString().isEmpty() && !checkSearchButton)
+                binding.imgSearch.setImageResource(R.drawable.ic_search)
         }
     }
 
     private fun setUpRecyclerView() {
+        binding.recyclerMovie.setHasFixedSize(true)
+        val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        binding.recyclerMovie.layoutManager = layoutManager
+        adapter = MoviesAdapter(getIdMovieLambdaFunction)
+        binding.recyclerMovie.adapter = adapter
+    }
 
-        recyclerMovie.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(myContext, RecyclerView.HORIZONTAL, false)
-        recyclerMovie.layoutManager = layoutManager
-        recyclerMovie.adapter = adapter
-        recyclerMovie.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val lastItem = layoutManager.findLastVisibleItemPosition()
-                val total = layoutManager.itemCount
-                if (total > 0)
-                    if (total - 1 == lastItem) {
-                        searchMovieViewModel.fetchMovieSearchData(edtSearch.text.toString(), true)
-                        pbrPagination.visibility = View.VISIBLE
-                    }
+    private fun setDataToRecyclerView() {
+        job?.cancel()
+        if (binding.edtSearch.text.toString().isNotEmpty()) {
+            searchMovieViewModel.fetchMovieSearchData(binding.edtSearch.text.toString())
+            job = lifecycleScope.launch {
+                searchMovieViewModel.dataFlow.collectLatest { adapter.submitData(it) }
             }
-        })
+        } else
+            cancelLoading()
     }
 
-    private fun callGetListMovies() {
-        if(getMovieName().isNotEmpty())
-            searchMovieViewModel.fetchMovieSearchData(getMovieName(), false)
-        searchMovieViewModel.getSearchMovieData().observe(this as LifecycleOwner, {
-            it?.let { adapter.submitList(it) }
-            pbrSearch.visibility = View.GONE
-            pbrPagination.visibility = View.GONE
-            swipeContainer.isRefreshing = false
-        })
+    private fun cancelLoading() {
+        if (binding.swipeContainer.isRefreshing)
+            binding.swipeContainer.isRefreshing = false
+        binding.pbrSearch.makeInVisible()
     }
 
-    private fun getMovieName(): String {
-        return edtSearch.text.toString()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        myContext = context
+    private fun handleLoading() {
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collectLatest {
+                when (it.refresh) {
+                    is LoadState.Loading -> pbrSearch.makeVisible()
+                    is LoadState.Error, is LoadState.NotLoading -> {
+                        cancelLoading()
+                    }
+                }
+                adapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.imgSearch -> {
                 if (checkSearchButton) {
-                    callGetListMovies()
-                    pbrSearch.visibility = View.VISIBLE
-                    imgSearch.setImageResource(R.drawable.ic_clear_)
+                    binding.pbrSearch.makeVisible()
+                    setDataToRecyclerView()
+                    binding.imgSearch.setImageResource(R.drawable.ic_clear_)
                 } else {
-                    edtSearch.text.clear()
-                    imgSearch.setImageResource(R.drawable.ic_search)
+                    binding.edtSearch.text.clear()
+                    cancelLoading()
+                    binding.imgSearch.setImageResource(R.drawable.ic_search)
                 }
                 checkSearchButton = !checkSearchButton
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

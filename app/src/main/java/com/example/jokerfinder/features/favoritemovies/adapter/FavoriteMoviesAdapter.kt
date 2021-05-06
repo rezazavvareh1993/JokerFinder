@@ -1,4 +1,4 @@
-package com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter
+package com.example.jokerfinder.features.favoritemovies.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_favorite_movie.view.*
 
@@ -21,7 +21,7 @@ class FavoriteMoviesAdapter(private val getFavoriteMovieId : (Int) -> (Unit)) : 
         holder.bind(getItem(position))
     }
 
-    fun getRoomAt(position: Int) : FavoriteMovieEntity{
+    fun getRoomAt(position: Int) : FavoriteMovieEntity {
         return getItem(position)
     }
 

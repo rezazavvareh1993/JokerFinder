@@ -1,7 +1,7 @@
-package com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter
+package com.example.jokerfinder.features.favoritemovies.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
 
 class FavoriteMovieDiffUtils : DiffUtil.ItemCallback<FavoriteMovieEntity>() {
     override fun areItemsTheSame(

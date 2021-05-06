@@ -1,14 +1,11 @@
 package com.example.jokerfinder.repository
 
-import android.annotation.SuppressLint
-import androidx.lifecycle.LiveData
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
+import com.example.jokerfinder.pojo.ResponseSearchMovie
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -20,9 +17,7 @@ class DataRepository @Inject constructor(
 
     private val apiKey = MyConstantClass.APY_KEY
 
-    /////////////////////////////////////////Network
-
-    @SuppressLint("CheckResult")
+    //Network
     fun fetchMovieDetails(idMovie: Int) = flow {
         val response = networkRepository.fetchMovieDetails(idMovie, apiKey)
         if (response.isSuccessful)
@@ -35,14 +30,10 @@ class DataRepository @Inject constructor(
             emit(response.body())
     }.flowOn(Dispatchers.IO)
 
-    fun fetchMovieSearchData(movieName: String, page: Int) = flow {
-        val response = networkRepository.fetchMovieSearchData(movieName, page, apiKey)
-        if (response.isSuccessful)
-            emit(response.body())
-    }.flowOn(Dispatchers.IO)
+    suspend fun fetchMovieSearchData(movieName: String, page: Int): ResponseSearchMovie =
+        networkRepository.fetchMovieSearchData(movieName, page, apiKey)
 
-    ////////////////////////////////Local
-
+    //Local
     fun fetchAllFavoriteMovies() = flow {
         val data = favoriteMovieDAO.getAllFavoriteMovies()
         if (!data.isNullOrEmpty())
@@ -57,9 +48,9 @@ class DataRepository @Inject constructor(
         favoriteMovieDAO.delete(favoriteMovieEntity)
     }
 
-    fun findByMovieId(movieId: Int): LiveData<FavoriteMovieEntity> {
+    fun findByMovieId(movieId: Int): FavoriteMovieEntity? {
         val x = favoriteMovieDAO.findByMovieId(movieId)
-        return  x
+        return x
     }
 
 }

@@ -1,8 +1,6 @@
 package com.example.jokerfinder.repository.networkreopsitory
 
-import com.example.jokerfinder.pojoes.ResponseDetailMovie
-import com.example.jokerfinder.retrofit.JokerFinderApiService
-import retrofit2.Response
+import com.example.jokerfinder.repository.networkreopsitory.retrofit.JokerFinderApiService
 import javax.inject.Inject
 
 class NetworkRepository @Inject constructor(private val retrofitService: JokerFinderApiService) {

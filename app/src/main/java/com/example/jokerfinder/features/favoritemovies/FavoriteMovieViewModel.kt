@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jokerfinder.base.db.FavoriteMovieEntity
 import com.example.jokerfinder.repository.DataRepository
+import com.example.jokerfinder.utils.response.GeneralResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -18,24 +19,26 @@ import javax.inject.Inject
 class FavoriteMovieViewModel @Inject constructor(private val repository: DataRepository) :
     ViewModel() {
 
-    private var movieListMutableLiveData = MutableLiveData<List<FavoriteMovieEntity>>()
+    private var movieListMutableLiveData = MutableLiveData<GeneralResponse<List<FavoriteMovieEntity>>>()
     private var isMovieInDataBaseMutableLiveData = MutableLiveData<Boolean>()
 
     fun fetchAllFavoriteMovies() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                var data: List<FavoriteMovieEntity>? = null
+                movieListMutableLiveData.postValue(GeneralResponse.Loading())
                 repository.fetchAllFavoriteMovies()
-                    .collect { movieListMutableLiveData.postValue(it) }
+                    .collect { data = it }
+
+                movieListMutableLiveData.postValue(GeneralResponse.Success(data))
             } catch (e: Exception) {
-                movieListMutableLiveData.postValue(null)
+                movieListMutableLiveData.postValue(GeneralResponse.Error(e.message.toString()))
                 Log.d(TAG, e.message.toString())
             }
         }
     }
 
-    fun getAllFavoriteMovies(): LiveData<List<FavoriteMovieEntity>> {
-        return movieListMutableLiveData
-    }
+    fun getAllFavoriteMovies() = movieListMutableLiveData
 
     fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) {
         viewModelScope.launch {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,12 +20,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseFragment
 import com.example.jokerfinder.base.db.FavoriteMovieEntity
+import com.example.jokerfinder.base.extensions.makeGone
+import com.example.jokerfinder.base.extensions.makeVisible
 import com.example.jokerfinder.databinding.FragmentFavoriteMovieBinding
 import com.example.jokerfinder.features.favoritemovies.adapter.FavoriteMoviesAdapter
 import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
+import com.example.jokerfinder.utils.response.GeneralResponse
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorite_movie.*
+import kotlinx.android.synthetic.main.item_empty_list.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -59,6 +64,32 @@ class FavoriteMoviesFragment : BaseFragment() {
         callGetListFavoriteMovies()
         setUpRecyclerView()
         itemTouchHelper()
+        observeFavoriteMovieDataBase()
+    }
+
+    private fun observeFavoriteMovieDataBase() {
+        favoriteMovieViewModel.getAllFavoriteMovies().removeObservers(viewLifecycleOwner)
+        favoriteMovieViewModel.getAllFavoriteMovies().observe(viewLifecycleOwner, {
+            it?.let { resource ->
+                when (resource) {
+                    is GeneralResponse.Loading -> binding.pbrFavoriteMovie.makeVisible()
+                    is GeneralResponse.Success -> setDataToRecyclerView(resource.data)
+                    is GeneralResponse.Error -> {
+                        binding.pbrFavoriteMovie.makeGone()
+                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setDataToRecyclerView(data: List<FavoriteMovieEntity>?) {
+        if (data != null) {
+            binding.root.emptyBoxLayout.makeGone()
+            adapter.submitList(data)
+        } else
+            binding.root.emptyBoxLayout.makeVisible()
+        binding.pbrFavoriteMovie.makeGone()
     }
 
     private fun itemTouchHelper() {
@@ -108,10 +139,6 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     private fun callGetListFavoriteMovies() {
         favoriteMovieViewModel.fetchAllFavoriteMovies()
-        favoriteMovieViewModel.getAllFavoriteMovies().observe(this as LifecycleOwner, {
-            it?.let { adapter.submitList(it) }
-            pbrFavoriteMovie.visibility = View.GONE
-        })
     }
 
     override fun onDestroyView() {

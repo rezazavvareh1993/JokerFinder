@@ -1,29 +1,26 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout_in_favorite_movie_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jokerfinder.features.favoritemovies.FavoriteMoviesFragment"
-    android:id="@+id/coordinator_layout_in_favorite_movie_fragment">
+    tools:context="com.example.jokerfinder.features.favoritemovies.FavoriteMoviesFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/backpic"
-
-        >
+        android:background="@drawable/backpic">
 
         <TextView
-            android:id="@+id/txt_favorite_movie_list"
+            android:id="@+id/txtTitle"
             android:layout_width="401dp"
             android:layout_height="45dp"
             android:gravity="center"
-            android:text="Favorite Movies"
+            android:text="@string/favorite_movies"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/rcyFavoriteMovie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
@@ -36,20 +33,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_favorite_movie_list"
-            tools:listitem="@layout/item_favorite_movie"/>
+            app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+            tools:listitem="@layout/item_favorite_movie" />
 
         <ProgressBar
             android:id="@+id/pbrFavoriteMovie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminateTint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/txt_favorite_movie_list"
-            app:layout_constraintTop_toTopOf="parent"
-            android:indeterminateTint="@color/colorPrimary"/>
+            app:layout_constraintStart_toStartOf="@+id/txtTitle"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include layout="@layout/item_empty_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

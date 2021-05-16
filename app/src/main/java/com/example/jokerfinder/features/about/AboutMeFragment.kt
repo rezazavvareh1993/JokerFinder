@@ -42,4 +42,9 @@ class AboutMeFragment : BaseFragment(), View.OnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MyConstantClass.LINKEDIN_URL)))
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

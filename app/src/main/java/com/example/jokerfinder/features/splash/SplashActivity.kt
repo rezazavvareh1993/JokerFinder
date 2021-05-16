@@ -43,8 +43,8 @@ class SplashActivity : AppCompatActivity() {
 
     private fun readFormatType() {
         val typeFace = Typeface.createFromAsset(assets, "billion_stars_personal_use.ttf")
-        binding.txt_movie_finder.text = this.resources.getString(R.string.movie_finder)
-        binding.txt_movie_finder.typeface = typeFace
+        binding.txtMovieFinder.text = this.resources.getString(R.string.movie_finder)
+        binding.txtMovieFinder.typeface = typeFace
     }
 
     private fun startActivityByDelay() {

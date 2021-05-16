@@ -38,18 +38,12 @@ class FavoriteMoviesAdapter(private val getFavoriteMovieId : (Int) -> (Unit)) : 
             binding.txtReleaseDateFavoriteMovie.text = favoriteMovieEntity.movieReleaseDate
             binding.txtRateFavoriteMovie.text = favoriteMovieEntity.movieRate.toString()
 
-            itemView.setOnClickListener {
-                getFavoriteMovieId(favoriteMovieEntity.movieId)
-            }
+            itemView.setOnClickListener { getFavoriteMovieId(favoriteMovieEntity.movieId) }
         }
 
 
         private fun getImageMovieByPicasso(uriImage: String) {
-            Picasso
-                .get()
-                .load(uriImage)
-                .fit()
-                .into(binding.imgBackgroundFavoriteMovie)
+            Picasso.get().load(uriImage).fit().into(binding.imgBackgroundFavoriteMovie)
         }
     }
 }

@@ -8,11 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,13 +20,9 @@ import com.example.jokerfinder.base.extensions.makeGone
 import com.example.jokerfinder.base.extensions.makeVisible
 import com.example.jokerfinder.databinding.FragmentFavoriteMovieBinding
 import com.example.jokerfinder.features.favoritemovies.adapter.FavoriteMoviesAdapter
-import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
 import com.example.jokerfinder.utils.response.GeneralResponse
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_favorite_movie.*
-import kotlinx.android.synthetic.main.item_empty_list.view.*
-
 /**
  * A simple [Fragment] subclass.
  */
@@ -85,10 +77,10 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     private fun setDataToRecyclerView(data: List<FavoriteMovieEntity>?) {
         if (data != null) {
-            binding.root.emptyBoxLayout.makeGone()
+            binding.itemEmptyList.emptyBoxLayout.makeGone()
             adapter.submitList(data)
         } else
-            binding.root.emptyBoxLayout.makeVisible()
+            binding.itemEmptyList.emptyBoxLayout.makeVisible()
         binding.pbrFavoriteMovie.makeGone()
     }
 
@@ -111,7 +103,7 @@ class FavoriteMoviesFragment : BaseFragment() {
                 callGetListFavoriteMovies()
                 showUndoSnackBar()
             }
-        }).attachToRecyclerView(rcyFavoriteMovie)
+        }).attachToRecyclerView(binding.rcyFavoriteMovie)
     }
 
     private fun showUndoSnackBar() {

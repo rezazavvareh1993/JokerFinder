@@ -10,24 +10,28 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.jokerfinder.R
 import com.example.jokerfinder.base.BaseFragment
+import com.example.jokerfinder.databinding.FragmentAboutUsBinding
 import com.example.jokerfinder.utils.MyConstantClass
-import kotlinx.android.synthetic.main.fragment_about_us.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class AboutMeFragment : BaseFragment(), View.OnClickListener {
 
+    private var _binding: FragmentAboutUsBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_about_us, container, false)
+        _binding = FragmentAboutUsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        imgGithub.setOnClickListener(this)
-        imgLinkedin.setOnClickListener(this)
+        binding.imgGithub.setOnClickListener(this)
+        binding.imgLinkedin.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {

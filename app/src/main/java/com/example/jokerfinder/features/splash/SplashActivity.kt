@@ -2,22 +2,25 @@ package com.example.jokerfinder.features.splash
 
 import android.content.Intent
 import android.graphics.Typeface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.example.jokerfinder.R
+import com.example.jokerfinder.databinding.ActivitySplashBinding
 import com.example.jokerfinder.features.MainActivity
 import com.example.jokerfinder.utils.MyConstantClass
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
-import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivitySplashBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         retriveTokenFcm()
         readFormatType()
@@ -40,8 +43,8 @@ class SplashActivity : AppCompatActivity() {
 
     private fun readFormatType() {
         val typeFace = Typeface.createFromAsset(assets, "billion_stars_personal_use.ttf")
-        txt_movie_finder.text = this.resources.getString(R.string.movie_finder)
-        txt_movie_finder.typeface = typeFace
+        binding.txt_movie_finder.text = this.resources.getString(R.string.movie_finder)
+        binding.txt_movie_finder.typeface = typeFace
     }
 
     private fun startActivityByDelay() {

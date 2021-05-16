@@ -46,7 +46,9 @@
             app:layout_constraintStart_toStartOf="@+id/txtTitle"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include layout="@layout/item_empty_list" />
+        <include
+            android:id="@+id/itemEmptyList"
+            layout="@layout/item_empty_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

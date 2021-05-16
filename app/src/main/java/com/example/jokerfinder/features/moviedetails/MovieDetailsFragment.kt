@@ -25,7 +25,6 @@ import com.example.jokerfinder.pojo.Crew
 import com.example.jokerfinder.pojo.ResponseDetailMovie
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_movie_details.*
 
 /**
  * A simple [Fragment] subclass for see details of a movie and actors
@@ -111,7 +110,7 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
                 adapter.submitList(it.cast)
                 credits.crew?.let { crew -> getCrewOfMovie(crew) }
             }
-            pbrCast.makeGone()
+            binding.pbrCast.makeGone()
         })
     }
 
@@ -124,15 +123,15 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
             when (i.job) {
                 "Director" -> {
                     director += i.name + ","
-                    txtDirector.text = "Director : $director"
+                    binding.txtDirector.text = "Director : $director"
                 }
                 "Writer" -> {
                     writer += i.name + ","
-                    txtWriter.text = "Writer : $writer"
+                    binding.txtWriter.text = "Writer : $writer"
                 }
                 "Producer" -> {
                     producer += i.name + ","
-                    txtProducer.text = "Producer : $producer"
+                    binding.txtProducer.text = "Producer : $producer"
                 }
             }
         }
@@ -157,9 +156,9 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
         binding.txtTitle.text = responseDetailMovie.originalTitle
         binding.txtRate.text = "Rate :  ${responseDetailMovie.voteAverage}"
         Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.backdropPath)
-            .into(imgMainMovie)
+            .into(binding.imgMainMovie)
         Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.posterPath)
-            .into(img_logo_detail_movie)
+            .into(binding.imgLogoDetailMovie)
 
     }
 

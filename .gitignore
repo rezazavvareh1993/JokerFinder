@@ -1,5 +1,44 @@
+#built application files
+*.apk
+*.ap_
+*.aab
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Index
+*.pb
+
+# Android Studio
 *.iml
+.idea
+#.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 .gradle
+build/
+.navigation
+captures/
+output.json
+
+#NDK
+obj/
+.externalNativeBuild
+
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -7,10 +46,8 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
 /build
 /captures
-.externalNativeBuild
 .cxx
 /.idea/sonarlint/issuestore/a/8/a8cd3154ef03f9584f497d3fd462b37f252a4ac2
 /.idea/sonarlint/issuestore/e/c/ec16ac96f06b598f6a044deb27ac351dd1f9aec4
@@ -27,3 +64,4 @@
 /.idea/sonarlint/issuestore/e/f/ef728a9849d0f21fb4aa6e4d8814fce04c0c77a3
 /.idea/sonarlint/issuestore/4/f/4f861a54a72ed553e53c85ed888d5c56e091aabf
 /.idea/sonarlint/issuestore/d/f/dfbc08281de2996b50634b46df81228dce0a865b
+/.idea/sonarlint/issuestore/f/2/f245c56c8a751f4de2c4497b478da67da56e1d84

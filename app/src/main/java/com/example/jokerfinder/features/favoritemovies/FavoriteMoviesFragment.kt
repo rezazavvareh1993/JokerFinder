@@ -1,118 +1,120 @@
 package com.example.jokerfinder.features.favoritemovies
 
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.jokerfinder.R
-import com.example.jokerfinder.base.BaseApplication
 import com.example.jokerfinder.base.BaseFragment
-import com.example.jokerfinder.features.favoritemovies.favoritemoviesadapter.FavoriteMoviesAdapter
-import com.example.jokerfinder.features.moviedetails.MovieDetailsViewModel
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
+import com.example.jokerfinder.base.extensions.makeGone
+import com.example.jokerfinder.base.extensions.makeVisible
+import com.example.jokerfinder.databinding.FragmentFavoriteMovieBinding
+import com.example.jokerfinder.features.favoritemovies.adapter.FavoriteMoviesAdapter
+import com.example.jokerfinder.utils.response.GeneralResponse
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_favorite_movie.*
-import javax.inject.Inject
-
+import dagger.hilt.android.AndroidEntryPoint
 /**
  * A simple [Fragment] subclass.
  */
+@AndroidEntryPoint
 class FavoriteMoviesFragment : BaseFragment() {
+    private var _binding: FragmentFavoriteMovieBinding? = null
 
-    //////////////Inject
-    @Inject
-    lateinit var factory : ViewModelProvider.Factory
-
-    ///////////////navController
-    lateinit var navController: NavController
-
-    ///////////////ViewModels
-    lateinit var favoriteMovieViewModel: FavoriteMovieViewModel
-    lateinit var movieDetailsViewModel: MovieDetailsViewModel
-
-    ////////////////lambdaFunctions
-    private val getFavoriteMovieId : (Int) -> Unit = {
-        val bundle = bundleOf("movieId" to it)
-        navController.navigate(R.id.action_favoriteMovieFragment_to_movieDetailsFragment, bundle)
-    }
-
-    /////////////Value
-    private lateinit var myContext : Context
+    private val binding get() = _binding!!
+    private val favoriteMovieViewModel: FavoriteMovieViewModel by viewModels()
     private lateinit var lastFavoriteMovieEntityDeleted: FavoriteMovieEntity
-
-    /////////////adapter
-    private val adapter =
-        FavoriteMoviesAdapter(getFavoriteMovieId)
-
-
+    private lateinit var adapter: FavoriteMoviesAdapter
+    private val getFavoriteMovieId: (Int) -> Unit = {
+        val bundle = bundleOf("movieId" to it)
+        findNavController().navigate(
+            R.id.action_favoriteMovieFragment_to_movieDetailsFragment,
+            bundle
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentFavoriteMovieBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_movie, container, false)
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        injectFactory()
-        init(view)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         callGetListFavoriteMovies()
         setUpRecyclerView()
+        itemTouchHelper()
+        observeFavoriteMovieDataBase()
+    }
 
+    private fun observeFavoriteMovieDataBase() {
+        favoriteMovieViewModel.getAllFavoriteMovies().removeObservers(viewLifecycleOwner)
+        favoriteMovieViewModel.getAllFavoriteMovies().observe(viewLifecycleOwner, {
+            it?.let { resource ->
+                when (resource) {
+                    is GeneralResponse.Loading -> binding.pbrFavoriteMovie.makeVisible()
+                    is GeneralResponse.Success -> setDataToRecyclerView(resource.data)
+                    is GeneralResponse.Error -> {
+                        binding.pbrFavoriteMovie.makeGone()
+                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setDataToRecyclerView(data: List<FavoriteMovieEntity>?) {
+        if (data != null) {
+            binding.itemEmptyList.emptyBoxLayout.makeGone()
+            adapter.submitList(data)
+        } else
+            binding.itemEmptyList.emptyBoxLayout.makeVisible()
+        binding.pbrFavoriteMovie.makeGone()
+    }
+
+    private fun itemTouchHelper() {
         ///////////////////deleteMovie
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-            0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
+            ) = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 lastFavoriteMovieEntityDeleted = adapter.getRoomAt(viewHolder.adapterPosition)
-                favoriteMovieViewModel.deleteMovieFromFavoriteMovies(lastFavoriteMovieEntityDeleted)
+                favoriteMovieViewModel.deleteMovieFromFavoriteMovies(
+                    lastFavoriteMovieEntityDeleted
+                )
                 callGetListFavoriteMovies()
-                showUndoSnackBar(view)
+                showUndoSnackBar()
             }
-        }).attachToRecyclerView(favorite_movie_recycler_view)
+        }).attachToRecyclerView(binding.rcyFavoriteMovie)
     }
 
-
-
-    private fun showUndoSnackBar(view: View) {
+    private fun showUndoSnackBar() {
 
         val snackBar = Snackbar.make(
-            view, "Your movie has been deleted.",
-            Snackbar.LENGTH_LONG
+            requireView(), getString(R.string.deleteFavoriteMovie), Snackbar.LENGTH_LONG
         )
-        snackBar.setAction(
-            "Undo"
-        ) {
-            undoDelete()
-        }
+        snackBar.setAction(getString(R.string.undo)) { undoDelete() }
             .setActionTextColor(resources.getColor(R.color.colorPrimary))
         snackBar.setActionTextColor(resources.getColor(R.color.colorAccent))
         snackBar.show()
-
     }
 
     private fun undoDelete() {
@@ -120,35 +122,19 @@ class FavoriteMoviesFragment : BaseFragment() {
         callGetListFavoriteMovies()
     }
 
-    private fun injectFactory() {
-        (activity?.application as BaseApplication)
-            .getApplicationComponent()
-            .injectToFavoriteMoviesFragment(this)
-    }
-
     private fun setUpRecyclerView() {
-        val layoutManager =  LinearLayoutManager(myContext , RecyclerView.VERTICAL, false)
-        favorite_movie_recycler_view.layoutManager = layoutManager
-        favorite_movie_recycler_view.adapter = adapter
+        val layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.rcyFavoriteMovie.layoutManager = layoutManager
+        adapter = FavoriteMoviesAdapter(getFavoriteMovieId)
+        binding.rcyFavoriteMovie.adapter = adapter
     }
 
     private fun callGetListFavoriteMovies() {
         favoriteMovieViewModel.fetchAllFavoriteMovies()
-        favoriteMovieViewModel.getAllFavoriteMovies().observe(this as LifecycleOwner, Observer {
-
-            it?.let { adapter.submitList(it) }
-            progress_bar_in_favorite_movies_fragment.visibility = View.GONE
-        })
     }
 
-    private fun init(view: View) {
-        navController = Navigation.findNavController(view)
-        favoriteMovieViewModel = ViewModelProvider(this, factory).get(FavoriteMovieViewModel::class.java)
-        movieDetailsViewModel = ViewModelProvider(this, factory).get(MovieDetailsViewModel::class.java)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        myContext = context
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -26,7 +26,7 @@
             android:layout_height="150dp">
 
             <ImageView
-                android:id="@+id/img_cast_pic"
+                android:id="@+id/imgCastPic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
@@ -38,7 +38,7 @@
 
 
         <TextView
-            android:id="@+id/txt_character_cast"
+            android:id="@+id/txtCharacterCast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -49,7 +49,7 @@
             tools:ignore="RtlHardcoded" />
 
         <TextView
-            android:id="@+id/txt_name_cast"
+            android:id="@+id/txtNameCast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"

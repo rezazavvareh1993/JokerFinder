@@ -1,16 +1,10 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
-
 apply plugin: 'kotlin-kapt'
-
 apply plugin: "androidx.navigation.safeargs.kotlin"
-
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'kotlin-android-extensions'
-
-//apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 30
@@ -24,8 +18,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
-        targetCompatibility = "8"
-        sourceCompatibility = "8"
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     buildTypes {
         release {
@@ -33,9 +30,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
+    def androidXTestExtKotlinRunnerVersion = '1.1.1'
+    def androidXTestCoreVersion = '1.2.0'
+    def robolectricVersion = '4.3-beta-1'
+    def archTestingVersion = '2.0.0'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -46,19 +52,13 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
 
     ////////////////RecyclerView & CardView
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
 
     ///////////////////////Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'//for support RX by retrofit
-
-    //////////////////////RX
-    implementation "io.reactivex.rxjava2:rxjava:2.2.13"
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-    implementation 'com.jakewharton.rxbinding2:rxbinding:2.2.0'
 
     //////////////////////Gson
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -69,51 +69,56 @@ dependencies {
     ////////////////////ViewModel , Live Data
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
-    //////////////////////Dagger
-    implementation 'com.google.dagger:dagger:2.28'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    kapt 'com.google.dagger:dagger-compiler:2.28'
-
     /////////////////////room database by rx
-    implementation "androidx.room:room-runtime:2.2.6"
+    implementation "androidx.room:room-runtime:2.3.0"
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    implementation "androidx.room:room-rxjava2:2.2.6"
-    implementation "androidx.room:room-ktx:2.2.6"
-    kapt "androidx.room:room-compiler:2.2.6"
+    implementation "androidx.room:room-rxjava2:2.3.0"
+    implementation "androidx.room:room-ktx:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
 
     /////////////////////Navigation component
-    implementation "androidx.navigation:navigation-fragment:2.3.4"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     // For Kotlin use navigation-fragment-ktx
-    implementation "androidx.navigation:navigation-ui:2.3.4"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
     // For Kotlin use navigation-ui-ktx
 
     implementation "com.google.android.material:material:1.4.0-alpha02"
 
     // FireBase
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
-    implementation "com.google.firebase:firebase-core:18.0.2"
-    implementation 'com.google.firebase:firebase-analytics:18.0.2'
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation "com.google.firebase:firebase-core:18.0.3"
+    implementation 'com.google.firebase:firebase-analytics:18.0.3'
 
     // For Kotlin use paging-runtime-ktx
-    implementation "androidx.paging:paging-runtime:2.1.2"
+    implementation "androidx.paging:paging-runtime-ktx:2.1.2"
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     //Hilt
-//    implementation "com.google.dagger:hilt-android:$hilt_version"
-//    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // Logging
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     //add coroutines to the app
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+
+    // Paging
+    implementation 'androidx.paging:paging-runtime-ktx:3.0.0-alpha12'
 
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 }

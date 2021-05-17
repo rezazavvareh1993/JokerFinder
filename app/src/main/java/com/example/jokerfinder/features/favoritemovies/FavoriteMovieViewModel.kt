@@ -1,72 +1,82 @@
 package com.example.jokerfinder.features.favoritemovies
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.jokerfinder.base.BaseViewModel
-import com.example.jokerfinder.pojoes.FavoriteMovieEntity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.jokerfinder.base.db.FavoriteMovieEntity
 import com.example.jokerfinder.repository.DataRepository
-import io.reactivex.disposables.CompositeDisposable
+import com.example.jokerfinder.utils.response.GeneralResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FavoriteMovieViewModel(val repository: DataRepository) : BaseViewModel() {
-    private var movieListMutableLiveData = MutableLiveData<List<FavoriteMovieEntity>>()
+@HiltViewModel
+class FavoriteMovieViewModel @Inject constructor(private val repository: DataRepository) :
+    ViewModel() {
+
+    private var movieListMutableLiveData = MutableLiveData<GeneralResponse<List<FavoriteMovieEntity>>>()
     private var isMovieInDataBaseMutableLiveData = MutableLiveData<Boolean>()
-    private val compositeDisposable = CompositeDisposable()
 
-    /////////////////////////get all favoriteMovie from dataBase
-    fun fetchAllFavoriteMovies (){
-        compositeDisposable.add(
-            repository.fetchAllFavoriteMovies()
-                .subscribe({
-                    if(it!=null)
-                        movieListMutableLiveData.value = it
-                    else
-                        movieListMutableLiveData.value = null
-                },{ Log.d("MyTag", it.message!!)})
-        )
+    fun fetchAllFavoriteMovies() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                var data: List<FavoriteMovieEntity>? = null
+                movieListMutableLiveData.postValue(GeneralResponse.Loading())
+                repository.fetchAllFavoriteMovies()
+                    .collect { data = it }
+
+                movieListMutableLiveData.postValue(GeneralResponse.Success(data))
+            } catch (e: Exception) {
+                movieListMutableLiveData.postValue(GeneralResponse.Error(e.message.toString()))
+                Log.d(TAG, e.message.toString())
+            }
+        }
     }
 
-    fun getAllFavoriteMovies() : LiveData<List<FavoriteMovieEntity>> {
-        return movieListMutableLiveData
-    }
+    fun getAllFavoriteMovies() = movieListMutableLiveData
 
-    //////////////////////insert Movie to dataBase
     fun insertFavoriteMovie(favoriteMovieEntity: FavoriteMovieEntity) {
-        compositeDisposable.add(repository.insertFavoriteMovie(favoriteMovieEntity)
-            .subscribe({
+        viewModelScope.launch {
+            try {
+                repository.insertFavoriteMovie(favoriteMovieEntity)
                 Log.d("MyTag", "insert ${favoriteMovieEntity.movieName}")
-            },{
-                Log.d("MyTag", it.message!!)
-            }))
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
+            }
+        }
     }
 
-    ////////////////////////delete Movie from dataBase
-    fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity){
-        compositeDisposable.add(repository.deleteMovieFromFavoriteMovies(favoriteMovieEntity)
-            .subscribe ({
+    fun deleteMovieFromFavoriteMovies(favoriteMovieEntity: FavoriteMovieEntity) {
+        viewModelScope.launch {
+            try {
+                repository.deleteMovieFromFavoriteMovies(favoriteMovieEntity)
                 Log.d("MyTag", "delete ${favoriteMovieEntity.movieName}")
-            }, {
-                Log.d("MyTag", it.message!!)
-            }))
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
+            }
+        }
     }
 
-    ///////////////////////////findMovieByData
-    fun findMovieByMovieId(movieId : Int ){
-        compositeDisposable.add(repository.findByMovieId(movieId)
-            .subscribe({
-                isMovieInDataBaseMutableLiveData.value =true
-            },{
-                Log.d("MyTag", it.message!!)
-                isMovieInDataBaseMutableLiveData.value =false
-            }))
+    fun findMovieByMovieId(movieId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val data = repository.findByMovieId(movieId)
+                if (data != null)
+                    isMovieInDataBaseMutableLiveData.postValue(true)
+                else
+                    isMovieInDataBaseMutableLiveData.postValue(false)
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
+                isMovieInDataBaseMutableLiveData.postValue(false)
+            }
+        }
     }
 
-    fun getIsMovieInDataBase() : LiveData<Boolean>{
-        return isMovieInDataBaseMutableLiveData
-    }
+    fun getIsMovieInDataBase() = isMovieInDataBaseMutableLiveData
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
-    }
 }

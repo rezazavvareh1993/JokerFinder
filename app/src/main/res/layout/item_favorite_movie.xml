@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/img_background_favorite_movie"
+                android:id="@+id/imgBackgroundFavoriteMovie"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/ic_launcher_background"
@@ -48,31 +48,31 @@
             app:layout_constraintGuide_begin="229dp" />
 
         <TextView
-            android:id="@+id/txt_release_date_favorite_movie"
+            android:id="@+id/txtReleaseDateFavoriteMovie"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Release Date :"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/txt_rate_favorite_movie"
+            app:layout_constraintBottom_toTopOf="@id/txtRateFavoriteMovie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toBottomOf="@+id/txt_name_favorite_name" />
+            app:layout_constraintTop_toBottomOf="@+id/txtNameFavoriteName" />
 
         <TextView
-            android:id="@+id/txt_name_favorite_name"
+            android:id="@+id/txtNameFavoriteName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Name :"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/txt_release_date_favorite_movie"
+            app:layout_constraintBottom_toTopOf="@id/txtReleaseDateFavoriteMovie"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txt_rate_favorite_movie"
+            android:id="@+id/txtRateFavoriteMovie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rate :"
@@ -81,16 +81,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.069"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toBottomOf="@+id/txt_release_date_favorite_movie" />
+            app:layout_constraintTop_toBottomOf="@+id/txtReleaseDateFavoriteMovie" />
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/txt_rate_favorite_movie"
+            app:layout_constraintBottom_toBottomOf="@+id/txtRateFavoriteMovie"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:layout_constraintTop_toTopOf="@+id/txt_rate_favorite_movie"
+            app:layout_constraintTop_toTopOf="@+id/txtRateFavoriteMovie"
             app:srcCompat="@drawable/star" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

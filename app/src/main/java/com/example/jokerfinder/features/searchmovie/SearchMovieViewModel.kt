@@ -1,70 +1,40 @@
 package com.example.jokerfinder.features.searchmovie
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.jokerfinder.base.BaseViewModel
-import com.example.jokerfinder.pojoes.ResultModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.jokerfinder.features.searchmovie.movieadapter.MoviePageResource
+import com.example.jokerfinder.pojo.ResultModel
 import com.example.jokerfinder.repository.DataRepository
-import io.reactivex.disposables.CompositeDisposable
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class SearchMovieViewModel (private val repository: DataRepository): BaseViewModel() {
+@HiltViewModel
+class SearchMovieViewModel @Inject constructor(private val repository: DataRepository) :
+    ViewModel() {
 
-    private var page = 1
-    private var shouldLoadMore = true
-    private var list = arrayListOf<ResultModel>()
+    lateinit var dataFlow: Flow<PagingData<ResultModel>>
+    private var lastName = ""
     private var movieName = ""
-    private var isLoading = false
 
-
-    private var searchMovieMutableLiveData = MutableLiveData<List<ResultModel>>()
-    private val disposable = CompositeDisposable()
-
-
-    fun fetchMovieSearchData(movieName : String, isLoadMore : Boolean){
-        if (isLoading) return
-
-        if (movieName.isNotEmpty())
-            this.movieName = movieName
-
-        prepareDataToSearch(isLoadMore)
-
-        disposable.add(
-            repository.fetchMovieSearchData(movieName,page)
-                .subscribe({
-                    isLoading = false
-                    if(it.results.isEmpty())
-                      shouldLoadMore = false
-
-                    list.addAll(it.results)
-                    searchMovieMutableLiveData.value = list
-
-                },{
-                    isLoading = false
-                    searchMovieMutableLiveData.value = null
-                    Log.d("MyTag",it.message!!)
-                })
-        )
+    fun fetchMovieSearchData() {
+        if (lastName == movieName) return
+        dataFlow = Pager(PagingConfig(pageSize = 10)) {
+            MoviePageResource(repository, movieName)
+        }.flow.cachedIn(viewModelScope)
+        lastName = movieName
     }
 
-    private fun prepareDataToSearch(isLoadMore: Boolean) {
-        isLoading = true
-        if (isLoadMore && shouldLoadMore) {
-            page++
-        } else {
-            page = 1
-            list.clear()
-            shouldLoadMore = true
-        }
+    fun setMovieName(name: String) {
+        movieName = name
     }
 
-    fun getSearchMovieData() : LiveData<List<ResultModel>> = searchMovieMutableLiveData
+    fun getMovieName() = movieName
 
-    /**
-     * Clearing the RX disposables
-     */
-    override fun onCleared() {
-        super.onCleared()
-        disposable.clear()
-    }
+    fun isSameName() = movieName == lastName
 }
+

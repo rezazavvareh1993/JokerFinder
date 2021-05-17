@@ -21,7 +21,6 @@ import com.example.jokerfinder.base.extensions.makeVisible
 import com.example.jokerfinder.databinding.FragmentSearchMovieBinding
 import com.example.jokerfinder.features.searchmovie.movieadapter.MoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_search_movie.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -108,7 +107,7 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
         lifecycleScope.launch {
             adapter.loadStateFlow.collectLatest {
                 when (it.refresh) {
-                    is LoadState.Loading -> pbrSearch.makeVisible()
+                    is LoadState.Loading -> binding.pbrSearch.makeVisible()
                     is LoadState.Error, is LoadState.NotLoading -> {
                         cancelLoading()
                     }

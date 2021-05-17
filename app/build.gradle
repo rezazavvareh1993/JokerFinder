@@ -1,15 +1,9 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
-
 apply plugin: 'kotlin-kapt'
-
 apply plugin: "androidx.navigation.safeargs.kotlin"
-
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'kotlin-android-extensions'
-
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -43,6 +37,11 @@ android {
 }
 
 dependencies {
+    def androidXTestExtKotlinRunnerVersion = '1.1.1'
+    def androidXTestCoreVersion = '1.2.0'
+    def robolectricVersion = '4.3-beta-1'
+    def archTestingVersion = '2.0.0'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -91,7 +90,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:18.0.3'
 
     // For Kotlin use paging-runtime-ktx
-    implementation "androidx.paging:paging-runtime:2.1.2"
+    implementation "androidx.paging:paging-runtime-ktx:2.1.2"
 
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
@@ -115,4 +114,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
 }

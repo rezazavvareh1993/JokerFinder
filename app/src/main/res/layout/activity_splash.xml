@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/txt_movie_finder"
+        android:id="@+id/txtMovieFinder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/movie_finder"
@@ -20,10 +20,10 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/img_jocker"/>
+        app:layout_constraintBottom_toTopOf="@id/imgJoker"/>
 
     <ImageView
-        android:id="@+id/img_jocker"
+        android:id="@+id/imgJoker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -34,5 +34,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_movie_finder" />
+        app:layout_constraintTop_toBottomOf="@id/txtMovieFinder" />
 </androidx.constraintlayout.widget.ConstraintLayout>

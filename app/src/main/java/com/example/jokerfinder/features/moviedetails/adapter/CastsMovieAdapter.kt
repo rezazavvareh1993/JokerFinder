@@ -1,25 +1,21 @@
 package com.example.jokerfinder.features.moviedetails.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.jokerfinder.R
+import com.example.jokerfinder.databinding.ItemCastsListBinding
 import com.example.jokerfinder.pojo.Cast
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_casts_list.view.*
 
 class CastsMovieAdapter : ListAdapter<Cast, CastsMovieAdapter.CastViewHolder>(
     CastDiffUtilCallBack()
 ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CastViewHolder {
-
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_casts_list, parent, false)
         return CastViewHolder(
-            v
+            ItemCastsListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -29,15 +25,14 @@ class CastsMovieAdapter : ListAdapter<Cast, CastsMovieAdapter.CastViewHolder>(
         holder.bind(getItem(position))
     }
 
-    class CastViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CastViewHolder(val binding: ItemCastsListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(cast: Cast) {
             val uriImage = "https://image.tmdb.org/t/p/w500${cast.profilePath}"
-            with(itemView) {
-                Picasso.get().load(uriImage).into(imgCastPic)
-                txtCharacterCast.text = "Character : ${cast.character}"
-                txtNameCast.text = "Name : ${cast.name}"
-            }
+            Picasso.get().load(uriImage).into(binding.imgCastPic)
+            binding.txtCharacterCast.text = "Character : ${cast.character}"
+            binding.txtNameCast.text = "Name : ${cast.name}"
         }
     }
 

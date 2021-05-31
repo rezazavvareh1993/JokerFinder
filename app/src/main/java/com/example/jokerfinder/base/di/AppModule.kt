@@ -15,6 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -42,11 +43,8 @@ object AppModule {
     @Provides
     fun provideRetrofit(gson: Gson): Retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
-        .addConverterFactory(GsonConverterFactory.create(gson))
+        .addConverterFactory(MoshiConverterFactory.create())
         .build()
-
-    @Provides
-    fun provideGson(): Gson = GsonBuilder().create()
 
     @Provides
     fun provideApiService(retrofit: Retrofit): JokerFinderApiService =

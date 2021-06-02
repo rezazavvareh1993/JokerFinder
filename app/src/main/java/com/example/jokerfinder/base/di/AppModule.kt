@@ -8,6 +8,7 @@ import com.example.jokerfinder.repository.networkreopsitory.retrofit.JokerFinder
 import com.example.jokerfinder.base.db.MovieDB
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,10 +42,13 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(gson: Gson): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(moshi: Moshi): Retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
+
+    @Provides
+    fun provideMoshi(): Moshi = Moshi.Builder().build()
 
     @Provides
     fun provideApiService(retrofit: Retrofit): JokerFinderApiService =

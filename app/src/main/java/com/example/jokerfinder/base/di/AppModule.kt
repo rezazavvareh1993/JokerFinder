@@ -1,13 +1,11 @@
 package com.example.jokerfinder.base.di
 
 import android.content.Context
+import com.example.jokerfinder.base.db.MovieDB
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.repository.networkreopsitory.retrofit.JokerFinderApiService
-import com.example.jokerfinder.base.db.MovieDB
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -15,7 +13,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 

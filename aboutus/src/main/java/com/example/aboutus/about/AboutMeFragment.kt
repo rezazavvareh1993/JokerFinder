@@ -1,4 +1,4 @@
-package com.example.jokerfinder.features.about
+package com.example.aboutus.about
 
 
 import android.content.Intent
@@ -8,15 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.jokerfinder.R
-import com.example.jokerfinder.base.BaseFragment
-import com.example.jokerfinder.databinding.FragmentAboutUsBinding
-import com.example.jokerfinder.utils.MyConstantClass
+import com.example.aboutus.AboutUsConst
+import com.example.aboutus.R
+import com.example.aboutus.databinding.FragmentAboutUsBinding
 
 /**
  * A simple [Fragment] subclass.
  */
-class AboutMeFragment : BaseFragment(), View.OnClickListener {
+class AboutMeFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentAboutUsBinding? = null
     private val binding get() = _binding!!
@@ -37,9 +36,9 @@ class AboutMeFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.imgGithub ->
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MyConstantClass.GITHUB_URL)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutUsConst.GITHUB_URL)))
             R.id.imgLinkedin ->
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(MyConstantClass.LINKEDIN_URL)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(AboutUsConst.LINKEDIN_URL)))
         }
     }
 

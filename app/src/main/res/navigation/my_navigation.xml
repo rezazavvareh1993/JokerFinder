@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_navigation"
     app:startDestination="@id/searchMovieFragment">
+
     <fragment
         android:id="@+id/searchMovieFragment"
         android:name="com.example.jokerfinder.features.searchmovie.SearchMovieFragment"
@@ -36,11 +37,6 @@
         <action
             android:id="@+id/action_favoriteMovieFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
-
     </fragment>
-    <fragment
-        android:id="@+id/aboutUsFragment"
-        android:name="com.example.jokerfinder.features.about.AboutMeFragment"
-        android:label="fragment_about_us"
-        tools:layout="@layout/fragment_about_us" />
+    <include app:graph="@navigation/about_navigation"/>
 </navigation>

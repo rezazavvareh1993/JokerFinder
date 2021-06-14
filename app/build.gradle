@@ -112,13 +112,11 @@ dependencies {
 
     // Moshi
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.11.0"
-
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
 
     // AndroidX Test - JVM testing
     testImplementation "androidx.test.ext:junit-ktx:$androidXTestExtKotlinRunnerVersion"

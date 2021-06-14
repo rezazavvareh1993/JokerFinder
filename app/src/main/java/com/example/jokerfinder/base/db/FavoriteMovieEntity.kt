@@ -8,7 +8,7 @@ class FavoriteMovieEntity (
     @PrimaryKey(autoGenerate = true)
     var movieId: Int,
     val movieName : String,
-    val movieReleaseDate : String,
-    val movieRate : Double,
-    val moviePicUrl : String
+    val movieReleaseDate : String?,
+    val movieRate : Double?,
+    val moviePicUrl : String?
 )

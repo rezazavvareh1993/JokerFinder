@@ -3,7 +3,6 @@ package com.example.jokerfinder.pojo
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
 data class ProductionCompany(
     val id: Int,
     val name: String,

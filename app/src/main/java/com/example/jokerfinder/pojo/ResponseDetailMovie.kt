@@ -3,7 +3,6 @@ package com.example.jokerfinder.pojo
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
-@JsonClass(generateAdapter = true)
 data class ResponseDetailMovie(
     val adult: Boolean,
     val budget: Int,
@@ -24,7 +23,7 @@ data class ResponseDetailMovie(
     @Json(name = "backdrop_path") val backdropPath: String,
     @Json(name = "belongs_to_collection") val belongsToCollection: BelongsToCollection,
     @Json(name = "poster_path") val posterPath: String,
-    @Json(name = "release_date") val releaseDate: String,
+    @Json(name = "release_date") val releaseDate: String?,
     @Json(name = "vote_average") val voteAverage: Double,
     @Json(name = "vote_count") val voteCount: Int,
     @Json(name = "spoken_languages") val spokenLanguages: List<SpokenLanguage>? = null,

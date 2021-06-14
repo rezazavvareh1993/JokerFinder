@@ -45,7 +45,8 @@ object AppModule {
         .build()
 
     @Provides
-    fun provideMoshi(): Moshi = Moshi.Builder().build()
+    fun provideMoshi(): Moshi = Moshi.Builder()
+        .build()
 
     @Provides
     fun provideApiService(retrofit: Retrofit): JokerFinderApiService =

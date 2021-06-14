@@ -14,7 +14,7 @@ class MoviePageResource(
             val response = repository.fetchMovieSearchData(movieName, page)
             val previousPage = if (page - 1 > 0) page - 1 else null
             val nextPage = if (response.results.isNullOrEmpty()) null else page + 1
-            LoadResult.Page(response.results, previousPage, nextPage)
+            LoadResult.Page(response.results!!, previousPage, nextPage)
         } catch (e: Exception) {
             LoadResult.Error(e)
         }

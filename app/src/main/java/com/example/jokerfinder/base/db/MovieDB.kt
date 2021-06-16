@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 
-@Database(entities = [FavoriteMovieEntity::class], version = 2, exportSchema = false)
+@Database(entities = [FavoriteMovieEntity::class], version = 3, exportSchema = false)
 abstract class MovieDB : RoomDatabase() {
     abstract fun favoriteMovieDAO(): FavoriteMovieDAO
 

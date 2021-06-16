@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':aboutus')
     def androidXTestExtKotlinRunnerVersion = '1.1.1'
     def androidXTestCoreVersion = '1.2.0'
     def robolectricVersion = '4.3-beta-1'

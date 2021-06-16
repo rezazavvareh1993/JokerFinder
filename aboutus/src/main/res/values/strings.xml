@@ -1,0 +1,4 @@
+<resources>
+    <string name="technologies_description">MVVM\nArchitecture components\n(LiveData,ViewModel,Room)\nKotlin\nCoroutine, Flow\nHilt\nRetrofit\nNavigation Component\nSingle Activity\nSafe Args\nPagination\nDataBinding\nViewBinding\nFireBase</string>
+    <string name="app_description">This sample app tries to demonstrate how to implement latest technologies in Android Applications.  for more information kindly visit the github page.</string>
+</resources>

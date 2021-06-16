@@ -9,6 +9,6 @@ data class Crew(
     val id: Int,
     val job: String,
     val name: String,
-    @Json(name = "credit_id") val creditId: String,
-    @Json(name = "profile_path") val profilePath: String
+    @field:Json(name = "credit_id") val creditId: String,
+    @field:Json(name = "profile_path") val profilePath: String
 )

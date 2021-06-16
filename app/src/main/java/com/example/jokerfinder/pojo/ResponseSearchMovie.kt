@@ -6,6 +6,6 @@ import com.squareup.moshi.JsonClass
 data class ResponseSearchMovie(
     val page: Int,
     val results: List<ResultModel>? = null,
-    @Json(name = "total_results") val totalResults: Int,
-    @Json(name = "total_pages") val totalPages: Int
+    @field:Json(name = "total_results") val totalResults: Int,
+    @field:Json(name = "total_pages") val totalPages: Int
 )

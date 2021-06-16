@@ -8,7 +8,7 @@
     <string name="character">Character :</string>
     <string name="released">Released :</string>
     <string name="vote_count">Vote Count :</string>
-    <string name="technologies_description">MVVM\nArchitecture components\n(LiveData,ViewModel,Room)\nKotlin\nCoroutine, Flow\nHilt\nRetrofit\nNavigation Component\nSingle Activity\nSafe Args\nPagination\nDataBinding\nViewBinding\nFireBase</string>
+    <string name="technologies_description">MVVM\nArchitecture components\n( LiveData, ViewModel, Room )\nKotlin\nCoroutine, Flow\nHilt\nRetrofit\nNavigation Component\nSingle Activity\nSafe Args\nPagination\nDataBinding\nViewBinding\nFireBase\nMoshi\nLibrary Module</string>
     <string name="app_description">This sample app tries to demonstrate how to implement latest technologies in Android Applications.  for more information kindly visit the github page.</string>
     <string name="favorite_movies">Favorite Movies</string>
     <string name="nothing_movie">فیلم مورد علاقه ای وجود ندارد.</string>

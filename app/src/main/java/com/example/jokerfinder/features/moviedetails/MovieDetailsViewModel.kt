@@ -30,10 +30,6 @@ class MovieDetailsViewModel @Inject constructor(private val repository: DataRepo
                 }
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
-//                MyConstantClass.showToast(
-//                    context,
-//                    context.resources.getString(R.string.error_connection)
-//                )
                 movieDetailsLiveData.postValue(null)
             }
         }

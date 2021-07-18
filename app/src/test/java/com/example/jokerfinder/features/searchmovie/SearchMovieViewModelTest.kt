@@ -8,23 +8,15 @@ import com.example.jokerfinder.base.db.MovieDB
 import com.example.jokerfinder.repository.DataRepository
 import com.example.jokerfinder.repository.localrepository.FavoriteMovieDAO
 import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
-import com.example.jokerfinder.repository.networkreopsitory.retrofit.JokerFinderApiService
-import com.google.gson.GsonBuilder
 import junit.framework.TestCase
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 @RunWith(AndroidJUnit4::class)
-@Config(manifest = Config.NONE)
 class SearchMovieViewModelTest : TestCase() {
 
     private lateinit var viewModel: SearchMovieViewModel
-    private lateinit var networkRepository: NetworkRepository
-    private lateinit var favoriteMovieDAO: FavoriteMovieDAO
     private lateinit var dataRepository: DataRepository
 
 
@@ -37,16 +29,16 @@ class SearchMovieViewModelTest : TestCase() {
         val db = Room.inMemoryDatabaseBuilder(context, MovieDB::class.java)
             .allowMainThreadQueries().build()
 
-        val jokerFinderApiService = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build().create(JokerFinderApiService::class.java)
+//        val jokerFinderApiService = Retrofit.Builder()
+//            .baseUrl("https://api.themoviedb.org/3/")
+//            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+//            .build().create(JokerFinderApiService::class.java)
 
-        favoriteMovieDAO = db.favoriteMovieDAO()
+//        favoriteMovieDAO = db.favoriteMovieDAO()
 
-        networkRepository= NetworkRepository(jokerFinderApiService)
+//        networkRepository= NetworkRepository(jokerFinderApiService)
 
-        dataRepository = DataRepository(networkRepository, favoriteMovieDAO)
+        dataRepository = DataRepository()
 
         viewModel = SearchMovieViewModel(dataRepository)
     }

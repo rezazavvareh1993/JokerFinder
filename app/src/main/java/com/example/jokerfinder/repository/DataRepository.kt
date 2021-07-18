@@ -10,10 +10,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class DataRepository @Inject constructor(
-    private val networkRepository: NetworkRepository,
-    private val favoriteMovieDAO: FavoriteMovieDAO
-) {
+class DataRepository() {
+
+    @Inject
+    lateinit var networkRepository: NetworkRepository
+
+    @Inject
+    lateinit var favoriteMovieDAO: FavoriteMovieDAO
+
 
     private val apiKey = MyConstantClass.APY_KEY
 

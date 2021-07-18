@@ -1,28 +1,38 @@
 package com.example.jokerfinder.features.moviedetails
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.jokerfinder.getOrAwaitValue
+import com.example.jokerfinder.repository.DataRepository
+import junit.framework.TestCase
 import org.hamcrest.CoreMatchers
 import org.junit.Assert.assertThat
-import org.junit.Rule
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class MovieDetailsViewModelTest {
-    @get:Rule
-    var instantExecutorRule = InstantTaskExecutorRule()
+class MovieDetailsViewModelTest: TestCase() {
+
+    private lateinit var viewModel: MovieDetailsViewModel
+    private lateinit var dataRepository: DataRepository
+
+    @Before
+    override fun setUp() {
+        super.setUp()
+
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        dataRepository = DataRepository()
+
+        viewModel = MovieDetailsViewModel(dataRepository)
+    }
 
     @Test
-    fun movieDetailsTest() {
-        // Given a fresh ViewModel
-        val movieDetailsViewModel =
-            MovieDetailsViewModel(ApplicationProvider.getApplicationContext())
-
+    fun testFe3tDetailOfMovie() {
+        viewModel.fetchMovieDetails(10)
         // Then the new task event is triggered
-        val value = movieDetailsViewModel.getMovieDetailsData().getOrAwaitValue()
-        assertThat(value.adult, CoreMatchers.not(CoreMatchers.nullValue()))
+        val response = viewModel.getMovieDetailsData().getOrAwaitValue()
+        assertThat(response.adult, CoreMatchers.not(CoreMatchers.nullValue()))
     }
 }

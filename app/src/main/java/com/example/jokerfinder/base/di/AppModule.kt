@@ -29,7 +29,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRepository() = DataRepository()
+    fun provideRepository(localDataSource: FavoriteMovieDAO) =
+        DataRepository(localDataSource)
 
     @Singleton
     @Provides

@@ -38,7 +38,7 @@ class SearchMovieViewModelTest : TestCase() {
 
 //        networkRepository= NetworkRepository(jokerFinderApiService)
 
-        dataRepository = DataRepository()
+        dataRepository = DataRepository(db.favoriteMovieDAO())
 
         viewModel = SearchMovieViewModel(dataRepository)
     }

@@ -11,7 +11,6 @@ import com.example.jokerfinder.databinding.ActivitySplashBinding
 import com.example.jokerfinder.features.MainActivity
 import com.example.jokerfinder.utils.MyConstantClass
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.iid.FirebaseInstanceId
 
 class SplashActivity : AppCompatActivity() {
 
@@ -28,17 +27,17 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun retriveTokenFcm() {
-        FirebaseInstanceId.getInstance().instanceId
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w("MyTag", "getInstanceId failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new Instance ID token
-                val token = task.result?.token
-                Log.d("MyTag", token!!)
-            })
+//        FirebaseInstanceId.getInstance().instanceId
+//            .addOnCompleteListener(OnCompleteListener { task ->
+//                if (!task.isSuccessful) {
+//                    Log.w("MyTag", "getInstanceId failed", task.exception)
+//                    return@OnCompleteListener
+//                }
+//
+//                // Get new Instance ID token
+//                val token = task.result?.token
+//                Log.d("MyTag", token!!)
+//            })
     }
 
     private fun readFormatType() {

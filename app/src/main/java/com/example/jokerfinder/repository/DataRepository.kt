@@ -7,18 +7,12 @@ import com.example.jokerfinder.repository.networkreopsitory.NetworkRepository
 import com.example.jokerfinder.utils.MyConstantClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class DataRepository() {
-
-    @Inject
-    lateinit var networkRepository: NetworkRepository
-
-    @Inject
-    lateinit var favoriteMovieDAO: FavoriteMovieDAO
-
-
+class DataRepository @Inject constructor(
+    private val networkRepository: NetworkRepository,
+    private val favoriteMovieDAO: FavoriteMovieDAO
+) {
     private val apiKey = MyConstantClass.APY_KEY
 
     //Network

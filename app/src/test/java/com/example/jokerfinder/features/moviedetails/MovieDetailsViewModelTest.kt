@@ -22,7 +22,6 @@ class MovieDetailsViewModelTest: TestCase() {
     override fun setUp() {
         super.setUp()
 
-        val context = ApplicationProvider.getApplicationContext<Context>()
         dataRepository = DataRepository()
 
         viewModel = MovieDetailsViewModel(dataRepository)

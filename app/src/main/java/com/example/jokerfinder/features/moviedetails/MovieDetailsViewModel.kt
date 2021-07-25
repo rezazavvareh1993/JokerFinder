@@ -11,6 +11,7 @@ import com.example.jokerfinder.pojo.ResponseDetailMovie
 import com.example.jokerfinder.repository.DataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,19 +22,16 @@ class MovieDetailsViewModel @Inject constructor(private val repository: DataRepo
     private var movieDetailsLiveData = MutableLiveData<ResponseDetailMovie>()
     private var castOfMovieMutableLiveData = MutableLiveData<Credits>()
 
-
     fun fetchMovieDetails(idMovie: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                repository.fetchMovieDetails(idMovie).collect {
+                repository.fetchMovieDetails(idMovie).catch {
+                    movieDetailsLiveData.postValue(null)
+                }.collect {
                     movieDetailsLiveData.postValue(it)
                 }
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
-//                MyConstantClass.showToast(
-//                    context,
-//                    context.resources.getString(R.string.error_connection)
-//                )
                 movieDetailsLiveData.postValue(null)
             }
         }

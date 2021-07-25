@@ -20,15 +20,13 @@ class DataRepository @Inject constructor(
     //Network
     fun fetchMovieDetails(idMovie: Int) = flow {
         val response = networkRepository.fetchMovieDetails(idMovie, apiKey)
-        if (response.isSuccessful)
-            emit(response.body())
-    }.flowOn(Dispatchers.IO)
+        emit(response)
+    }
 
     fun fetchCastsOfMovie(idMovie: Int) = flow {
         val response = networkRepository.fetchCastsOfMovie(idMovie, apiKey)
-        if (response.isSuccessful)
-            emit(response.body())
-    }.flowOn(Dispatchers.IO)
+        emit(response)
+    }
 
     suspend fun fetchMovieSearchData(movieName: String, page: Int): ResponseSearchMovie =
         networkRepository.fetchMovieSearchData(movieName, page, apiKey)

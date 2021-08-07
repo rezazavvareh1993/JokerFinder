@@ -37,7 +37,6 @@ class MovieDetailsViewModel @Inject constructor(private val repository: DataRepo
         }
     }
 
-
     fun fetchCastOfMovieData(idMovie: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -54,4 +53,3 @@ class MovieDetailsViewModel @Inject constructor(private val repository: DataRepo
     fun getMovieDetailsData(): LiveData<ResponseDetailMovie> = movieDetailsLiveData
     fun getCastOfMovieData(): LiveData<Credits> = castOfMovieMutableLiveData
 }
-

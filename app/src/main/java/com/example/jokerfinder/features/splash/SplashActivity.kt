@@ -5,13 +5,11 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.jokerfinder.R
 import com.example.jokerfinder.databinding.ActivitySplashBinding
 import com.example.jokerfinder.features.MainActivity
 import com.example.jokerfinder.utils.MyConstantClass
-import com.google.android.gms.tasks.OnCompleteListener
 
 class SplashActivity : AppCompatActivity() {
 
@@ -48,11 +46,13 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startActivityByDelay() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }, MyConstantClass.SPLASH_ACTIVITY_TIME)
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            },
+            MyConstantClass.SPLASH_ACTIVITY_TIME
+        )
     }
 }
-

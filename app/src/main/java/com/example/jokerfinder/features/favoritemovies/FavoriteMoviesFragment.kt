@@ -1,6 +1,5 @@
 package com.example.jokerfinder.features.favoritemovies
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,7 +44,8 @@ class FavoriteMoviesFragment : BaseFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFavoriteMovieBinding.inflate(inflater, container, false)
@@ -63,18 +63,21 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     private fun observeFavoriteMovieDataBase() {
         favoriteMovieViewModel.getAllFavoriteMovies().removeObservers(viewLifecycleOwner)
-        favoriteMovieViewModel.getAllFavoriteMovies().observe(viewLifecycleOwner, {
-            it?.let { resource ->
-                when (resource) {
-                    is GeneralResponse.Loading -> binding.pbrFavoriteMovie.makeVisible()
-                    is GeneralResponse.Success -> setDataToRecyclerView(resource.data)
-                    is GeneralResponse.Error -> {
-                        binding.pbrFavoriteMovie.makeGone()
-                        Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+        favoriteMovieViewModel.getAllFavoriteMovies().observe(
+            viewLifecycleOwner,
+            {
+                it?.let { resource ->
+                    when (resource) {
+                        is GeneralResponse.Loading -> binding.pbrFavoriteMovie.makeVisible()
+                        is GeneralResponse.Success -> setDataToRecyclerView(resource.data)
+                        is GeneralResponse.Error -> {
+                            binding.pbrFavoriteMovie.makeGone()
+                            Toast.makeText(requireContext(), resource.message, Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
-        })
+        )
     }
 
     private fun setDataToRecyclerView(data: List<FavoriteMovieEntity>?) {
@@ -87,26 +90,26 @@ class FavoriteMoviesFragment : BaseFragment() {
     }
 
     private fun itemTouchHelper() {
-        ///////////////////deleteMovie
+        // /////////////////deleteMovie
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         ) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ) = false
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ) = false
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                lastFavoriteMovieEntityDeleted =
-                    adapter.getRoomAt(viewHolder.absoluteAdapterPosition)
-                favoriteMovieViewModel.deleteMovieFromFavoriteMovies(
-                    lastFavoriteMovieEntityDeleted
-                )
-                callGetListFavoriteMovies()
-                showUndoSnackBar()
-            }
-        }).attachToRecyclerView(binding.rcyFavoriteMovie)
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    lastFavoriteMovieEntityDeleted =
+                        adapter.getRoomAt(viewHolder.absoluteAdapterPosition)
+                    favoriteMovieViewModel.deleteMovieFromFavoriteMovies(
+                        lastFavoriteMovieEntityDeleted
+                    )
+                    callGetListFavoriteMovies()
+                    showUndoSnackBar()
+                }
+            }).attachToRecyclerView(binding.rcyFavoriteMovie)
     }
 
     private fun showUndoSnackBar() {

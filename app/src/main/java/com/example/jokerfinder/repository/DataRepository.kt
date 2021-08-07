@@ -17,7 +17,7 @@ class DataRepository @Inject constructor(
 
     private val apiKey = MyConstantClass.APY_KEY
 
-    //Network
+    // Network
     fun fetchMovieDetails(idMovie: Int) = flow {
         val response = networkRepository.fetchMovieDetails(idMovie, apiKey)
         emit(response)
@@ -31,7 +31,7 @@ class DataRepository @Inject constructor(
     suspend fun fetchMovieSearchData(movieName: String, page: Int): ResponseSearchMovie =
         networkRepository.fetchMovieSearchData(movieName, page, apiKey)
 
-    //Local
+    // Local
     fun fetchAllFavoriteMovies() = flow {
         val data = favoriteMovieDAO.getAllFavoriteMovies()
         if (!data.isNullOrEmpty())
@@ -49,5 +49,4 @@ class DataRepository @Inject constructor(
     fun findByMovieId(movieId: Int): FavoriteMovieEntity? {
         return favoriteMovieDAO.findByMovieId(movieId)
     }
-
 }

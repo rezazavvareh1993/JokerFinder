@@ -8,7 +8,7 @@ import com.example.jokerfinder.base.db.FavoriteMovieEntity
 import com.example.jokerfinder.databinding.ItemFavoriteMovieBinding
 import com.squareup.picasso.Picasso
 
-class FavoriteMoviesAdapter(private val getFavoriteMovieId : (Int) -> (Unit)) : ListAdapter<FavoriteMovieEntity, FavoriteMoviesAdapter.FavoriteMovieViewHolder>(FavoriteMovieDiffUtils()) {
+class FavoriteMoviesAdapter(private val getFavoriteMovieId: (Int) -> (Unit)) : ListAdapter<FavoriteMovieEntity, FavoriteMoviesAdapter.FavoriteMovieViewHolder>(FavoriteMovieDiffUtils()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteMovieViewHolder {
         val binding =
             ItemFavoriteMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,7 +39,6 @@ class FavoriteMoviesAdapter(private val getFavoriteMovieId : (Int) -> (Unit)) : 
 
             itemView.setOnClickListener { getFavoriteMovieId(favoriteMovieEntity.movieId) }
         }
-
 
         private fun getImageMovieByPicasso(uriImage: String) {
             Picasso.get().load(uriImage).fit().into(binding.imgBackgroundFavoriteMovie)

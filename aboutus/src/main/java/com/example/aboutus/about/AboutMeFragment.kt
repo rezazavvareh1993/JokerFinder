@@ -1,6 +1,5 @@
 package com.example.aboutus.about
 
-
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,7 +20,9 @@ class AboutMeFragment : Fragment(), View.OnClickListener {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentAboutUsBinding.inflate(inflater, container, false)
         return binding.root

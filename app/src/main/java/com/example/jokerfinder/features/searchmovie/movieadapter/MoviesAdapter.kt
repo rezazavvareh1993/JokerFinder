@@ -32,12 +32,12 @@ class MoviesAdapter(private val getMovieIdFunction: (Int) -> Unit) :
 
             val uriImage = "https://image.tmdb.org/t/p/w500" + resultModel.posterPath
             Picasso.get().load(uriImage).into(binding.imgMoviePic)
-                binding.txtNameMovie.text = resultModel.title
-                binding.txtMovieListRate.text = resultModel.voteAverage.toString()
-                binding.txtVoteCountMovie.text = "votes : ${resultModel.voteCount}"
-                binding.txtReleasedMovie.text = "released : ${resultModel.releaseDate}"
-                binding.ratingBarMovie.rating = resultModel.voteAverage.toFloat() / 2
-                itemView.setOnClickListener { getMovieIdFunction(resultModel.id) }
+            binding.txtNameMovie.text = resultModel.title
+            binding.txtMovieListRate.text = resultModel.voteAverage.toString()
+            binding.txtVoteCountMovie.text = "votes : ${resultModel.voteCount}"
+            binding.txtReleasedMovie.text = "released : ${resultModel.releaseDate}"
+            binding.ratingBarMovie.rating = resultModel.voteAverage.toFloat() / 2
+            itemView.setOnClickListener { getMovieIdFunction(resultModel.id) }
         }
     }
 

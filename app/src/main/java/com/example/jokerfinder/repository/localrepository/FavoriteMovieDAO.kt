@@ -1,7 +1,6 @@
 package com.example.jokerfinder.repository.localrepository
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.* // ktlint-disable no-wildcard-imports
 import com.example.jokerfinder.base.db.FavoriteMovieEntity
 
 @Dao

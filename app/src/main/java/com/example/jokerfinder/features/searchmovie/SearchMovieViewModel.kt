@@ -37,4 +37,3 @@ class SearchMovieViewModel @Inject constructor(private val repository: DataRepos
 
     fun isSameName() = movieName == lastName
 }
-

@@ -18,7 +18,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
 //        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 //
 //        FirebaseMessaging.getInstance().isAutoInitEnabled = true
@@ -40,7 +39,7 @@ class MainActivity : BaseActivity() {
 //                val token = task.result?.token
 //
 //                // Log and toast
-////                val msg = getString(R.string.msg_token_fmt, token)
+// //                val msg = getString(R.string.msg_token_fmt, token)
 //                Log.d("MyTag", token!!)
 //                Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
 //            })
@@ -52,8 +51,3 @@ class MainActivity : BaseActivity() {
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
     }
 }
-
-
-
-
-

@@ -1,6 +1,5 @@
 package com.example.jokerfinder.features.moviedetails
 
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,15 +40,16 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
     private lateinit var favoriteMovieEntity: FavoriteMovieEntity
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         loadingViews()
         setUpRecyclerView()
         callMovieDetails()
@@ -85,15 +85,18 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
 
     private fun callMovieDetails() {
         movieDetailViewModel.fetchMovieDetails(getMovieSearchedId())
-        movieDetailViewModel.getMovieDetailsData().observe(this as LifecycleOwner, {
-            it?.let {
-                saveMovieInformationForUsingDataBase(it)
-                bindData(it)
-                showViews()
-                callCastsOfMovie()
+        movieDetailViewModel.getMovieDetailsData().observe(
+            this as LifecycleOwner,
+            {
+                it?.let {
+                    saveMovieInformationForUsingDataBase(it)
+                    bindData(it)
+                    showViews()
+                    callCastsOfMovie()
+                }
+                binding.pbrMovieDetails.makeGone()
             }
-            binding.pbrMovieDetails.makeGone()
-        })
+        )
     }
 
     private fun saveMovieInformationForUsingDataBase(it: ResponseDetailMovie) {
@@ -105,13 +108,16 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
     private fun callCastsOfMovie() {
         movieDetailViewModel.fetchCastOfMovieData(getMovieSearchedId())
         movieDetailViewModel.getCastOfMovieData().removeObservers(viewLifecycleOwner)
-        movieDetailViewModel.getCastOfMovieData().observe(viewLifecycleOwner, {
-            it?.let { credits ->
-                adapter.submitList(it.cast)
-                credits.crew?.let { crew -> getCrewOfMovie(crew) }
+        movieDetailViewModel.getCastOfMovieData().observe(
+            viewLifecycleOwner,
+            {
+                it?.let { credits ->
+                    adapter.submitList(it.cast)
+                    credits.crew?.let { crew -> getCrewOfMovie(crew) }
+                }
+                binding.pbrCast.makeGone()
             }
-            binding.pbrCast.makeGone()
-        })
+        )
     }
 
     @SuppressLint("SetTextI18n")
@@ -159,9 +165,7 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
             .into(binding.imgMainMovie)
         Picasso.get().load("https://image.tmdb.org/t/p/w500" + responseDetailMovie.posterPath)
             .into(binding.imgLogoDetailMovie)
-
     }
-
 
     private fun getMovieSearchedId(): Int {
         val safeArgs = MovieDetailsFragmentArgs.fromBundle(requireArguments())
@@ -170,12 +174,15 @@ class MovieDetailsFragment : BaseFragment(), View.OnClickListener {
 
     private fun isMovieInDataBase() {
         favoriteMovieViewModel.findMovieByMovieId(getMovieSearchedId())
-        favoriteMovieViewModel.getIsMovieInDataBase().observe(this as LifecycleOwner, {
-            if (it)
-                binding.imgLikeMovie.setImageResource(R.drawable.ic_favorite_red)
-            else
-                binding.imgLikeMovie.setImageResource(R.drawable.ic_favorite_border)
-        })
+        favoriteMovieViewModel.getIsMovieInDataBase().observe(
+            this as LifecycleOwner,
+            {
+                if (it)
+                    binding.imgLikeMovie.setImageResource(R.drawable.ic_favorite_red)
+                else
+                    binding.imgLikeMovie.setImageResource(R.drawable.ic_favorite_border)
+            }
+        )
     }
 
     override fun onClick(v: View?) {

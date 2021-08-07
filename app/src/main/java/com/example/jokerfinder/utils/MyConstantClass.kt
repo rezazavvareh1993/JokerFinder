@@ -6,7 +6,7 @@ import android.widget.Toast
 class MyConstantClass {
 
     companion object {
-        fun showToast(context : Context, message : String?){
+        fun showToast(context: Context, message: String?) {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         }
 
@@ -14,7 +14,5 @@ class MyConstantClass {
         const val APY_KEY = "1ee72f0e064595f1d5adcd6a78cfb5c4"
         const val GITHUB_URL = "https://github.com/rezazavvareh1993/JokerFinder"
         const val LINKEDIN_URL = "https://linkedin.com/in/reza-zavvareh-0b738013a"
-
-
     }
 }

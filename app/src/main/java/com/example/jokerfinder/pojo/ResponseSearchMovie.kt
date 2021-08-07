@@ -1,7 +1,6 @@
 package com.example.jokerfinder.pojo
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 
 data class ResponseSearchMovie(
     val page: Int,

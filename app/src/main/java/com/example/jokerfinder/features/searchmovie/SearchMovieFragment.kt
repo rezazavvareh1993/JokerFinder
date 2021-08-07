@@ -1,6 +1,5 @@
 package com.example.jokerfinder.features.searchmovie
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,21 +45,21 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSearchMovieBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         init()
         setUpRecyclerView()
         setDataToRecyclerView()
         handleLoading()
     }
-
 
     private fun init() {
         binding.imgSearch.setOnClickListener(this)
@@ -122,7 +121,7 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
             R.id.imgSearch -> {
                 if (checkSearchButton) {
                     searchMovieViewModel.setMovieName(binding.edtSearch.text.toString())
-                    if(!searchMovieViewModel.isSameName()) {
+                    if (!searchMovieViewModel.isSameName()) {
                         binding.pbrSearch.makeVisible()
                         setDataToRecyclerView()
                         binding.imgSearch.setImageResource(R.drawable.ic_clear)

@@ -6,6 +6,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 
 android {
     compileSdkVersion 30
@@ -25,6 +26,7 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
     buildTypes {
         release {
             minifyEnabled false

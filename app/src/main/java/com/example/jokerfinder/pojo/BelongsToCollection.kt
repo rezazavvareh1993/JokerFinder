@@ -1,8 +1,7 @@
 package com.example.jokerfinder.pojo
-import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Json
 
-data class BelongsToCollection (
+data class BelongsToCollection(
     val id: Int,
     val name: String,
     @field:Json(name = "poster_path")val posterPath: String,

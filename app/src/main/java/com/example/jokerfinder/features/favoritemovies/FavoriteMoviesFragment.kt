@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,6 +24,7 @@ import com.example.jokerfinder.features.favoritemovies.adapter.FavoriteMoviesAda
 import com.example.jokerfinder.utils.response.GeneralResponse
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+
 /**
  * A simple [Fragment] subclass.
  */
@@ -51,8 +53,8 @@ class FavoriteMoviesFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         callGetListFavoriteMovies()
         setUpRecyclerView()
         itemTouchHelper()
@@ -96,7 +98,8 @@ class FavoriteMoviesFragment : BaseFragment() {
             ) = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                lastFavoriteMovieEntityDeleted = adapter.getRoomAt(viewHolder.adapterPosition)
+                lastFavoriteMovieEntityDeleted =
+                    adapter.getRoomAt(viewHolder.absoluteAdapterPosition)
                 favoriteMovieViewModel.deleteMovieFromFavoriteMovies(
                     lastFavoriteMovieEntityDeleted
                 )
@@ -112,8 +115,8 @@ class FavoriteMoviesFragment : BaseFragment() {
             requireView(), getString(R.string.deleteFavoriteMovie), Snackbar.LENGTH_LONG
         )
         snackBar.setAction(getString(R.string.undo)) { undoDelete() }
-            .setActionTextColor(resources.getColor(R.color.colorPrimary))
-        snackBar.setActionTextColor(resources.getColor(R.color.colorAccent))
+            .setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        snackBar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
         snackBar.show()
     }
 

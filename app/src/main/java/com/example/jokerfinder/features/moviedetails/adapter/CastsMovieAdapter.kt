@@ -20,8 +20,6 @@ class CastsMovieAdapter : ListAdapter<Cast, CastsMovieAdapter.CastViewHolder>(
     }
 
     override fun onBindViewHolder(holder: CastViewHolder, position: Int) {
-
-        val position = holder.layoutPosition
         holder.bind(getItem(position))
     }
 

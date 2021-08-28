@@ -4,7 +4,7 @@ This project has created about search moveis and see informations about selected
 I have implemeneted new android tecknologies for learning and use by other users on android projects
  
  Technologies: 
- MVVM /n
+ MVVM,
  Architecture components( LiveData, ViewModel, Room )
  Kotlin
  Coroutine, Flow

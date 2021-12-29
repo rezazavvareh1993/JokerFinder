@@ -90,7 +90,9 @@ class SearchMovieFragment : BaseFragment(), View.OnClickListener {
         if (searchMovieViewModel.getMovieName().isNotEmpty()) {
             searchMovieViewModel.fetchMovieSearchData()
             job = lifecycleScope.launch {
-                searchMovieViewModel.dataFlow.collectLatest { adapter.submitData(it) }
+                searchMovieViewModel.dataFlow.collectLatest {
+                    adapter.submitData(it)
+                }
             }
         } else
             cancelLoading()
